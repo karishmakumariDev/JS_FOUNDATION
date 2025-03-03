@@ -150,27 +150,22 @@ console.log(user.greet()); // Output: Hello, Karishma
 
 
 
+## Object Methods and "this"
 
-### Object methods, "this"
-- Objects are usually created to represent entities of the real world, like users, orders and so on:
-  ```
-  let user = {
-  name: "John",
-  age: 30
-};
-```
--  And, in the real world, a user can act: select something from the shopping cart, login, logout etc.
--  Actions are represented in JavaScript by functions in properties.
-
-### Method Example
-For a start, let’s teach the user to say hello:
+Objects are usually created to represent entities of the real world, like users, orders, etc.
 
 ```javascript
 let user = {
   name: "John",
   age: 30
 };
+```
 
+### Method Examples
+
+To teach the user to say hello:
+
+```javascript
 user.sayHi = function() {
   alert("Hello!");
 };
@@ -178,46 +173,175 @@ user.sayHi = function() {
 user.sayHi(); // Hello!
 ```
 
-Here we’ve just used a Function Expression to create a function and assign it to the property `user.sayHi` of the object.
+A function that is a property of an object is called a **method**.
 
-Then we can call it as `user.sayHi()`. The user can now speak!
+Using a pre-declared function as a method:
 
-A function that is a property of an object is called its **method**.
+```javascript
+let user = {};
 
-So, here we’ve got a method `sayHi` of the object `user`.
-
-Of course, we could use a pre-declared function as a method, like this:
-let user = {
-  // ...
-};
-
-// first, declare
 function sayHi() {
   alert("Hello!");
 }
 
-// then add as a method
 user.sayHi = sayHi;
 
-user.sayHi();
+user.sayHi(); // Hello!
+```
 
-- Here during the execution of user.sayHi(), the value of this will be user.
-- Technically, it’s also possible to access the object without this, by referencing it via the outer variable:
+### Object-Oriented Programming (OOP)
 
-### shorted method
-- Shorter Syntax for Methods in an Object Literal
- ``` 
-  // these objects do the same
+When we use objects to represent entities, it is called Object-Oriented Programming (OOP).
+
+### Method Shorthand
+
+Instead of:
+
+```javascript
 user = {
   sayHi: function() {
     alert("Hello");
   }
 };
+```
 
-// method shorthand looks better, right?
+We use shorthand:
+
+```javascript
 user = {
-  sayHi() { // same as "sayHi: function(){...}"
+  sayHi() {
     alert("Hello");
   }
 };
 ```
+
+### "this" in Methods
+
+To access object properties inside a method, we use `this`:
+
+```javascript
+let user = {
+  name: "John",
+  age: 30,
+
+  sayHi() {
+    alert(this.name);
+  }
+};
+
+user.sayHi(); // John
+```
+
+Avoid using the object name inside methods, as it may cause issues when copying objects.
+
+### "this" is Not Bound
+
+JavaScript evaluates `this` at runtime based on the calling object:
+
+```javascript
+let user = { name: "John" };
+let admin = { name: "Admin" };
+
+function sayHi() {
+  alert(this.name);
+}
+
+user.f = sayHi;
+admin.f = sayHi;
+
+user.f(); // John
+admin.f(); // Admin
+```
+
+### Calling Without an Object
+
+```javascript
+function sayHi() {
+  alert(this);
+}
+
+sayHi(); // undefined (in strict mode)
+```
+
+### Arrow Functions Have No "this"
+
+Arrow functions do not have their own `this`:
+
+```javascript
+let user = {
+  firstName: "Ilya",
+  sayHi() {
+    let arrow = () => alert(this.firstName);
+    arrow();
+  }
+};
+
+user.sayHi(); // Ilya
+```
+
+### Summary
+
+- Methods allow objects to "act".
+- `this` refers to the calling object.
+- Arrow functions inherit `this` from their surrounding scope.
+
+### Tasks
+
+#### Using "this" in Object Literal
+
+```javascript
+function makeUser() {
+  return {
+    name: "John",
+    ref: this
+  };
+}
+
+let user = makeUser();
+
+alert(user.ref.name); // Error
+```
+
+#### Create a Calculator
+
+```javascript
+let calculator = {
+  read() {
+    this.a = +prompt("Enter first number:", 0);
+    this.b = +prompt("Enter second number:", 0);
+  },
+  sum() {
+    return this.a + this.b;
+  },
+  mul() {
+    return this.a * this.b;
+  }
+};
+
+calculator.read();
+alert(calculator.sum());
+alert(calculator.mul());
+```
+
+#### Chaining
+
+```javascript
+let ladder = {
+  step: 0,
+  up() {
+    this.step++;
+    return this;
+  },
+  down() {
+    this.step--;
+    return this;
+  },
+  showStep() {
+    alert(this.step);
+    return this;
+  }
+};
+
+ladder.up().up().down().showStep().down().showStep();
+```
+
