@@ -83,7 +83,7 @@ console.log(car.brand); // Output: Toyota
 ### **3. Using Constructor Function**
 ### What is a Constructor Function in JavaScript?
 
-A constructor function is a special type of function used to create multiple objects with similar properties. It acts as a blueprint for creating objects dynamically. Constructor functions use t
+A constructor function is a special type of function used to create multiple objects with similar properties. It acts as a blueprint for creating objects dynamically. Constructor functions use the this keyword to assign values and must be called using the new keyword.
 ```javascript
 function Person(name, age) {
     this.name = name;
