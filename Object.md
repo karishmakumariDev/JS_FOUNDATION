@@ -689,4 +689,213 @@ For complex cases, libraries like Lodash’s `_.cloneDeep(obj)` can be used.
 - `structuredClone` performs a deep copy, duplicating nested objects as well.
 - `_.cloneDeep(obj)` from Lodash can be used for complex cloning scenarios.
 
+# The JavaScript language: Objects - The Basics
+
+## Object References and Copying
+
+Objects in JavaScript are stored and copied by reference, while primitives are copied as a whole value.
+
+### Copying Primitives
+
+```js
+let message = "Hello!";
+let phrase = message;
+```
+
+Each variable holds a separate copy of the value.
+
+### Copying Objects
+
+Objects are stored in memory, and variables store references to them:
+
+```js
+let user = { name: "John" };
+```
+
+Assigning an object to another variable copies the reference:
+
+```js
+let admin = user;
+admin.name = "Pete";
+alert(user.name); // 'Pete'
+```
+
+Both `user` and `admin` reference the same object.
+
+### Comparison by Reference
+
+Two objects are equal only if they reference the same object:
+
+```js
+let a = {};
+let b = a;
+alert(a == b); // true
+alert(a === b); // true
+```
+
+Different objects, even with identical properties, are not equal:
+
+```js
+let a = {};
+let b = {};
+alert(a == b); // false
+```
+
+### `const` Objects Can Be Modified
+
+The reference cannot change, but the object properties can:
+
+```js
+const user = { name: "John" };
+user.name = "Pete"; // Allowed
+alert(user.name); // Pete
+```
+
+### Cloning and Merging Objects
+
+Using `Object.assign()` to copy properties:
+
+```js
+let user = { name: "John", age: 30 };
+let clone = Object.assign({}, user);
+alert(clone.name); // "John"
+```
+
+### Nested Cloning
+
+Shallow copy keeps references to nested objects:
+
+```js
+let user = { name: "John", sizes: { height: 182, width: 50 } };
+let clone = Object.assign({}, user);
+alert(user.sizes === clone.sizes); // true
+```
+
+Deep cloning can be done using `structuredClone()`:
+
+```js
+let clone = structuredClone(user);
+alert(user.sizes === clone.sizes); // false
+```
+
+## Constructor, Operator `new`
+
+### Constructor Function
+
+```js
+function User(name) {
+  this.name = name;
+  this.isAdmin = false;
+}
+let user = new User("Jack");
+alert(user.name); // Jack
+alert(user.isAdmin); // false
+```
+
+### `new` Execution Steps
+
+1. Creates an empty object.
+2. Assigns `this` to the new object.
+3. Executes the function.
+4. Returns `this`.
+
+### `new.target`
+
+Determines if a function was called with `new`:
+
+```js
+function User() {
+  alert(new.target);
+}
+User(); // undefined
+new User(); // function User {...}
+```
+
+### Returning Objects from Constructors
+
+Returning an object replaces `this`:
+
+```js
+function BigUser() {
+  this.name = "John";
+  return { name: "Godzilla" };
+}
+alert(new BigUser().name); // Godzilla
+```
+
+Returning a primitive is ignored:
+
+```js
+function SmallUser() {
+  this.name = "John";
+  return;
+}
+alert(new SmallUser().name); // John
+```
+
+### Methods in Constructor
+
+```js
+function User(name) {
+  this.name = name;
+  this.sayHi = function() {
+    alert("My name is: " + this.name);
+  };
+}
+let john = new User("John");
+john.sayHi(); // My name is: John
+```
+
+## Tasks
+
+### Two Functions – One Object
+
+Create functions `A` and `B` so that `new A() == new B()`:
+
+```js
+let obj = {};
+function A() { return obj; }
+function B() { return obj; }
+alert(new A() == new B()); // true
+```
+
+### Create New Calculator
+
+```js
+function Calculator() {
+  this.read = function() {
+    this.a = +prompt("Enter a:", 0);
+    this.b = +prompt("Enter b:", 0);
+  };
+  this.sum = function() {
+    return this.a + this.b;
+  };
+  this.mul = function() {
+    return this.a * this.b;
+  };
+}
+let calculator = new Calculator();
+calculator.read();
+alert("Sum=" + calculator.sum());
+alert("Mul=" + calculator.mul());
+```
+
+### Create New Accumulator
+
+```js
+function Accumulator(startingValue) {
+  this.value = startingValue;
+  this.read = function() {
+    this.value += +prompt("Enter a number:", 0);
+  };
+}
+let accumulator = new Accumulator(1);
+accumulator.read();
+accumulator.read();
+alert(accumulator.value);
+```
+
+---
+
+
 
