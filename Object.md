@@ -159,3 +159,5 @@ console.log(user.greet()); // Output: Hello, Karishma
   age: 30
 };
 ```
+- And, in the real world, a user can act: select something from the shopping cart, login, logout etc.
+- Actions are represented in JavaScript by functions in properties.
