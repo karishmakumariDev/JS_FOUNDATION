@@ -21,6 +21,8 @@ You can access the properties of an object using dot notation or bracket notatio
 ```javascript
 console.log(user.name); // Output: John
 console.log(user["age"]); // Output: 30
+let currentKey = 'age';
+console.log(user[currentKey]) // Output: 30
 ```
 
 ### Modifying Object Properties:
