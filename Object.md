@@ -514,3 +514,179 @@ For example, `Symbol.toPrimitive` allows custom object-to-primitive conversions.
 
 Even though symbols are hidden, methods like `Object.getOwnPropertySymbols(obj)` and `Reflect.ownKeys(obj)` can access them.
 
+
+
+
+
+# Object References and Copying in JavaScript
+
+## Primitive Values vs Objects
+
+Objects and primitive values behave differently when assigned or copied.
+
+### Primitive Values
+Primitive values such as strings, numbers, and booleans are copied "as a whole value".
+
+```javascript
+let message = "Hello!";
+let phrase = message;
+```
+Each variable holds an independent copy of the string "Hello!".
+
+### Objects
+Objects are stored and copied "by reference". A variable assigned to an object holds a reference to its memory address, not the object itself.
+
+```javascript
+let user = {
+  name: "John"
+};
+```
+
+When assigning an object to another variable, only the reference is copied, not the object itself:
+
+```javascript
+let admin = user;
+```
+Both `user` and `admin` reference the same object in memory.
+
+```javascript
+admin.name = "Pete";
+alert(user.name); // 'Pete'
+```
+Changes made through one reference affect the original object.
+
+## Comparison by Reference
+Two objects are equal only if they reference the same memory location:
+
+```javascript
+let a = {};
+let b = a;
+alert(a == b); // true
+alert(a === b); // true
+```
+Two independently created objects are not equal, even if their properties are identical:
+
+```javascript
+let a = {};
+let b = {};
+alert(a == b); // false
+```
+
+## Const Objects Can Be Modified
+A `const` object can still have its properties modified because only the reference is constant:
+
+```javascript
+const user = {
+  name: "John"
+};
+user.name = "Pete"; // Allowed
+alert(user.name); // Pete
+```
+However, reassigning `user` to a new object is not allowed:
+
+```javascript
+user = { name: "Alice" }; // Error
+```
+
+## Cloning and Merging Objects
+
+### Shallow Cloning with a Loop
+
+We can clone an object manually by copying its properties:
+
+```javascript
+let user = {
+  name: "John",
+  age: 30
+};
+
+let clone = {};
+for (let key in user) {
+  clone[key] = user[key];
+}
+clone.name = "Pete";
+alert(user.name); // John (unchanged)
+```
+
+### Using `Object.assign`
+
+`Object.assign` can be used to copy properties from one object to another:
+
+```javascript
+let user = { name: "John" };
+let permissions1 = { canView: true };
+let permissions2 = { canEdit: true };
+
+Object.assign(user, permissions1, permissions2);
+alert(user.canView); // true
+alert(user.canEdit); // true
+```
+
+It can also be used to clone objects:
+
+```javascript
+let clone = Object.assign({}, user);
+```
+
+### Nested Cloning Issue
+
+If an object has nested objects, `Object.assign` only copies references to the nested objects:
+
+```javascript
+let user = {
+  name: "John",
+  sizes: {
+    height: 182,
+    width: 50
+  }
+};
+
+let clone = Object.assign({}, user);
+alert(user.sizes === clone.sizes); // true
+```
+Modifying `clone.sizes.width` will also affect `user.sizes.width`.
+
+## Deep Cloning with `structuredClone`
+
+`structuredClone` creates a deep copy, ensuring nested objects are also cloned:
+
+```javascript
+let user = {
+  name: "John",
+  sizes: {
+    height: 182,
+    width: 50
+  }
+};
+
+let clone = structuredClone(user);
+alert(user.sizes === clone.sizes); // false
+```
+
+### Handling Circular References
+
+`structuredClone` can handle circular references, where an object references itself:
+
+```javascript
+let user = {};
+user.me = user;
+let clone = structuredClone(user);
+alert(clone.me === clone); // true
+```
+
+### Limitations of `structuredClone`
+
+It does not support functions:
+
+```javascript
+structuredClone({ f: function() {} }); // Error
+```
+For complex cases, libraries like Lodash’s `_.cloneDeep(obj)` can be used.
+
+## Summary
+- Objects are copied by reference, meaning changes via one reference affect all references.
+- `Object.assign` creates a shallow copy, meaning nested objects are still shared.
+- `structuredClone` performs a deep copy, duplicating nested objects as well.
+- `_.cloneDeep(obj)` from Lodash can be used for complex cloning scenarios.
+
+
