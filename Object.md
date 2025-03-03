@@ -1365,3 +1365,132 @@ For further reading:
 - **V8 blog** – for updates on memory management.
 
 
+
+# Optional Chaining (`?.`)
+
+## A Recent Addition
+The optional chaining (`?.`) operator is a recent addition to JavaScript. Older browsers may require polyfills.
+
+## The "Non-Existing Property" Problem
+If you've just started learning JavaScript, this problem may not have affected you yet, but it is quite common.
+
+Consider user objects that hold user information. Most users have an `address` property containing `street`, but some do not.
+
+```js
+let user = {}; // User without "address" property
+alert(user.address.street); // Error!
+```
+
+Since `user.address` is `undefined`, attempting to access `user.address.street` results in an error.
+
+In many cases, we'd prefer to get `undefined` instead of an error when accessing a missing property.
+
+### Example in Web Development
+Using `document.querySelector('.elem')`, we may get `null` if the element doesn't exist.
+
+```js
+let html = document.querySelector('.elem').innerHTML; // Error if '.elem' doesn't exist
+```
+
+If the element is absent, accessing `.innerHTML` results in an error. We often prefer `html = null` instead.
+
+## Traditional Solutions
+### Using `if` or Conditional (`?`)
+```js
+let user = {};
+alert(user.address ? user.address.street : undefined);
+```
+This works but is verbose because `user.address` appears twice.
+
+### Using `&&`
+```js
+let user = {};
+alert(user.address && user.address.street && user.address.street.name); // undefined
+```
+This prevents errors but still requires repeated property checks.
+
+## Optional Chaining (`?.`)
+The optional chaining operator (`?.`) stops evaluation if the value before `?.` is `undefined` or `null`, returning `undefined`.
+
+```js
+let user = {};
+alert(user?.address?.street); // undefined (no error)
+```
+
+### Example with `document.querySelector`
+```js
+let html = document.querySelector('.elem')?.innerHTML; // undefined if element doesn't exist
+```
+
+### Example with Missing `user` Object
+```js
+let user = null;
+alert(user?.address); // undefined
+alert(user?.address.street); // undefined
+```
+
+### Chaining Multiple `?.`
+```js
+alert(user?.address?.street?.name); // undefined if any property is missing
+```
+
+## Guidelines for Using `?.`
+- Use `?.` only where missing values are acceptable.
+- Do not overuse it, as it may hide programming errors.
+- The variable before `?.` must be declared; otherwise, a `ReferenceError` occurs.
+
+```js
+user?.address; // ReferenceError if `user` is not defined
+```
+
+## Short-Circuiting Behavior
+If `?.` encounters `undefined` or `null`, it stops further evaluation.
+
+```js
+let user = null;
+let x = 0;
+user?.sayHi(x++); // No execution of sayHi()
+alert(x); // 0
+```
+
+## Other Variants: `?.()`, `?.[]`
+### Calling Optional Methods
+```js
+let userAdmin = {
+  admin() { alert("I am admin"); }
+};
+let userGuest = {};
+userAdmin.admin?.(); // "I am admin"
+userGuest.admin?.(); // Nothing happens
+```
+
+### Accessing Properties with `?.[]`
+```js
+let key = "firstName";
+let user1 = { firstName: "John" };
+let user2 = null;
+alert(user1?.[key]); // "John"
+alert(user2?.[key]); // undefined
+```
+
+### Using `?.` with `delete`
+```js
+delete user?.name; // Deletes user.name if user exists
+```
+
+## `?.` Cannot Be Used for Assignments
+```js
+let user = null;
+user?.name = "John"; // Error
+```
+
+## Summary
+| Syntax        | Behavior |
+|--------------|----------|
+| `obj?.prop`  | Returns `obj.prop` if `obj` exists, otherwise `undefined` |
+| `obj?.[prop]` | Returns `obj[prop]` if `obj` exists, otherwise `undefined` |
+| `obj.method?.()` | Calls `obj.method()` if `obj.method` exists, otherwise returns `undefined` |
+
+Using `?.` ensures safer property access and cleaner code but should be applied judiciously to avoid hiding real errors.
+
+
