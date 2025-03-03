@@ -146,3 +146,14 @@ console.log(user.greet()); // Output: Hello, Karishma
 - **Properties** define the characteristics of an object.
 - You can access properties using **dot notation (`obj.key`)** or **bracket notation (`obj["key"]`)**.
 
+
+
+
+
+
+### Object methods, "this"
+- Objects are usually created to represent entities of the real world, like users, orders and so on:
+  ```let user = {
+  name: "John",
+  age: 30
+}; ```
