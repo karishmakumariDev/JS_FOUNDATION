@@ -345,3 +345,172 @@ let ladder = {
 ladder.up().up().down().showStep().down().showStep();
 ```
 
+
+# Symbol Type
+
+## By Specification
+Only two primitive types may serve as object property keys:
+
+- `string` type
+- `symbol` type
+
+Otherwise, if one uses another type, such as `number`, it’s auto-converted to a string. So that:
+
+```js
+obj[1] // same as obj["1"]
+obj[true] // same as obj["true"]
+```
+
+Until now, we’ve been using only strings. Now let’s explore symbols and see what they can do for us.
+
+---
+
+## Symbols
+A **symbol** represents a unique identifier. A value of this type can be created using `Symbol()`:
+
+```js
+let id = Symbol();
+```
+
+Upon creation, we can give symbols a description (also called a symbol name), mostly useful for debugging purposes:
+
+```js
+let id = Symbol("id"); // id is a symbol with the description "id"
+```
+
+Symbols are guaranteed to be unique, even if they have the same description:
+
+```js
+let id1 = Symbol("id");
+let id2 = Symbol("id");
+
+console.log(id1 === id2); // false
+```
+
+### Symbols Don’t Auto-Convert to a String
+
+Unlike other values, symbols do **not** implicitly convert to strings:
+
+```js
+let id = Symbol("id");
+alert(id); // TypeError: Cannot convert a Symbol value to a string
+```
+
+To display a symbol, use `.toString()`:
+
+```js
+alert(id.toString()); // Symbol(id)
+```
+
+Or access its `description` property:
+
+```js
+alert(id.description); // "id"
+```
+
+---
+
+## "Hidden" Properties
+
+Symbols allow us to create hidden properties in an object that no other code can accidentally access or overwrite:
+
+```js
+let user = { name: "John" };
+let id = Symbol("id");
+user[id] = 1;
+
+console.log(user[id]); // 1
+```
+
+This is useful when working with third-party objects to prevent property conflicts.
+
+---
+
+## Symbols in Object Literals
+
+To use a symbol as an object key, wrap it in square brackets:
+
+```js
+let id = Symbol("id");
+let user = {
+  name: "John",
+  [id]: 123
+};
+```
+
+Without brackets, it would be treated as a string key.
+
+---
+
+## Symbols Are Skipped by `for...in`
+
+Symbolic properties do not appear in `for...in` loops:
+
+```js
+let id = Symbol("id");
+let user = { name: "John", age: 30, [id]: 123 };
+
+for (let key in user) console.log(key); // name, age (no symbols)
+
+console.log("Direct:", user[id]); // Direct: 123
+```
+
+However, `Object.assign` copies symbols:
+
+```js
+let clone = Object.assign({}, user);
+console.log(clone[id]); // 123
+```
+
+---
+
+## Global Symbols
+
+To create a globally shared symbol, use `Symbol.for(key)`. If the symbol already exists, it returns the existing one:
+
+```js
+let id1 = Symbol.for("id");
+let id2 = Symbol.for("id");
+
+console.log(id1 === id2); // true
+```
+
+### `Symbol.keyFor()`
+To retrieve the key of a global symbol:
+
+```js
+let sym = Symbol.for("name");
+console.log(Symbol.keyFor(sym)); // "name"
+```
+
+This only works for global symbols. For regular symbols, use `.description`:
+
+```js
+let localSymbol = Symbol("name");
+console.log(localSymbol.description); // "name"
+```
+
+---
+
+## System Symbols
+JavaScript provides built-in symbols for various behaviors:
+
+- `Symbol.hasInstance`
+- `Symbol.isConcatSpreadable`
+- `Symbol.iterator`
+- `Symbol.toPrimitive`
+
+For example, `Symbol.toPrimitive` allows custom object-to-primitive conversions.
+
+---
+
+## Summary
+
+- Symbols are unique primitive values created using `Symbol()`.
+- They can be used as object keys but are **not** auto-converted to strings.
+- They allow **hidden** object properties that don’t show up in loops.
+- Global symbols (`Symbol.for`) allow symbol sharing across code.
+- System symbols (`Symbol.*`) help modify JavaScript behavior.
+
+Even though symbols are hidden, methods like `Object.getOwnPropertySymbols(obj)` and `Reflect.ownKeys(obj)` can access them.
+
