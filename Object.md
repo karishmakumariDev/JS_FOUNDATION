@@ -201,3 +201,23 @@ user.sayHi = sayHi;
 
 user.sayHi();
 
+- Here during the execution of user.sayHi(), the value of this will be user.
+- Technically, it’s also possible to access the object without this, by referencing it via the outer variable:
+
+### shorted method
+- Shorter Syntax for Methods in an Object Literal
+ ``` 
+  // these objects do the same
+user = {
+  sayHi: function() {
+    alert("Hello");
+  }
+};
+
+// method shorthand looks better, right?
+user = {
+  sayHi() { // same as "sayHi: function(){...}"
+    alert("Hello");
+  }
+};
+```
