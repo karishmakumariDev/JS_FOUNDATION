@@ -898,4 +898,183 @@ alert(accumulator.value);
 ---
 
 
+# The JavaScript Language
+
+## Objects: The Basics
+
+### March 31, 2024
+
+## Object to Primitive Conversion
+
+### What happens when objects are added `obj1 + obj2`, subtracted `obj1 - obj2` or printed using `alert(obj)`?
+
+JavaScript doesn’t allow you to customize how operators work on objects. Unlike some other programming languages, such as Ruby or C++, we can’t implement a special object method to handle addition (or other operators).
+
+In case of such operations, objects are auto-converted to primitives, and then the operation is carried out over these primitives and results in a primitive value.
+
+That’s an important limitation: the result of `obj1 + obj2` (or another math operation) can’t be another object!
+
+E.g. we can’t make objects representing vectors or matrices (or achievements or whatever), add them and expect a “summed” object as the result. Such architectural feats are automatically “off the board”.
+
+So, because we can’t technically do much here, there’s no maths with objects in real projects. When it happens, with rare exceptions, it’s because of a coding mistake.
+
+In this chapter we’ll cover how an object converts to primitive and how to customize it.
+
+## We have two purposes:
+
+- It will allow us to understand what’s going on in case of coding mistakes when such an operation happened accidentally.
+- There are exceptions, where such operations are possible and look good. E.g. subtracting or comparing dates (`Date` objects). We’ll come across them later.
+
+## Conversion Rules
+
+In the chapter **Type Conversions**, we’ve seen the rules for numeric, string, and boolean conversions of primitives. But we left a gap for objects. Now, as we know about methods and symbols it becomes possible to fill it.
+
+- There’s no conversion to boolean. All objects are `true` in a boolean context, as simple as that. There exist only numeric and string conversions.
+- The numeric conversion happens when we subtract objects or apply mathematical functions. For instance, `Date` objects (to be covered in the chapter **Date and Time**) can be subtracted, and the result of `date1 - date2` is the time difference between two dates.
+- As for the string conversion – it usually happens when we output an object with `alert(obj)` and in similar contexts.
+
+We can implement string and numeric conversion by ourselves, using special object methods.
+
+Now let’s get into technical details, because it’s the only way to cover the topic in-depth.
+
+## Hints
+
+### How does JavaScript decide which conversion to apply?
+
+There are three variants of type conversion, that happen in various situations. They’re called **“hints”**, as described in the specification:
+
+- **"string"**
+  - For an object-to-string conversion, when we’re doing an operation on an object that expects a string, like `alert`:
+
+```js
+// output
+alert(obj);
+
+// using object as a property key
+anotherObj[obj] = 123;
+```
+
+- **"number"**
+  - For an object-to-number conversion, like when we’re doing maths:
+
+```js
+// explicit conversion
+let num = Number(obj);
+
+// maths (except binary plus)
+let n = +obj; // unary plus
+let delta = date1 - date2;
+
+// less/greater comparison
+let greater = user1 > user2;
+```
+
+Most built-in mathematical functions also include such conversion.
+
+- **"default"**
+  - Occurs in rare cases when the operator is “not sure” what type to expect.
+
+```js
+// binary plus uses the "default" hint
+let total = obj1 + obj2;
+
+// obj == number uses the "default" hint
+if (user == 1) { ... };
+```
+
+## Symbol.toPrimitive
+
+Let’s start from the first method. There’s a built-in symbol named `Symbol.toPrimitive` that should be used to name the conversion method, like this:
+
+```js
+obj[Symbol.toPrimitive] = function(hint) {
+  // here goes the code to convert this object to a primitive
+  // it must return a primitive value
+  // hint = one of "string", "number", "default"
+};
+```
+
+If the method `Symbol.toPrimitive` exists, it’s used for all hints, and no more methods are needed.
+
+For instance, here `user` object implements it:
+
+```js
+let user = {
+  name: "John",
+  money: 1000,
+
+  [Symbol.toPrimitive](hint) {
+    alert(`hint: ${hint}`);
+    return hint == "string" ? `{name: "${this.name}"}` : this.money;
+  }
+};
+
+// conversions demo:
+alert(user); // hint: string -> {name: "John"}
+alert(+user); // hint: number -> 1000
+alert(user + 500); // hint: default -> 1500
+```
+
+## toString/valueOf
+
+If there’s no `Symbol.toPrimitive`, then JavaScript tries to find methods `toString` and `valueOf`:
+
+```js
+let user = {
+  name: "John",
+  money: 1000,
+
+  // for hint="string"
+  toString() {
+    return `{name: "${this.name}"}`;
+  },
+
+  // for hint="number" or "default"
+  valueOf() {
+    return this.money;
+  }
+};
+
+alert(user); // toString -> {name: "John"}
+alert(+user); // valueOf -> 1000
+alert(user + 500); // valueOf -> 1500
+```
+
+## A conversion can return any primitive type
+
+The important thing to know about all primitive-conversion methods is that they do not necessarily return the **“hinted” primitive**.
+
+There is no control whether `toString` returns exactly a string, or whether `Symbol.toPrimitive` method returns a number for the hint `"number"`.
+
+The only mandatory thing: these methods **must return a primitive, not an object**.
+
+## Further Conversions
+
+As we know already, many operators and functions perform type conversions, e.g. multiplication `*` converts operands to numbers.
+
+For instance:
+
+```js
+let obj = {
+  toString() {
+    return "2";
+  }
+};
+
+alert(obj * 2); // 4, object converted to primitive "2", then multiplication made it a number
+```
+
+## Summary
+
+- The object-to-primitive conversion is called automatically by many built-in functions and operators that expect a primitive as a value.
+- There are 3 types (**hints**) of it:
+  - **"string"** (for alert and other operations that need a string)
+  - **"number"** (for maths)
+  - **"default"** (few operators, usually objects implement it the same way as "number")
+- The conversion algorithm is:
+  - Call `obj[Symbol.toPrimitive](hint)` if the method exists.
+  - Otherwise, try calling `obj.toString()` or `obj.valueOf()`.
+- In practice, implementing only `obj.toString()` is often enough as a **“catch-all” method** for string conversions.
+
+
 
