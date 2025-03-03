@@ -187,5 +187,17 @@ A function that is a property of an object is called its **method**.
 So, here we’ve got a method `sayHi` of the object `user`.
 
 Of course, we could use a pre-declared function as a method, like this:
+let user = {
+  // ...
+};
 
+// first, declare
+function sayHi() {
+  alert("Hello!");
+}
+
+// then add as a method
+user.sayHi = sayHi;
+
+user.sayHi();
 
