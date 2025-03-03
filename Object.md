@@ -153,7 +153,9 @@ console.log(user.greet()); // Output: Hello, Karishma
 
 ### Object methods, "this"
 - Objects are usually created to represent entities of the real world, like users, orders and so on:
-  ```let user = {
+  ```
+  let user = {
   name: "John",
   age: 30
-}; ```
+};
+```
