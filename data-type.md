@@ -284,5 +284,297 @@ let arrayLike = {
 
 alert( arr.concat(arrayLike) ); // [1, 2, "something", "else"]
 ```
+## Iterate: forEach
+
+The `arr.forEach` method allows running a function for every element of the array.
+
+### Syntax:
+```javascript
+arr.forEach(function(item, index, array) {
+  // ... do something with an item
+});
+```
+Example:
+```javascript
+// For each element, call alert
+["Bilbo", "Gandalf", "Nazgul"].forEach(alert);
+```
+A more elaborate example:
+```javascript
+["Bilbo", "Gandalf", "Nazgul"].forEach((item, index, array) => {
+  alert(`${item} is at index ${index} in ${array}`);
+});
+```
+The result of the function (if any) is discarded.
+
+## Searching in Array
+### indexOf/lastIndexOf and includes
+These methods operate similarly to their string counterparts but work with array items:
+- `arr.indexOf(item, from)`: Searches from index `from`, returns the index or `-1` if not found.
+- `arr.includes(item, from)`: Searches from index `from`, returns `true` if found.
+
+Example:
+```javascript
+let arr = [1, 0, false];
+alert(arr.indexOf(0)); // 1
+alert(arr.includes(1)); // true
+```
+`arr.lastIndexOf(item, from)` works like `indexOf`, but searches from right to left.
+
+### Includes Handles NaN Correctly
+```javascript
+const arr = [NaN];
+alert(arr.indexOf(NaN)); // -1 (wrong)
+alert(arr.includes(NaN)); // true (correct)
+```
+
+## find and findIndex/findLastIndex
+`arr.find(fn)` searches for an object matching a condition.
+
+Example:
+```javascript
+let users = [
+  {id: 1, name: "John"},
+  {id: 2, name: "Pete"},
+  {id: 3, name: "Mary"}
+];
+
+let user = users.find(item => item.id == 1);
+alert(user.name); // John
+```
+
+- `arr.findIndex(fn)`: Returns the index of the matching item or `-1` if not found.
+- `arr.findLastIndex(fn)`: Searches from right to left.
+
+Example:
+```javascript
+let users = [
+  {id: 1, name: "John"},
+  {id: 2, name: "Pete"},
+  {id: 3, name: "Mary"},
+  {id: 4, name: "John"}
+];
+
+alert(users.findIndex(user => user.name == 'John')); // 0
+alert(users.findLastIndex(user => user.name == 'John')); // 3
+```
+
+## filter
+`arr.filter(fn)` returns an array of matching elements.
+
+Example:
+```javascript
+let users = [
+  {id: 1, name: "John"},
+  {id: 2, name: "Pete"},
+  {id: 3, name: "Mary"}
+];
+
+let someUsers = users.filter(item => item.id < 3);
+alert(someUsers.length); // 2
+```
+
+## Transform an Array
+### map
+`arr.map(fn)` transforms an array.
+
+Example:
+```javascript
+let lengths = ["Bilbo", "Gandalf", "Nazgul"].map(item => item.length);
+alert(lengths); // 5,7,6
+```
+
+### sort(fn)
+`arr.sort()` sorts an array lexicographically.
+
+Example:
+```javascript
+let arr = [1, 2, 15];
+arr.sort();
+alert(arr); // 1, 15, 2
+```
+To sort numerically:
+```javascript
+arr.sort((a, b) => a - b);
+alert(arr); // 1, 2, 15
+```
+
+### reverse
+`arr.reverse()` reverses the order of elements.
+```javascript
+let arr = [1, 2, 3, 4, 5];
+arr.reverse();
+alert(arr); // 5,4,3,2,1
+```
+
+### split and join
+- `str.split(delim)`: Splits a string into an array.
+- `arr.join(glue)`: Joins array elements into a string.
+
+Example:
+```javascript
+let names = 'Bilbo, Gandalf, Nazgul';
+let arr = names.split(', ');
+alert(arr.join(';')); // Bilbo;Gandalf;Nazgul
+```
+
+## reduce/reduceRight
+
+When we need to iterate over an array – we can use `forEach`, `for`, or `for..of`.
+
+When we need to iterate and return the data for each element – we can use `map`.
+
+The methods `arr.reduce` and `arr.reduceRight` also belong to that breed but are a little bit more intricate. They are used to calculate a single value based on the array.
+
+### Syntax:
+```js
+let value = arr.reduce(function(accumulator, item, index, array) {
+  // ...
+}, [initial]);
+```
+
+### Arguments:
+- `accumulator` – is the result of the previous function call, equals `initial` the first time (if `initial` is provided).
+- `item` – is the current array item.
+- `index` – is its position.
+- `array` – is the array.
+
+### Example: Sum of an array
+```js
+let arr = [1, 2, 3, 4, 5];
+let result = arr.reduce((sum, current) => sum + current, 0);
+alert(result); // 15
+```
+
+If no initial value is provided, `reduce` will use the first element as the initial value and start from the second element. However, calling `reduce` on an empty array without an initial value will cause an error.
+
+### reduceRight
+The method `arr.reduceRight` does the same but processes the array from right to left.
+
+---
+
+## Array.isArray
+Arrays do not form a separate language type; they are based on objects.
+
+### Example:
+```js
+alert(typeof {}); // object
+alert(typeof []); // object
+alert(Array.isArray({})); // false
+alert(Array.isArray([])); // true
+```
+
+---
+
+## Most methods support `thisArg`
+Many array methods like `find`, `filter`, and `map` accept an optional additional parameter `thisArg`, which allows setting `this` in the callback function.
+
+### Example:
+```js
+let army = {
+  minAge: 18,
+  maxAge: 27,
+  canJoin(user) {
+    return user.age >= this.minAge && user.age < this.maxAge;
+  }
+};
+
+let users = [
+  {age: 16},
+  {age: 20},
+  {age: 23},
+  {age: 30}
+];
+
+let soldiers = users.filter(army.canJoin, army);
+alert(soldiers.length); // 2
+alert(soldiers[0].age); // 20
+alert(soldiers[1].age); // 23
+```
+
+---
+
+## Cheat Sheet of Array Methods
+
+### To add/remove elements:
+- `push(...items)` – adds items to the end.
+- `pop()` – extracts an item from the end.
+- `shift()` – extracts an item from the beginning.
+- `unshift(...items)` – adds items to the beginning.
+- `splice(pos, deleteCount, ...items)` – removes and inserts items at a specific position.
+- `slice(start, end)` – creates a new array from a portion of another array.
+- `concat(...items)` – merges arrays.
+
+### To search among elements:
+- `indexOf/lastIndexOf(item, pos)` – finds item index.
+- `includes(value)` – checks if the array contains a value.
+- `find/filter(func)` – finds elements based on a condition.
+- `findIndex` – returns index instead of value.
+
+### To iterate over elements:
+- `forEach(func)` – calls `func` for each element.
+
+### To transform an array:
+- `map(func)` – transforms elements.
+- `sort(func)` – sorts an array in place.
+- `reverse()` – reverses the array in place.
+- `split/join` – converts a string to an array and vice versa.
+- `reduce/reduceRight(func, initial)` – calculates a single value from an array.
+
+### Additional methods:
+- `Array.isArray(value)` – checks if a value is an array.
+- `some(fn)/every(fn)` – checks if any/all elements match a condition.
+- `fill(value, start, end)` – fills an array with a value.
+- `copyWithin(target, start, end)` – copies elements inside the same array.
+- `flat(depth)/flatMap(fn)` – flattens a nested array.
+
+---
+
+## Tasks
+
+### 1. Convert `border-left-width` to `borderLeftWidth`
+Write a function `camelize(str)` that converts a dash-separated string into camelCase.
+
+#### Example:
+```js
+camelize("background-color") == 'backgroundColor';
+camelize("list-style-image") == 'listStyleImage';
+camelize("-webkit-transition") == 'WebkitTransition';
+```
+
+#### Solution:
+```js
+function camelize(str) {
+  return str
+    .split('-')
+    .map((word, index) => index == 0 ? word : word[0].toUpperCase() + word.slice(1))
+    .join('');
+}
+```
+
+---
+
+### 2. Filter range
+Write a function `filterRange(arr, a, b)` that filters an array to return elements within a given range without modifying the original array.
+
+#### Example:
+```js
+let arr = [5, 3, 8, 1];
+let filtered = filterRange(arr, 1, 4);
+alert(filtered); // [3, 1]
+alert(arr); // [5, 3, 8, 1] (not modified)
+```
+
+#### Solution:
+```js
+function filterRange(arr, a, b) {
+  return arr.filter(item => (a <= item && item <= b));
+}
+```
+
+---
+
+Look through this cheat sheet whenever you need to work with arrays. With practice, you'll remember these methods naturally!
+
 
 
