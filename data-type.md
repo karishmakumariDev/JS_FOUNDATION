@@ -576,5 +576,216 @@ function filterRange(arr, a, b) {
 
 Look through this cheat sheet whenever you need to work with arrays. With practice, you'll remember these methods naturally!
 
+### 1. Filter range "in place"
+
+**Question:** Write a function `filterRangeInPlace(arr, a, b)` that modifies `arr` by removing values outside the range `[a, b]`.
+
+**Answer:**
+```javascript
+function filterRangeInPlace(arr, a, b) {
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i] < a || arr[i] > b) {
+      arr.splice(i, 1);
+      i--; // Because array length decreases after splice
+    }
+  }
+}
+
+let arr = [5, 3, 8, 1];
+filterRangeInPlace(arr, 1, 4);
+console.log(arr); // [3, 1]
+```
+
+### 2. Sort in decreasing order
+
+**Question:** Sort an array in decreasing order.
+
+**Answer:**
+```javascript
+let arr = [5, 2, 1, -10, 8];
+arr.sort((a, b) => b - a);
+console.log(arr); // [8, 5, 2, 1, -10]
+```
+
+### 3. Copy and sort array
+
+**Question:** Create a function `copySorted(arr)` that returns a sorted copy of `arr` without modifying the original.
+
+**Answer:**
+```javascript
+function copySorted(arr) {
+  return [...arr].sort();
+}
+
+let arr = ["HTML", "JavaScript", "CSS"];
+let sorted = copySorted(arr);
+
+console.log(sorted); // ["CSS", "HTML", "JavaScript"]
+console.log(arr); // ["HTML", "JavaScript", "CSS"]
+```
+
+### 4. Create an extendable calculator
+
+**Question:** Implement a calculator with extendable operations.
+
+**Answer:**
+```javascript
+function Calculator() {
+  this.methods = {
+    "+": (a, b) => a + b,
+    "-": (a, b) => a - b,
+  };
+
+  this.calculate = function (str) {
+    let [a, op, b] = str.split(" ");
+    a = +a;
+    b = +b;
+    return this.methods[op] ? this.methods[op](a, b) : NaN;
+  };
+
+  this.addMethod = function (name, func) {
+    this.methods[name] = func;
+  };
+}
+
+let calc = new Calculator();
+console.log(calc.calculate("3 + 7")); // 10
+
+let powerCalc = new Calculator();
+powerCalc.addMethod("*", (a, b) => a * b);
+powerCalc.addMethod("/", (a, b) => a / b);
+powerCalc.addMethod("**", (a, b) => a ** b);
+
+console.log(powerCalc.calculate("2 ** 3")); // 8
+```
+
+### 5. Map to names
+
+**Question:** Convert an array of user objects to an array of names.
+
+**Answer:**
+```javascript
+let users = [
+  { name: "John", age: 25 },
+  { name: "Pete", age: 30 },
+  { name: "Mary", age: 28 },
+];
+
+let names = users.map(user => user.name);
+console.log(names); // ["John", "Pete", "Mary"]
+```
+
+### 6. Map to objects
+
+**Question:** Convert an array of user objects to a new array containing `id` and `fullName`.
+
+**Answer:**
+```javascript
+let users = [
+  { name: "John", surname: "Smith", id: 1 },
+  { name: "Pete", surname: "Hunt", id: 2 },
+  { name: "Mary", surname: "Key", id: 3 },
+];
+
+let usersMapped = users.map(user => ({
+  fullName: `${user.name} ${user.surname}`,
+  id: user.id
+}));
+
+console.log(usersMapped[0].id); // 1
+console.log(usersMapped[0].fullName); // John Smith
+```
+
+### 7. Sort users by age
+
+**Question:** Sort an array of user objects by age.
+
+**Answer:**
+```javascript
+function sortByAge(arr) {
+  arr.sort((a, b) => a.age - b.age);
+}
+
+let users = [
+  { name: "Pete", age: 30 },
+  { name: "John", age: 25 },
+  { name: "Mary", age: 28 },
+];
+
+sortByAge(users);
+console.log(users.map(user => user.name)); // ["John", "Mary", "Pete"]
+```
+
+### 8. Shuffle an array
+
+**Question:** Write a function `shuffle(array)` that randomly reorders elements.
+
+**Answer:**
+```javascript
+function shuffle(array) {
+  array.sort(() => Math.random() - 0.5);
+}
+
+let arr = [1, 2, 3];
+shuffle(arr);
+console.log(arr); // Randomized order
+```
+
+### 9. Get average age
+
+**Question:** Write a function `getAverageAge(users)` to calculate the average age.
+
+**Answer:**
+```javascript
+function getAverageAge(users) {
+  return users.reduce((sum, user) => sum + user.age, 0) / users.length;
+}
+
+let users = [
+  { name: "John", age: 25 },
+  { name: "Pete", age: 30 },
+  { name: "Mary", age: 29 },
+];
+
+console.log(getAverageAge(users)); // 28
+```
+
+### 10. Filter unique array members
+
+**Question:** Implement `unique(arr)` to return unique elements from an array.
+
+**Answer:**
+```javascript
+function unique(arr) {
+  return [...new Set(arr)];
+}
+
+let strings = ["Hare", "Krishna", "Hare", "Krishna", "Krishna", "Hare", ":-O"];
+console.log(unique(strings)); // ["Hare", "Krishna", ":-O"]
+```
+
+### 11. Create keyed object from array
+
+**Question:** Write `groupById(arr)` to convert an array into an object keyed by `id`.
+
+**Answer:**
+```javascript
+function groupById(arr) {
+  return arr.reduce((acc, user) => {
+    acc[user.id] = user;
+    return acc;
+  }, {});
+}
+
+let users = [
+  { id: "john", name: "John Smith", age: 20 },
+  { id: "ann", name: "Ann Smith", age: 24 },
+  { id: "pete", name: "Pete Peterson", age: 31 },
+];
+
+let usersById = groupById(users);
+console.log(usersById);
+```
+
 
 
