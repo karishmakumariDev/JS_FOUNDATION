@@ -1290,4 +1290,214 @@ console.log(chars.length); // 2
 - Objects with indexed properties and `length` are **array-like** but may not be iterable.
 - `Array.from(obj[, mapFn, thisArg])` creates an array from an iterable or array-like object.
 
+# Destructuring Assignment in JavaScript
+
+## Introduction
+The two most commonly used data structures in JavaScript are **Objects** and **Arrays**.
+- **Objects** store data in key-value pairs.
+- **Arrays** store data in an ordered list.
+
+When passing objects or arrays to functions, sometimes we only need specific elements or properties. **Destructuring assignment** allows us to "unpack" arrays or objects into multiple variables in a convenient way.
+
+Destructuring is also useful when dealing with functions with multiple parameters and default values.
+
+---
+
+## Array Destructuring
+### Example:
+```javascript
+let arr = ["John", "Smith"];
+let [firstName, surname] = arr;
+
+console.log(firstName); // John
+console.log(surname);  // Smith
+```
+### How it Works:
+- The array `arr` contains two elements.
+- The destructuring assignment `[firstName, surname] = arr` extracts values into respective variables.
+
+#### Destructuring with `split()`
+```javascript
+let [firstName, surname] = "John Smith".split(' ');
+console.log(firstName); // John
+console.log(surname);  // Smith
+```
+---
+
+## Skipping Elements
+```javascript
+let [firstName, , title] = ["Julius", "Caesar", "Consul", "of the Roman Republic"];
+console.log(title); // Consul
+```
+### Explanation:
+- The second element is ignored using an extra comma `,`.
+
+---
+
+## Works with Any Iterable
+```javascript
+let [a, b, c] = "abc"; // ['a', 'b', 'c']
+let [one, two, three] = new Set([1, 2, 3]);
+```
+### Explanation:
+- **Destructuring works with any iterable**, such as strings, arrays, and sets.
+- JavaScript internally uses `for..of` to iterate and assign values.
+
+---
+
+## Assigning to Object Properties
+```javascript
+let user = {};
+[user.name, user.surname] = "John Smith".split(' ');
+console.log(user.name); // John
+console.log(user.surname); // Smith
+```
+### Explanation:
+- Instead of assigning values to variables, we assign them to an object's properties.
+
+---
+
+## Looping with `Object.entries()`
+```javascript
+let user = { name: "John", age: 30 };
+for (let [key, value] of Object.entries(user)) {
+  console.log(`${key}: ${value}`);
+}
+```
+### Explanation:
+- `Object.entries(user)` returns an array of `[key, value]` pairs.
+- We use **destructuring** inside the `for..of` loop.
+
+---
+
+## Swapping Variables
+```javascript
+let guest = "Jane";
+let admin = "Pete";
+[guest, admin] = [admin, guest];
+console.log(guest); // Pete
+console.log(admin); // Jane
+```
+### Explanation:
+- This **swaps values** without needing a temporary variable.
+
+---
+
+## Rest `...` Operator
+```javascript
+let [name1, name2, ...rest] = ["Julius", "Caesar", "Consul", "of the Roman Republic"];
+console.log(rest); // ['Consul', 'of the Roman Republic']
+```
+### Explanation:
+- The `...rest` collects the remaining elements into an array.
+
+---
+
+## Default Values
+```javascript
+let [name = "Guest", surname = "Anonymous"] = ["Julius"];
+console.log(name);    // Julius
+console.log(surname); // Anonymous
+```
+### Explanation:
+- If no value exists, the default value is used.
+
+---
+
+## Object Destructuring
+```javascript
+let options = {
+  title: "Menu",
+  width: 100,
+  height: 200
+};
+let {title, width, height} = options;
+console.log(title);  // Menu
+console.log(width);  // 100
+console.log(height); // 200
+```
+### Explanation:
+- Object properties are assigned to variables of the same name.
+
+---
+
+## Changing Variable Names
+```javascript
+let {width: w, height: h, title} = options;
+console.log(w);      // 100
+console.log(h);      // 200
+```
+### Explanation:
+- The property `width` is assigned to `w`, and `height` to `h`.
+
+---
+
+## Using Default Values in Objects
+```javascript
+let {width = 100, height = 200, title} = { title: "Menu" };
+console.log(width);  // 100 (default value used)
+console.log(height); // 200 (default value used)
+```
+### Explanation:
+- Missing properties use default values.
+
+---
+
+## Nested Destructuring
+```javascript
+let options = {
+  size: { width: 100, height: 200 },
+  items: ["Cake", "Donut"],
+  extra: true
+};
+let {
+  size: { width, height },
+  items: [item1, item2],
+  title = "Menu"
+} = options;
+console.log(width);  // 100
+console.log(height); // 200
+console.log(item1);  // Cake
+console.log(item2);  // Donut
+```
+### Explanation:
+- We extract **nested properties** from an object.
+
+---
+
+## Function Parameters with Destructuring
+```javascript
+function showMenu({ title = "Untitled", width = 200, height = 100, items = [] }) {
+  console.log(`${title} ${width} ${height}`);
+  console.log(items);
+}
+let options = { title: "My Menu", items: ["Item1", "Item2"] };
+showMenu(options);
+```
+### Explanation:
+- The function **directly extracts properties** from the passed object.
+
+---
+
+## Default Function Parameters
+```javascript
+function showMenu({ title = "Menu", width = 100, height = 200 } = {}) {
+  console.log(`${title} ${width} ${height}`);
+}
+showMenu(); // Menu 100 200
+```
+### Explanation:
+- If no argument is passed, the function **uses an empty object `{}`** as the default.
+
+---
+
+## Summary
+- **Array destructuring** allows extracting elements from an array.
+- **Object destructuring** allows extracting properties from an object.
+- **The rest operator (`...`)** gathers remaining elements.
+- **Default values** ensure missing properties don’t cause errors.
+- **Destructuring is useful in function parameters**, making code more readable.
+
+By mastering destructuring, we can write cleaner and more efficient JavaScript code!
+
 
