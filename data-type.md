@@ -788,4 +788,110 @@ console.log(usersById);
 ```
 
 
+# Object.keys, Object.values, Object.entries
+
+## Iterating Over Data Structures
+
+JavaScript provides various methods to iterate over different data structures. Previously, we explored:
+
+- `map.keys()`
+- `map.values()`
+- `map.entries()`
+
+These methods are generic and widely used in data structures like:
+
+- **Map**
+- **Set**
+- **Array**
+- **Plain Objects** (with a different syntax)
+
+## Object Methods
+For plain objects, JavaScript provides:
+
+- `Object.keys(obj)`: Returns an array of keys.
+- `Object.values(obj)`: Returns an array of values.
+- `Object.entries(obj)`: Returns an array of `[key, value]` pairs.
+
+### Differences Between `Map` and `Object`
+
+| Feature      | Map            | Object                    |
+|-------------|---------------|---------------------------|
+| Call Syntax | `map.keys()`   | `Object.keys(obj)`        |
+| Returns     | Iterable       | "Real" Array             |
+
+The main reasons for using `Object.keys(obj)`, `Object.values(obj)`, and `Object.entries(obj)` instead of calling them directly on objects are:
+
+1. **Flexibility**: Objects may define their own methods like `data.values()`, so `Object.values(data)` avoids conflicts.
+2. **Historical Reasons**: `Object.*` methods return real arrays rather than iterables.
+
+## Example Usage
+
+```js
+let user = {
+  name: "John",
+  age: 30
+};
+
+console.log(Object.keys(user));    // ["name", "age"]
+console.log(Object.values(user));  // ["John", 30]
+console.log(Object.entries(user)); // [["name", "John"], ["age", 30]]
+```
+
+## Looping Over Object Values
+
+```js
+let user = {
+  name: "John",
+  age: 30
+};
+
+for (let value of Object.values(user)) {
+  console.log(value); // "John", then 30
+}
+```
+
+## Ignoring Symbolic Properties
+
+Like `for...in`, `Object.keys/values/entries` ignore properties with `Symbol` keys. If needed, use:
+
+- `Object.getOwnPropertySymbols(obj)`: Returns only symbolic keys.
+- `Reflect.ownKeys(obj)`: Returns all keys, including symbolic ones.
+
+```js
+let user = {
+  name: "John",
+  age: 30,
+  [Symbol("id")]: 123
+};
+
+console.log(Object.keys(user)); // ["name", "age"]
+console.log(Reflect.ownKeys(user)); // ["name", "age", Symbol(id)]
+```
+
+## Transforming Objects
+
+Unlike arrays, objects lack methods like `map` and `filter`. However, we can achieve similar functionality using:
+
+1. `Object.entries(obj)`: Converts an object into an array of key-value pairs.
+2. Apply array transformations (e.g., `map`).
+3. `Object.fromEntries(array)`: Converts the modified array back into an object.
+
+### Example: Doubling Object Values
+
+```js
+let prices = {
+  banana: 1,
+  orange: 2,
+  meat: 4,
+};
+
+let doublePrices = Object.fromEntries(
+  Object.entries(prices).map(([key, value]) => [key, value * 2])
+);
+
+console.log(doublePrices.meat); // 8
+```
+
+This method allows powerful transformations in a clean, readable way.
+
 
