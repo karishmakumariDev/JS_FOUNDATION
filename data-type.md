@@ -1079,4 +1079,215 @@ alert(Math.pow(2, 10)); // 1024
 - Use **`parseInt`/`parseFloat`** for soft conversions.
 - Use **Math functions** like `Math.random()`, `Math.max()`, `Math.min()`, and `Math.pow()` for calculations.
 
+# Iterables
+
+Iterable objects are a generalization of arrays. That’s a concept that allows us to make any object usable in a `for..of` loop.
+
+Of course, Arrays are iterable. But there are many other built-in objects that are iterable as well. For instance, strings are also iterable.
+
+If an object isn’t technically an array but represents a collection (list, set) of something, then `for..of` is a great syntax to loop over it. Let's see how to make it work.
+
+## Symbol.iterator
+
+We can easily grasp the concept of iterables by making one of our own.
+
+For instance, we have an object that is not an array but looks suitable for `for..of`.
+
+Like a range object that represents an interval of numbers:
+
+```javascript
+let range = {
+  from: 1,
+  to: 5
+};
+```
+
+We want `for..of` to work:
+
+```javascript
+for(let num of range) {
+  console.log(num); // 1,2,3,4,5
+}
+```
+
+To make the `range` object iterable (and thus let `for..of` work) we need to add a method to the object named `Symbol.iterator` (a special built-in symbol just for that).
+
+When `for..of` starts, it calls that method once (or errors if not found). The method must return an iterator – an object with the method `next()`.
+
+Onward, `for..of` works only with that returned object. When `for..of` wants the next value, it calls `next()` on that object.
+
+The result of `next()` must have the form `{done: Boolean, value: any}`, where `done=true` means that the loop is finished, otherwise `value` is the next value.
+
+### Full implementation of range:
+
+```javascript
+let range = {
+  from: 1,
+  to: 5
+};
+
+// 1. call to for..of initially calls this
+range[Symbol.iterator] = function() {
+
+  return {
+    current: this.from,
+    last: this.to,
+
+    next() {
+      if (this.current <= this.last) {
+        return { done: false, value: this.current++ };
+      } else {
+        return { done: true };
+      }
+    }
+  };
+};
+
+for (let num of range) {
+  console.log(num); // 1, then 2, 3, 4, 5
+}
+```
+
+### Alternative implementation
+
+We can simplify the code by using `range` itself as the iterator:
+
+```javascript
+let range = {
+  from: 1,
+  to: 5,
+
+  [Symbol.iterator]() {
+    this.current = this.from;
+    return this;
+  },
+
+  next() {
+    if (this.current <= this.to) {
+      return { done: false, value: this.current++ };
+    } else {
+      return { done: true };
+    }
+  }
+};
+
+for (let num of range) {
+  console.log(num); // 1, then 2, 3, 4, 5
+}
+```
+
+## Infinite Iterators
+
+Infinite iterators are also possible. For instance, the range becomes infinite for `range.to = Infinity`. We can also make an iterable object that generates an infinite sequence of pseudorandom numbers.
+
+## String is Iterable
+
+Arrays and strings are the most widely used built-in iterables.
+
+For a string, `for..of` loops over its characters:
+
+```javascript
+for (let char of "test") {
+  console.log(char); // t, then e, then s, then t
+}
+```
+
+It works correctly with surrogate pairs:
+
+```javascript
+let str = '𝒳😂';
+for (let char of str) {
+    console.log(char); // 𝒳, and then 😂
+}
+```
+
+## Calling an Iterator Explicitly
+
+We can also call an iterator explicitly:
+
+```javascript
+let str = "Hello";
+
+let iterator = str[Symbol.iterator]();
+
+while (true) {
+  let result = iterator.next();
+  if (result.done) break;
+  console.log(result.value); // outputs characters one by one
+}
+```
+
+## Iterables and Array-Likes
+
+Two official terms:
+
+1. **Iterables** implement the `Symbol.iterator` method.
+2. **Array-likes** have indexes and `length`, so they look like arrays but may not be iterable.
+
+Example of an array-like but not iterable object:
+
+```javascript
+let arrayLike = {
+  0: "Hello",
+  1: "World",
+  length: 2
+};
+
+// Error (no Symbol.iterator)
+for (let item of arrayLike) {}
+```
+
+## Array.from
+
+`Array.from` converts iterables or array-likes into real arrays.
+
+Example with an array-like object:
+
+```javascript
+let arrayLike = {
+  0: "Hello",
+  1: "World",
+  length: 2
+};
+
+let arr = Array.from(arrayLike);
+console.log(arr.pop()); // World (method works)
+```
+
+Example with an iterable object:
+
+```javascript
+let arr = Array.from(range);
+console.log(arr); // [1,2,3,4,5]
+```
+
+Using a mapping function:
+
+```javascript
+let arr = Array.from(range, num => num * num);
+console.log(arr); // [1,4,9,16,25]
+```
+
+Converting a string into an array of characters:
+
+```javascript
+let str = '𝒳😂';
+
+let chars = Array.from(str);
+
+console.log(chars[0]); // 𝒳
+console.log(chars[1]); // 😂
+console.log(chars.length); // 2
+```
+
+## Summary
+
+- Objects that can be used in `for..of` are called **iterable**.
+- Iterables must implement `Symbol.iterator`, returning an iterator.
+- An iterator has a `next()` method that returns `{done: Boolean, value: any}`.
+- `for..of` automatically calls `Symbol.iterator()`.
+- Strings and arrays are built-in iterables.
+- Objects with indexed properties and `length` are **array-like** but may not be iterable.
+- `Array.from(obj[, mapFn, thisArg])` creates an array from an iterable or array-like object.
+
 
