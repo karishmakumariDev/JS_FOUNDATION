@@ -988,4 +988,95 @@ JavaScript attempts to fit numbers within its limitations, sometimes causing une
 
 Also, JavaScript has both `0` and `-0`, though they mostly behave the same way.
 
+## Tests: isFinite and isNaN
+
+### Special Numeric Values
+- **Infinity** (and `-Infinity`) is greater (or lesser) than anything.
+- **NaN** represents an error.
+- Both belong to the `number` type but require special functions for validation.
+
+### isNaN(value)
+- Converts the argument to a number and checks if it's `NaN`.
+```js
+alert(isNaN(NaN)); // true
+alert(isNaN("str")); // true
+```
+- `NaN` is unique in that it does not equal itself:
+```js
+alert(NaN === NaN); // false
+```
+
+### isFinite(value)
+- Converts the argument to a number and returns `true` if it's a regular number (not `NaN`, `Infinity`, or `-Infinity`).
+```js
+alert(isFinite("15")); // true
+alert(isFinite("str")); // false
+alert(isFinite(Infinity)); // false
+```
+
+### Number.isNaN and Number.isFinite
+- **Number.isNaN(value)** checks if the value is exactly `NaN` without type conversion.
+```js
+alert(Number.isNaN(NaN)); // true
+alert(Number.isNaN("str" / 2)); // true
+alert(Number.isNaN("str")); // false
+```
+- **Number.isFinite(value)** checks if the value is a finite number without conversion.
+```js
+alert(Number.isFinite(123)); // true
+alert(Number.isFinite("123")); // false
+```
+
+### Object.is(a, b)
+- Works like `===` but is more reliable:
+  - `Object.is(NaN, NaN) === true`
+  - `Object.is(0, -0) === false`
+
+## parseInt and parseFloat
+- Convert a string to a number until an error occurs.
+```js
+alert(parseInt("100px")); // 100
+alert(parseFloat("12.5em")); // 12.5
+alert(parseInt("12.3")); // 12
+alert(parseFloat("12.3.4")); // 12.3
+```
+- Returns `NaN` when no digits can be read.
+```js
+alert(parseInt("a123")); // NaN
+```
+
+### parseInt(str, radix)
+- Parses numbers in different numeral systems.
+```js
+alert(parseInt("0xff", 16)); // 255
+alert(parseInt("ff", 16)); // 255
+alert(parseInt("2n9c", 36)); // 123456
+```
+
+## Other Math Functions
+### Math.random()
+- Returns a random number between `0` and `1`.
+```js
+alert(Math.random());
+```
+
+### Math.max() and Math.min()
+- Return the largest and smallest values.
+```js
+alert(Math.max(3, 5, -10, 0, 1)); // 5
+alert(Math.min(1, 2)); // 1
+```
+
+### Math.pow(n, power)
+- Returns `n` raised to `power`.
+```js
+alert(Math.pow(2, 10)); // 1024
+```
+
+## Summary
+- Use **`isNaN`** and **`Number.isNaN`** to check for `NaN`.
+- Use **`isFinite`** and **`Number.isFinite`** to check for finite numbers.
+- Use **`parseInt`/`parseFloat`** for soft conversions.
+- Use **Math functions** like `Math.random()`, `Math.max()`, `Math.min()`, and `Math.pow()` for calculations.
+
 
