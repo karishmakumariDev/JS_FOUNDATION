@@ -894,4 +894,98 @@ console.log(doublePrices.meat); // 8
 
 This method allows powerful transformations in a clean, readable way.
 
+Numbers
+
+In modern JavaScript, there are two types of numbers:
+
+Regular numbers in JavaScript are stored in 64-bit format IEEE-754, also known as “double precision floating point numbers”. These are numbers that we’re using most of the time, and we’ll talk about them in this chapter.
+
+BigInt numbers represent integers of arbitrary length. They are sometimes needed because a regular integer number can’t safely exceed (2^53-1) or be less than -(2^53-1). As BigInts are used in a few special areas, we devote them to a special chapter BigInt.
+
+More ways to write a number
+
+Imagine we need to write 1 billion. The obvious way is:
+```js
+let billion = 1000000000;
+```
+We also can use underscore `_` as the separator:
+```js
+let billion = 1_000_000_000;
+```
+
+In JavaScript, we can shorten a number by appending the letter `e` to it and specifying the zeroes count:
+```js
+let billion = 1e9;  // 1 billion, literally: 1 and 9 zeroes
+alert(7.3e9);  // 7.3 billions (same as 7300000000 or 7_300_000_000)
+```
+A negative number after `e` means division by 1 with the given number of zeroes:
+```js
+1e-3 === 1 / 1000; // 0.001
+1.23e-6 === 1.23 / 1000000; // 0.00000123
+1234e-2 === 1234 / 100; // 12.34
+```
+
+Hex, binary, and octal numbers
+
+Hexadecimal numbers are widely used in JavaScript:
+```js
+alert(0xff); // 255
+alert(0xFF); // 255
+```
+Binary and octal numeral systems are supported using the `0b` and `0o` prefixes:
+```js
+let a = 0b11111111; // binary form of 255
+let b = 0o377; // octal form of 255
+alert(a == b); // true
+```
+
+`toString(base)`
+
+The method `num.toString(base)` returns a string representation of `num` in the numeral system with the given base:
+```js
+let num = 255;
+alert(num.toString(16));  // ff
+alert(num.toString(2));   // 11111111
+```
+
+Rounding numbers
+
+JavaScript provides several methods for rounding numbers:
+- `Math.floor`: Rounds down
+- `Math.ceil`: Rounds up
+- `Math.round`: Rounds to the nearest integer
+- `Math.trunc`: Removes anything after the decimal point
+
+Example:
+```js
+let num = 1.23456;
+alert(Math.round(num * 100) / 100); // 1.23
+```
+The `toFixed(n)` method rounds the number to `n` digits after the decimal point and returns a string:
+```js
+let num = 12.34;
+alert(num.toFixed(1)); // "12.3"
+```
+
+Imprecise calculations
+
+JavaScript numbers have precision issues due to their binary representation:
+```js
+alert(0.1 + 0.2 == 0.3); // false
+alert(0.1 + 0.2); // 0.30000000000000004
+```
+To fix this, use rounding methods:
+```js
+let sum = 0.1 + 0.2;
+alert(+sum.toFixed(2)); // 0.3
+```
+
+Funny behavior
+```js
+alert(9999999999999999); // 10000000000000000
+```
+JavaScript attempts to fit numbers within its limitations, sometimes causing unexpected results.
+
+Also, JavaScript has both `0` and `-0`, though they mostly behave the same way.
+
 
