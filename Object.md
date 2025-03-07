@@ -1494,3 +1494,196 @@ user?.name = "John"; // Error
 Using `?.` ensures safer property access and cleaner code but should be applied judiciously to avoid hiding real errors.
 
 
+##############################################
+# Strings in JavaScript
+
+In JavaScript, the textual data is stored as strings. There is no separate type for a single character.
+
+The internal format for strings is always UTF-16, and it is not tied to the page encoding.
+
+## Quotes
+
+Strings can be enclosed within either single quotes, double quotes, or backticks:
+
+```js
+let single = 'single-quoted';
+let double = "double-quoted";
+let backticks = `backticks`;
+```
+
+Single and double quotes are essentially the same. Backticks, however, allow us to embed any expression into the string using `${…}`:
+
+```js
+function sum(a, b) {
+  return a + b;
+}
+alert(`1 + 2 = ${sum(1, 2)}.`); // 1 + 2 = 3.
+```
+
+Another advantage of using backticks is that they allow a string to span multiple lines:
+
+```js
+let guestList = `Guests:
+ * John
+ * Pete
+ * Mary`;
+alert(guestList);
+```
+
+If we use single or double quotes and try to use multiple lines, there will be an error:
+
+```js
+let guestList = "Guests: // Error: Unexpected token ILLEGAL
+  * John";
+```
+
+## Special Characters
+
+It is still possible to create multiline strings with single and double quotes by using a "newline character" (`\n`), which denotes a line break:
+
+```js
+let guestList = "Guests:\n * John\n * Pete\n * Mary";
+alert(guestList);
+```
+
+### Common Escape Characters
+
+| Character | Description |
+|-----------|-------------|
+| `\n` | New line |
+| `\r` | Carriage return |
+| `\'`, `\"`, ``\``` | Quotes |
+| `\\` | Backslash |
+| `\t` | Tab |
+| `\b`, `\f`, `\v` | Backspace, Form Feed, Vertical Tab (rarely used) |
+
+To show an actual backslash `\`, we need to double it:
+
+```js
+alert( `The backslash: \\` ); // The backslash: \
+```
+
+## String Length
+
+The `length` property gives the string length:
+
+```js
+alert( `My\n`.length ); // 3
+```
+
+## Accessing Characters
+
+To get a character at a position, use square brackets `[]` or the `at()` method:
+
+```js
+let str = `Hello`;
+alert( str[0] ); // H
+alert( str.at(0) ); // H
+alert( str.at(-1) ); // o (negative index supported in at())
+```
+
+## Strings Are Immutable
+
+Strings in JavaScript cannot be changed in place. You must create a new string:
+
+```js
+let str = 'Hi';
+str = 'h' + str[1];
+alert( str ); // hi
+```
+
+## Changing Case
+
+```js
+alert( 'Interface'.toUpperCase() ); // INTERFACE
+alert( 'Interface'.toLowerCase() ); // interface
+```
+
+## Searching for a Substring
+
+### `indexOf`
+
+```js
+let str = 'Widget with id';
+alert( str.indexOf('Widget') ); // 0
+alert( str.indexOf('id', 2) ); // 12
+```
+
+Loop through all occurrences:
+
+```js
+let pos = -1;
+while ((pos = str.indexOf('id', pos + 1)) != -1) {
+  alert( pos );
+}
+```
+
+### `lastIndexOf`
+
+```js
+alert( str.lastIndexOf("id") );
+```
+
+### `includes`, `startsWith`, `endsWith`
+
+```js
+alert( "Widget with id".includes("Widget") ); // true
+alert( "Widget".startsWith("Wid") ); // true
+alert( "Widget".endsWith("get") ); // true
+```
+
+## Getting a Substring
+
+### `slice(start, end)`
+
+```js
+let str = "stringify";
+alert( str.slice(0, 5) ); // 'strin'
+alert( str.slice(-4, -1) ); // 'gif'
+```
+
+### `substring(start, end)`
+
+```js
+alert( str.substring(2, 6) ); // 'ring'
+alert( str.substring(6, 2) ); // 'ring' (reorders arguments)
+```
+
+### `substr(start, length)` (Not Recommended)
+
+```js
+alert( str.substr(2, 4) ); // 'ring'
+```
+
+## Comparing Strings
+
+### Using Character Codes
+
+```js
+alert( 'a' > 'Z' ); // true
+alert( 'Österreich' > 'Zealand' ); // true
+```
+
+### `localeCompare`
+
+```js
+alert( 'Österreich'.localeCompare('Zealand') ); // -1
+```
+
+## Summary
+
+- **Quotes**: Single, double, or backticks (` `` ` allow multiline & interpolation).
+- **Escape characters**: `\n`, `\t`, `\'`, `\"`, etc.
+- **String length**: `.length` property.
+- **Accessing characters**: `str[i]` or `str.at(i)`.
+- **Getting a substring**: Use `.slice()`, `.substring()`.
+- **Case conversion**: `.toLowerCase()`, `.toUpperCase()`.
+- **Searching in a string**: `.indexOf()`, `.includes()`, `.startsWith()`, `.endsWith()`.
+- **String comparison**: `.localeCompare()` for locale-aware comparison.
+
+Other useful methods:
+
+- `str.trim()` – Removes spaces from start and end.
+- `str.repeat(n)` – Repeats the string `n` times.
+- Regular expression support for search/replace (covered separately).
+
