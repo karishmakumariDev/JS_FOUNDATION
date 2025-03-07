@@ -1787,4 +1787,139 @@ alert( 'Österreich'.localeCompare('Zealand') ); // -1
 
 JavaScript strings are immutable and follow Unicode encoding for comparisons.
 
+###############################################
+# Map and Set
+
+Till now, we’ve learned about the following complex data structures:
+
+- **Objects** are used for storing keyed collections.
+- **Arrays** are used for storing ordered collections.
+
+But that’s not enough for real life. That’s why **Map** and **Set** also exist.
+
+## Map
+
+**Map** is a collection of keyed data items, just like an Object. But the main difference is that **Map allows keys of any type**.
+
+### Methods and Properties
+
+- `new Map()` – creates the map.
+- `map.set(key, value)` – stores the value by the key.
+- `map.get(key)` – returns the value by the key, `undefined` if the key doesn’t exist in the map.
+- `map.has(key)` – returns `true` if the key exists, `false` otherwise.
+- `map.delete(key)` – removes the element (the key/value pair) by the key.
+- `map.clear()` – removes everything from the map.
+- `map.size` – returns the current element count.
+
+### Example
+
+```javascript
+let map = new Map();
+
+map.set('1', 'str1');   // a string key
+map.set(1, 'num1');     // a numeric key
+map.set(true, 'bool1'); // a boolean key
+
+alert( map.get(1) );   // 'num1'
+alert( map.get('1') ); // 'str1'
+
+alert( map.size ); // 3
+```
+
+Unlike objects, **keys are not converted to strings**. Any type of key is possible.
+
+### Using Objects as Keys
+
+```javascript
+let john = { name: "John" };
+
+let visitsCountMap = new Map();
+
+visitsCountMap.set(john, 123);
+
+alert( visitsCountMap.get(john) ); // 123
+```
+
+Using objects as keys is one of the most notable features of **Map**.
+
+### How Map Compares Keys
+
+Map uses the **SameValueZero** algorithm to compare keys. It is similar to strict equality (`===`), but **NaN is considered equal to NaN**.
+
+### Chaining
+
+`map.set` returns the map itself, allowing method chaining:
+
+```javascript
+map.set('1', 'str1')
+  .set(1, 'num1')
+  .set(true, 'bool1');
+```
+
+### Iteration over Map
+
+For looping over a Map, there are three methods:
+
+- `map.keys()` – returns an iterable for keys.
+- `map.values()` – returns an iterable for values.
+- `map.entries()` – returns an iterable for entries `[key, value]`.
+
+#### Example
+
+```javascript
+let recipeMap = new Map([
+  ['cucumber', 500],
+  ['tomatoes', 350],
+  ['onion', 50]
+]);
+
+for (let vegetable of recipeMap.keys()) {
+  alert(vegetable); // cucumber, tomatoes, onion
+}
+
+for (let amount of recipeMap.values()) {
+  alert(amount); // 500, 350, 50
+}
+
+for (let entry of recipeMap) {
+  alert(entry); // cucumber,500 (and so on)
+}
+```
+
+**Map preserves the insertion order**, unlike a regular object.
+
+### forEach Method
+
+```javascript
+recipeMap.forEach((value, key) => {
+  alert(`${key}: ${value}`);
+});
+```
+
+### Object.entries: Convert Object to Map
+
+```javascript
+let obj = {
+  name: "John",
+  age: 30
+};
+
+let map = new Map(Object.entries(obj));
+
+alert(map.get('name')); // John
+```
+
+### Object.fromEntries: Convert Map to Object
+
+```javascript
+let map = new Map();
+map.set('banana', 1);
+map.set('orange', 2);
+map.set('meat', 4);
+
+let obj = Object.fromEntries(map);
+
+alert(obj.orange); // 2
+```
+
 
