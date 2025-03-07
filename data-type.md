@@ -1501,3 +1501,117 @@ showMenu(); // Menu 100 200
 By mastering destructuring, we can write cleaner and more efficient JavaScript code!
 
 
+########################################################
+# Strings in JavaScript
+
+In JavaScript, textual data is stored as **strings**. There is no separate type for a single character.
+
+The internal format for strings is always **UTF-16**, and it is not tied to the page encoding.
+
+## Quotes
+
+Strings can be enclosed within either **single quotes**, **double quotes**, or **backticks**:
+
+```js
+let single = 'single-quoted';
+let double = "double-quoted";
+let backticks = `backticks`;
+```
+
+Single and double quotes are essentially the same. **Backticks**, however, allow us to embed any expression into the string using **`${…}`**:
+
+```js
+function sum(a, b) {
+  return a + b;
+}
+
+alert(`1 + 2 = ${sum(1, 2)}.`); // 1 + 2 = 3.
+```
+
+### Multiline Strings with Backticks
+
+Another advantage of using backticks is that they allow a string to span multiple lines:
+
+```js
+let guestList = `Guests:
+ * John
+ * Pete
+ * Mary`;
+
+alert(guestList); // A list of guests, multiple lines
+```
+
+Using single or double quotes for multiline strings will cause an error:
+
+```js
+let guestList = "Guests: // Error: Unexpected token ILLEGAL
+  * John";
+```
+
+Backticks also support **tagged templates**, allowing a function to process the template string:
+
+```js
+func`string`
+```
+
+## Special Characters
+
+It is possible to create multiline strings with single and double quotes using a **newline character (`\n`)**:
+
+```js
+let guestList = "Guests:\n * John\n * Pete\n * Mary";
+
+alert(guestList); // A multiline list of guests, same as above
+```
+
+### Other Special Characters
+
+| Character | Description |
+|-----------|------------|
+| `\n` | New line |
+| `\r` | Carriage return (mainly for Windows) |
+| `\'`, `\"`, ``\``` | Quotes |
+| `\\` | Backslash |
+| `\t` | Tab |
+| `\b`, `\f`, `\v` | Backspace, Form Feed, Vertical Tab (legacy, not commonly used) |
+
+Since the backslash `\` is an **escape character**, to show an actual backslash, we need to double it:
+
+```js
+alert( `The backslash: \\` ); // The backslash: \
+```
+
+Escaped quotes allow using the same type of quotes within a string:
+
+```js
+alert( 'I\'m the Walrus!' ); // I'm the Walrus!
+```
+
+Alternatively, we can switch to double quotes or backticks:
+
+```js
+alert( "I'm the Walrus!" ); // I'm the Walrus!
+```
+
+## String Length
+
+The **length** property gives the string length:
+
+```js
+alert( `My\n`.length ); // 3
+```
+
+> **Note:** `\n` is a single special character, so the length is **3**.
+
+### `length` is a Property, Not a Function
+
+Incorrect usage:
+```js
+str.length(); // ❌ This will not work
+```
+
+Correct usage:
+```js
+str.length; // ✅
+```
+
