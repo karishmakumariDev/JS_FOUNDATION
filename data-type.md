@@ -2014,5 +2014,308 @@ set.forEach((value, valueAgain, set) => {
 - Elements **cannot** be directly accessed by their number.
 - **Set** ensures uniqueness, while **Map** stores key-value pairs efficiently.
 
+##############################################
+# Arrays and Objects in JavaScript
+
+Objects allow you to store keyed collections of values. That’s fine.
+
+But quite often we find that we need an ordered collection, where we have a 1st, a 2nd, a 3rd element, and so on. For example, we need that to store a list of something: users, goods, HTML elements, etc.
+
+It is not convenient to use an object here because it provides no methods to manage the order of elements. We can’t insert a new property “between” the existing ones. Objects are just not meant for such use.
+
+There exists a special data structure named **Array**, to store ordered collections.
+
+## Declaration
+There are two syntaxes for creating an empty array:
+
+```javascript
+let arr = new Array();
+let arr = [];
+```
+
+Almost all the time, the second syntax is used. We can supply initial elements in the brackets:
+
+```javascript
+let fruits = ["Apple", "Orange", "Plum"];
+```
+
+Array elements are numbered, starting with zero.
+
+We can get an element by its number in square brackets:
+
+```javascript
+let fruits = ["Apple", "Orange", "Plum"];
+
+alert(fruits[0]); // Apple
+alert(fruits[1]); // Orange
+alert(fruits[2]); // Plum
+```
+
+We can replace an element:
+
+```javascript
+fruits[2] = 'Pear'; // now ["Apple", "Orange", "Pear"]
+```
+
+Or add a new one to the array:
+
+```javascript
+fruits[3] = 'Lemon'; // now ["Apple", "Orange", "Pear", "Lemon"]
+```
+
+The total count of the elements in the array is its length:
+
+```javascript
+let fruits = ["Apple", "Orange", "Plum"];
+
+alert(fruits.length); // 3
+```
+
+We can also use alert to show the whole array:
+
+```javascript
+let fruits = ["Apple", "Orange", "Plum"];
+
+alert(fruits); // Apple,Orange,Plum
+```
+
+An array can store elements of any type.
+
+For instance:
+
+```javascript
+// mix of values
+let arr = ['Apple', { name: 'John' }, true, function() { alert('hello'); }];
+
+// get the object at index 1 and then show its name
+alert(arr[1].name); // John
+
+// get the function at index 3 and run it
+arr[3](); // hello
+```
+
+## Trailing Comma
+An array, just like an object, may end with a comma:
+
+```javascript
+let fruits = [
+  "Apple",
+  "Orange",
+  "Plum",
+];
+```
+
+The “trailing comma” style makes it easier to insert/remove items because all lines become alike.
+
+## Get Last Elements with `at`
+
+A recent addition to JavaScript is the `.at()` method.
+
+Let’s say we want the last element of the array.
+
+```javascript
+let fruits = ["Apple", "Orange", "Plum"];
+
+alert(fruits[fruits.length - 1]); // Plum
+```
+
+Instead of writing the variable name twice, we can use:
+
+```javascript
+alert(fruits.at(-1)); // Plum
+```
+
+In other words, `arr.at(i)`:
+- is exactly the same as `arr[i]`, if `i >= 0`.
+- for negative values of `i`, it steps back from the end of the array.
+
+## Methods pop/push, shift/unshift
+
+A queue is one of the most common uses of an array. In computer science, this means an ordered collection of elements which supports two operations:
+- `push` appends an element to the end.
+- `shift` gets an element from the beginning, advancing the queue, so that the 2nd element becomes the 1st.
+
+There’s another use case for arrays – the data structure named **stack**.
+
+It supports two operations:
+- `push` adds an element to the end.
+- `pop` takes an element from the end.
+
+For stacks, the latest pushed item is received first, which is called **LIFO** (Last-In-First-Out). For queues, we have **FIFO** (First-In-First-Out).
+
+JavaScript arrays can work as both queues and stacks.
+
+### Methods that work with the end of the array:
+
+#### `pop`
+Extracts the last element of the array and returns it:
+
+```javascript
+let fruits = ["Apple", "Orange", "Pear"];
+
+alert(fruits.pop()); // remove "Pear" and alert it
+alert(fruits); // Apple, Orange
+```
+
+#### `push`
+Appends the element to the end of the array:
+
+```javascript
+let fruits = ["Apple", "Orange"];
+
+fruits.push("Pear");
+
+alert(fruits); // Apple, Orange, Pear
+```
+
+### Methods that work with the beginning of the array:
+
+#### `shift`
+Extracts the first element of the array and returns it:
+
+```javascript
+let fruits = ["Apple", "Orange", "Pear"];
+
+alert(fruits.shift()); // remove Apple and alert it
+alert(fruits); // Orange, Pear
+```
+
+#### `unshift`
+Adds an element to the beginning of the array:
+
+```javascript
+let fruits = ["Orange", "Pear"];
+
+fruits.unshift('Apple');
+
+alert(fruits); // Apple, Orange, Pear
+```
+
+### Adding Multiple Elements
+
+Methods `push` and `unshift` can add multiple elements at once:
+
+```javascript
+let fruits = ["Apple"];
+
+fruits.push("Orange", "Peach");
+fruits.unshift("Pineapple", "Lemon");
+
+// ["Pineapple", "Lemon", "Apple", "Orange", "Peach"]
+alert(fruits);
+```
+
+## Internals
+An array is a special kind of object. The square brackets used to access a property `arr[0]` actually come from the object syntax. That’s essentially the same as `obj[key]`, where `arr` is the object, while numbers are used as keys.
+
+They extend objects, providing special methods to work with ordered collections of data and also the `length` property. But at the core, it’s still an object.
+
+### Copy by Reference
+```javascript
+let fruits = ["Banana"];
+let arr = fruits; // copy by reference
+
+console.log(arr === fruits); // true
+
+arr.push("Pear"); // modify the array by reference
+console.log(fruits); // ["Banana", "Pear"]
+```
+
+### Misusing Arrays
+Arrays should be used as ordered collections, but they can be misused:
+```javascript
+let fruits = [];
+fruits[99999] = 5; // assigning a far index
+fruits.age = 25; // adding a property
+```
+Using non-numeric properties or sparse indices turns off JavaScript’s array optimizations.
+
+### Performance: push/pop vs shift/unshift
+- **push/pop** are fast since they operate at the end.
+- **shift/unshift** are slow since they involve renumbering elements.
+
+```javascript
+let fruits = ["Apple", "Orange", "Pear"];
+fruits.shift(); // removes first element
+```
+
+### Loops
+**For loop:**
+```javascript
+for (let i = 0; i < arr.length; i++) {
+  console.log(arr[i]);
+}
+```
+
+**for..of loop:** (preferred for arrays)
+```javascript
+for (let fruit of fruits) {
+  console.log(fruit);
+}
+```
+
+**for..in loop:** (avoid for arrays)
+```javascript
+for (let key in arr) {
+  console.log(arr[key]);
+}
+```
+
+### `length` Property
+The `length` property reflects the highest numeric index plus one.
+```javascript
+let fruits = [];
+fruits[123] = "Apple";
+console.log(fruits.length); // 124
+```
+
+Truncating an array:
+```javascript
+let arr = [1, 2, 3, 4, 5];
+arr.length = 2;
+console.log(arr); // [1, 2]
+```
+
+### `new Array()`
+Using `new Array()` is rare. Beware:
+```javascript
+let arr = new Array(2);
+console.log(arr.length); // 2 (empty slots, not [2])
+```
+Prefer `[]` over `new Array()`.
+
+### Multidimensional Arrays
+```javascript
+let matrix = [
+  [1, 2, 3],
+  [4, 5, 6],
+  [7, 8, 9]
+];
+
+console.log(matrix[0][1]); // 2
+```
+
+### `toString` Conversion
+```javascript
+let arr = [1, 2, 3];
+console.log(arr.toString()); // "1,2,3"
+```
+
+### Avoid `==` for Arrays
+Arrays are objects, and `==` does not compare contents.
+```javascript
+console.log([] == []); // false
+console.log([0] == [0]); // false
+```
+Use loops or methods like `JSON.stringify()` for comparison.
+
+## Summary
+- **Use arrays for ordered data**.
+- **Methods:** `push()`, `pop()`, `shift()`, `unshift()`.
+- **Loops:** `for`, `for..of` (avoid `for..in`).
+- **Comparison:** Never use `==`; compare item-by-item.
+
+We will continue with array methods in the next chapter.
+
 
 
