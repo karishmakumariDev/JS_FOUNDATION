@@ -1614,4 +1614,177 @@ Correct usage:
 ```js
 str.length; // ✅
 ```
+# Accessing Characters
+
+To get a character at position `pos`, use square brackets `[pos]` or call the method `str.at(pos)`. The first character starts from the zero position:
+
+```js
+let str = `Hello`;
+
+// the first character
+alert( str[0] ); // H
+alert( str.at(0) ); // H
+
+// the last character
+alert( str[str.length - 1] ); // o
+alert( str.at(-1) );
+```
+
+The `.at(pos)` method allows negative positions. If `pos` is negative, then it’s counted from the end of the string.
+
+The square brackets always return `undefined` for negative indexes:
+
+```js
+let str = `Hello`;
+alert( str[-2] ); // undefined
+alert( str.at(-2) ); // l
+```
+
+### Iterating Over Characters
+
+We can iterate over characters using `for..of`:
+
+```js
+for (let char of "Hello") {
+  alert(char); // H, e, l, l, o
+}
+```
+
+## Strings are Immutable
+
+Strings can’t be changed in JavaScript. It is impossible to change a character:
+
+```js
+let str = 'Hi';
+str[0] = 'h'; // error
+alert( str[0] ); // doesn't work
+```
+
+To modify a string, create a new one:
+
+```js
+let str = 'Hi';
+str = 'h' + str[1];
+alert( str ); // hi
+```
+
+## Changing the Case
+
+```js
+alert( 'Interface'.toUpperCase() ); // INTERFACE
+alert( 'Interface'.toLowerCase() ); // interface
+alert( 'Interface'[0].toLowerCase() ); // 'i'
+```
+
+## Searching for a Substring
+
+### `str.indexOf`
+
+Finds a substring within a string:
+
+```js
+let str = 'Widget with id';
+alert( str.indexOf('Widget') ); // 0
+alert( str.indexOf('widget') ); // -1
+alert( str.indexOf("id") ); // 1
+```
+
+To find subsequent occurrences:
+
+```js
+let str = 'Widget with id';
+alert( str.indexOf('id', 2) ); // 12
+```
+
+Finding all occurrences:
+
+```js
+let str = 'As sly as a fox, as strong as an ox';
+let target = 'as';
+
+let pos = -1;
+while ((pos = str.indexOf(target, pos + 1)) != -1) {
+  alert( pos );
+}
+```
+
+### `str.lastIndexOf`
+
+Searches from the end:
+
+```js
+let str = "Widget with id";
+alert( str.lastIndexOf("id") ); // 12
+```
+
+### `includes`, `startsWith`, `endsWith`
+
+```js
+alert( "Widget with id".includes("Widget") ); // true
+alert( "Hello".includes("Bye") ); // false
+alert( "Widget".startsWith("Wid") ); // true
+alert( "Widget".endsWith("get") ); // true
+```
+
+## Getting a Substring
+
+### `slice`
+
+```js
+let str = "stringify";
+alert( str.slice(0, 5) ); // 'strin'
+alert( str.slice(-4, -1) ); // 'gif'
+```
+
+### `substring`
+
+```js
+let str = "stringify";
+alert( str.substring(2, 6) ); // "ring"
+alert( str.substring(6, 2) ); // "ring"
+```
+
+### `substr`
+
+```js
+let str = "stringify";
+alert( str.substr(2, 4) ); // 'ring'
+alert( str.substr(-4, 2) ); // 'gi'
+```
+
+## Comparing Strings
+
+Strings are compared character-by-character in alphabetical order:
+
+```js
+alert( 'a' > 'Z' ); // true
+alert( 'Österreich' > 'Zealand' ); // true
+```
+
+### Unicode and Character Codes
+
+```js
+alert( "Z".codePointAt(0) ); // 90
+alert( "z".codePointAt(0) ); // 122
+alert( String.fromCodePoint(90) ); // Z
+```
+
+### Correct Comparisons
+
+```js
+alert( 'Österreich'.localeCompare('Zealand') ); // -1
+```
+
+## Summary
+
+- Use backticks for multi-line strings and embedding expressions.
+- Use `[]` or `at()` to access characters.
+- Use `slice` or `substring` to extract substrings.
+- Use `toLowerCase` and `toUpperCase` to change case.
+- Use `indexOf` for searching, and `includes/startsWith/endsWith` for simple checks.
+- Use `localeCompare` for language-sensitive string comparisons.
+- Other useful methods: `trim()`, `repeat()`, and regex-based search/replace.
+
+JavaScript strings are immutable and follow Unicode encoding for comparisons.
+
 
