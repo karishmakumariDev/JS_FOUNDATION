@@ -2670,4 +2670,208 @@ console.log(meetup.date.getDate()); // Now works correctly
 
 By mastering these, you can work efficiently with JSON in JavaScript!
 
+##################################################################
+# WeakMap and WeakSet in JavaScript (Easy Language)
+
+## Garbage Collection in JavaScript
+In JavaScript, an object is stored in memory as long as it is reachable, meaning there is a reference to it. When an object becomes unreachable, it is automatically removed from memory through **garbage collection**.
+
+### Example:
+```js
+let john = { name: "John" };
+
+john = null; // Now the object { name: "John" } is removed from memory
+```
+Here, we first created an object and assigned it to the variable `john`. When we set `john = null`, the object `{ name: "John" }` is no longer reachable and gets **garbage collected**.
+
+---
+
+## Objects Inside Arrays and Maps
+### Example with Arrays:
+```js
+let john = { name: "John" };
+let array = [john];
+
+john = null;
+```
+Even after setting `john = null`, the object `{ name: "John" }` is still inside the array and remains in memory.
+
+### Example with Maps:
+```js
+let john = { name: "John" };
+let map = new Map();
+map.set(john, "..." );
+
+john = null;
+```
+Even after removing the reference (`john = null`), the object is still stored inside the `map`, so it **is not garbage collected**.
+
+---
+
+## WeakMap in JavaScript
+Unlike `Map`, a `WeakMap` allows the garbage collector to remove an object if there are no other references to it.
+
+### WeakMap Key Rules:
+- **Keys must be objects**, not primitive values (like numbers or strings).
+- If an object is used as a key and there are no other references, it **automatically gets deleted** from memory.
+
+### Example:
+```js
+let john = { name: "John" };
+let weakMap = new WeakMap();
+weakMap.set(john, "Secret Info");
+
+john = null; // Now the object is removed from WeakMap and memory
+```
+Here, the `WeakMap` automatically removes `{ name: "John" }` from memory when `john` is set to `null`.
+
+### WeakMap Methods:
+- `weakMap.set(key, value)` → Adds a key-value pair
+- `weakMap.get(key)` → Gets the value associated with the key
+- `weakMap.delete(key)` → Removes the key-value pair
+- `weakMap.has(key)` → Checks if a key exists
+
+### Limitations of WeakMap:
+- It **does not support iteration** (no `.keys()`, `.values()`, or `.entries()` methods).
+- It **does not have a `.size` property**, as keys may get removed anytime.
+
+---
+
+## Where is WeakMap Used?
+### 1️⃣ **Storing Temporary Data**
+```js
+let userVisits = new WeakMap();
+
+function visit(user) {
+  let count = userVisits.get(user) || 0;
+  userVisits.set(user, count + 1);
+}
+
+let john = { name: "John" };
+visit(john);
+john = null; // Object and its visit count are automatically deleted
+```
+With `WeakMap`, when `john` is removed, his visit count is also removed automatically.
+
+### 2️⃣ **Caching Data**
+```js
+let cache = new WeakMap();
+
+function process(obj) {
+  if (!cache.has(obj)) {
+    let result = "Processed Result";
+    cache.set(obj, result);
+    return result;
+  }
+  return cache.get(obj);
+}
+
+let obj = { id: 1 };
+process(obj);
+obj = null; // Cache entry is automatically removed
+```
+Here, if `obj` is deleted, its cache entry also gets removed automatically.
+
+---
+
+## WeakSet in JavaScript
+`WeakSet` is similar to `WeakMap`, but it only stores **objects**, not key-value pairs.
+
+### WeakSet Rules:
+- Only **objects** can be added.
+- If an object is removed from memory, it is **automatically deleted from the WeakSet**.
+- It has only 3 methods: `add()`, `has()`, and `delete()`.
+
+### Example:
+```js
+let weakSet = new WeakSet();
+let john = { name: "John" };
+
+weakSet.add(john);
+john = null; // Now the object is automatically removed from WeakSet
+```
+
+---
+
+## Conclusion
+- `WeakMap` and `WeakSet` allow **automatic memory cleanup** when objects are no longer needed.
+- They do **not support iteration** (`.keys()`, `.values()`, `.entries()` methods are unavailable).
+- They are useful for **storing temporary data**, **caching**, and **tracking objects without memory leaks**.
+
+🚀 Use `WeakMap` and `WeakSet` whenever you need a **memory-efficient way** to store object-related data! 🚀
+
+**WeakSet and WeakMap in JavaScript (Simple Explanation)**
+
+### WeakSet
+A **WeakSet** is similar to a regular **Set**, but with some important differences:
+
+- It **only stores objects** (no primitive values like numbers or strings).
+- An object in a **WeakSet** exists only while it is reachable from somewhere else.
+- Supports only three methods: `add()`, `has()`, and `delete()`.
+- Does **not** have methods like `size`, `keys()`, or any way to iterate over its values.
+
+#### Example:
+```javascript
+let visitedSet = new WeakSet();
+
+let john = { name: "John" };
+let pete = { name: "Pete" };
+let mary = { name: "Mary" };
+
+visitedSet.add(john); // John visited
+visitedSet.add(pete); // Pete visited
+visitedSet.add(john); // John again
+
+console.log(visitedSet.has(john)); // true
+console.log(visitedSet.has(mary)); // false
+
+john = null; // John is removed from memory
+```
+Since `john` is now unreachable, **WeakSet automatically removes it**, saving memory.
+
+### WeakMap
+A **WeakMap** is similar to a regular **Map**, but with some differences:
+
+- **Keys must be objects** (cannot be numbers, strings, etc.).
+- If an object used as a key is **deleted**, it is **automatically removed** from the WeakMap.
+- Does **not** support iteration methods like `keys()`, `values()`, or `entries()`.
+
+#### Example:
+```javascript
+let weakMap = new WeakMap();
+let user = { name: "John" };
+
+weakMap.set(user, "some data"); // Storing data for John
+
+console.log(weakMap.get(user)); // Output: "some data"
+
+user = null; // User is removed from memory
+```
+Since `user` is now unreachable, **WeakMap automatically deletes its entry**, preventing memory leaks.
+
+### Why Use WeakSet and WeakMap?
+1. **Memory Efficiency:** Objects are removed when no longer needed.
+2. **No Manual Cleanup Needed:** JavaScript’s garbage collector handles removal.
+3. **Best for Temporary Data:** Useful for tracking visited users, caching, etc.
+
+### Limitations
+- No size property (`size` does not exist).
+- No way to loop through entries (no `forEach`, `keys()`, etc.).
+- Only objects can be used as keys in WeakMap and stored in WeakSet.
+
+### Summary
+| Feature   | WeakSet  | WeakMap  |
+|-----------|---------|---------|
+| Stores only objects? | ✅ Yes | ✅ Yes |
+| Automatic garbage collection? | ✅ Yes | ✅ Yes |
+| Can iterate over values? | ❌ No | ❌ No |
+| Can check if an item exists? | ✅ Yes (has) | ✅ Yes (has) |
+| Can delete an item? | ✅ Yes (delete) | ✅ Yes (delete) |
+
+**When to Use?**
+- Use **WeakSet** when you need to track object existence (e.g., checking if a user visited a site).
+- Use **WeakMap** when you need to store temporary data linked to an object (e.g., caching calculations).
+
+By using **WeakMap** and **WeakSet**, we can manage memory efficiently and avoid manual cleanup of objects no longer needed!
+
 
