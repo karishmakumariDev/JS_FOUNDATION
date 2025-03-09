@@ -1,1 +1,75 @@
+# Recursion and Stack
+
+## Introduction
+Recursion is a powerful programming concept that helps solve complex problems by breaking them into smaller, similar subproblems. A recursive function is a function that calls itself to solve a problem.
+
+## Understanding Recursion
+A recursive function has two main parts:
+1. **Base Case**: The condition where the recursion stops.
+2. **Recursive Case**: The part where the function calls itself with a smaller problem.
+
+## Example: Calculating Power (x^n)
+Let's write a function `pow(x, n)` that calculates `x` raised to the power `n`.
+
+### Iterative Approach (Using Loop)
+```javascript
+function pow(x, n) {
+  let result = 1;
+  for (let i = 0; i < n; i++) {
+    result *= x;
+  }
+  return result;
+}
+
+console.log(pow(2, 3)); // Output: 8
+```
+
+### Recursive Approach
+```javascript
+function pow(x, n) {
+  if (n == 1) {
+    return x;
+  } else {
+    return x * pow(x, n - 1);
+  }
+}
+
+console.log(pow(2, 3)); // Output: 8
+```
+
+### Breakdown of Recursive Calls:
+For `pow(2, 3)`, the function executes as follows:
+```
+pow(2, 3) = 2 * pow(2, 2)
+pow(2, 2) = 2 * pow(2, 1)
+pow(2, 1) = 2
+```
+The function keeps calling itself until `n` becomes `1`, which is the **base case**.
+
+## Advantages of Recursion
+- Makes code shorter and easier to understand.
+- Useful in problems involving tree structures, graphs, and nested objects.
+- Can simplify complex problems.
+
+## Disadvantages of Recursion
+- Uses more memory due to function calls stored in the call stack.
+- If the base case is not defined properly, it may lead to infinite recursion.
+- Recursive functions have a depth limit in JavaScript (around 10,000 calls in most engines).
+
+## Optimizing Recursion
+To avoid excessive memory usage, recursion can be optimized using **Tail Call Optimization** (TCO). However, not all JavaScript engines support TCO.
+
+### Example of Tail-Optimized Recursion:
+```javascript
+function pow(x, n, result = 1) {
+  if (n == 0) return result;
+  return pow(x, n - 1, x * result);
+}
+
+console.log(pow(2, 3)); // Output: 8
+```
+
+## Conclusion
+Recursion is a powerful technique for solving problems involving repetitive structures. However, it should be used carefully to avoid performance issues. In many cases, iterative approaches can be more efficient. Understanding when to use recursion is key to writing effective code.
+
 
