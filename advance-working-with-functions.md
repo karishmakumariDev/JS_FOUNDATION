@@ -771,5 +771,226 @@ welcome(); // Hello, Guest
 Thus, functions in JavaScript can do more than just execute code—they can also hold data and utility functions!
 
 
+####################################################################
+
+# Function Binding in JavaScript
+
+## Losing "this"
+When we pass an object method as a callback (e.g., to `setTimeout`), we might lose the original `this` context.
+
+### Example:
+```js
+let user = {
+  firstName: "John",
+  sayHi() {
+    alert(`Hello, ${this.firstName}!`);
+  }
+};
+
+setTimeout(user.sayHi, 1000); // Hello, undefined!
+```
+
+### Why does this happen?
+- `setTimeout` takes `user.sayHi` without the `user` object.
+- The function is executed in a different context (`window` in browsers).
+- `this.firstName` tries to access `window.firstName`, which does not exist.
+
+### Another way to see the issue:
+```js
+let f = user.sayHi;
+setTimeout(f, 1000); // this is lost
+```
+
+## Solution 1: Using a Wrapper Function
+To ensure `this` is correct, we can wrap the method inside another function:
+
+```js
+setTimeout(function() {
+  user.sayHi();
+}, 1000);
+```
+
+Or using an arrow function (shorter syntax):
+
+```js
+setTimeout(() => user.sayHi(), 1000);
+```
+
+### Problem with this approach:
+If `user` changes before the `setTimeout` executes, it will call the new object's method instead of the original one.
+
+```js
+let user = {
+  firstName: "John",
+  sayHi() {
+    alert(`Hello, ${this.firstName}!`);
+  }
+};
+
+setTimeout(() => user.sayHi(), 1000);
+
+// Changing user before setTimeout runs
+user = {
+  sayHi() { alert("Another user in setTimeout!"); }
+};
+
+// Output: "Another user in setTimeout!"
+```
+
+## Solution 2: Using `bind()`
+To permanently bind `this` to the function, we can use `bind()`:
+
+```js
+let boundSayHi = user.sayHi.bind(user);
+setTimeout(boundSayHi, 1000); // Hello, John!
+```
+
+- `bind()` creates a new function with `this` fixed to `user`.
+- Even if `user` changes later, the function still refers to the original `user`.
+
+In the next section, we'll explore more about `bind()` and other solutions. 😊
+
+### Function Binding
+
+#### Losing "this"
+When we pass an object's method as a callback, such as to `setTimeout`, we often lose `this`.
+
+Example:
+```js
+let user = {
+  firstName: "John",
+  sayHi() {
+    alert(`Hello, ${this.firstName}!`);
+  }
+};
+
+setTimeout(user.sayHi, 1000); // Hello, undefined!
+```
+
+The issue occurs because `setTimeout` calls the function separately from the object, losing the context.
+
+### Solution 1: Wrapper Function
+To ensure the function executes in the right context, we wrap it inside another function:
+
+```js
+setTimeout(() => user.sayHi(), 1000); // Hello, John!
+```
+
+However, if `user` changes before the timeout, the function may call the wrong object.
+
+### Solution 2: `bind`
+JavaScript provides the `bind` method to fix `this`.
+
+#### Basic Syntax
+```js
+let boundFunc = func.bind(context);
+```
+This returns a new function where `this` is permanently set to `context`.
+
+#### Example
+```js
+let user = {
+  firstName: "John"
+};
+
+function func() {
+  alert(this.firstName);
+}
+
+let funcUser = func.bind(user);
+funcUser(); // John
+```
+
+We can also pass arguments using `bind`:
+
+```js
+function func(phrase) {
+  alert(phrase + ', ' + this.firstName);
+}
+
+let funcUser = func.bind(user);
+funcUser("Hello"); // Hello, John
+```
+
+### Binding Object Methods
+Binding an object method ensures it always works with the correct `this`.
+
+```js
+let user = {
+  firstName: "John",
+  sayHi() {
+    alert(`Hello, ${this.firstName}!`);
+  }
+};
+
+let sayHi = user.sayHi.bind(user);
+sayHi(); // Hello, John!
+
+setTimeout(sayHi, 1000); // Hello, John!
+```
+Even if `user` changes, `sayHi` will always refer to the original object.
+
+### Convenience Method: Bind All Methods
+If an object has multiple methods, we can bind them all at once:
+
+```js
+for (let key in user) {
+  if (typeof user[key] == 'function') {
+    user[key] = user[key].bind(user);
+  }
+}
+```
+
+### Partial Functions
+We can also bind arguments along with `this`:
+
+```js
+function mul(a, b) {
+  return a * b;
+}
+
+let double = mul.bind(null, 2);
+alert(double(3)); // 6
+alert(double(4)); // 8
+```
+
+Here, `mul.bind(null, 2)` creates a new function where `a` is fixed as `2`.
+
+#### Example: Creating a `triple` Function
+```js
+let triple = mul.bind(null, 3);
+alert(triple(3)); // 9
+alert(triple(4)); // 12
+```
+
+### Custom Partial Function Implementation
+If we want to fix arguments but not `this`, we can create a custom function:
+
+```js
+function partial(func, ...argsBound) {
+  return function(...args) {
+    return func.call(this, ...argsBound, ...args);
+  }
+}
+
+let user = {
+  firstName: "John",
+  say(time, phrase) {
+    alert(`[${time}] ${this.firstName}: ${phrase}!`);
+  }
+};
+
+user.sayNow = partial(user.say, "10:00");
+user.sayNow("Hello"); // [10:00] John: Hello!
+```
+
+### Summary
+- `bind` is used to fix `this` inside a function.
+- It is useful when passing methods as callbacks.
+- We can also use `bind` to partially apply function arguments.
+- A custom `partial` function helps fix arguments while keeping `this` dynamic.
+
+This technique is widely used in JavaScript frameworks and libraries to manage function execution context efficiently.
+
 
 
