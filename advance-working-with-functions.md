@@ -226,3 +226,74 @@ list.next = list.next.next;
 This structured approach simplifies recursive concepts while keeping the depth intact.
 
 
+# Understanding the Global Object in JavaScript
+
+## What is the Global Object?
+The **global object** is a special object that holds variables and functions accessible from anywhere in the program. These are either built into JavaScript or provided by the environment (like a browser or Node.js).
+
+### Different Names in Different Environments
+- In a **browser**, the global object is called **`window`**.
+- In **Node.js**, it is called **`global`**.
+- In other environments, it might have different names.
+- The standard name for the global object across all environments is **`globalThis`** (introduced in recent JavaScript versions).
+
+### Accessing the Global Object
+You can directly access properties and methods of the global object. For example:
+
+```js
+alert("Hello"); // Works without window
+// Same as:
+window.alert("Hello");
+```
+
+## Global Variables and Functions
+### Declaring Variables with `var`
+If you declare a variable using **`var`**, it automatically becomes a property of the global object:
+
+```js
+var gVar = 5;
+alert(window.gVar); // Output: 5
+```
+
+### Function Declarations
+Functions declared with the `function` keyword (not function expressions) also become properties of the global object.
+
+**Note:** This behavior is mostly for older code compatibility and is not recommended in modern JavaScript.
+
+### Declaring Variables with `let` or `const`
+If you use **`let`** or **`const`**, the variable does **not** become part of the global object:
+
+```js
+let gLet = 5;
+alert(window.gLet); // Output: undefined
+```
+
+## Making Global Variables Explicitly
+If you want a value to be **globally accessible**, you can add it directly to the `window` object:
+
+```js
+// Storing user information globally
+window.currentUser = { name: "John" };
+
+// Accessing the global variable from anywhere in the script
+alert(currentUser.name); // Output: John
+
+// If there is another local variable with the same name, use window to avoid conflicts
+alert(window.currentUser.name); // Output: John
+```
+
+## Why Avoid Global Variables?
+Using global variables is generally **not a good practice** because:
+1. **It can cause conflicts** – If multiple scripts use the same variable name, unexpected issues may arise.
+2. **It makes debugging harder** – Changes in one part of the code can affect another part unexpectedly.
+3. **It reduces modularity** – Functions should take inputs and return outputs instead of depending on external variables.
+
+### Best Practices:
+- Use **local variables** whenever possible.
+- Pass variables as **function arguments** instead of using global variables.
+- If necessary, use **modules** in JavaScript (`import` and `export`).
+
+By following these best practices, you can write **clean, maintainable, and bug-free** JavaScript code!
+
+
+
