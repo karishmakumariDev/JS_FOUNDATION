@@ -295,5 +295,244 @@ Using global variables is generally **not a good practice** because:
 
 By following these best practices, you can write **clean, maintainable, and bug-free** JavaScript code!
 
+**Using Global Object for Polyfills**
+
+### Checking for Modern Features
+The global object can be used to check if modern JavaScript features are supported in a browser.
+
+For example, checking if `Promise` is available:
+
+```js
+if (!window.Promise) {
+  alert("Your browser is really old!");
+}
+```
+
+If the feature is missing, we can create a **polyfill**, which is a custom implementation of the missing feature:
+
+```js
+if (!window.Promise) {
+  window.Promise = ... // Custom implementation of Promise
+}
+```
+
+### Summary
+- The **global object** stores variables and functions that are accessible everywhere.
+- It includes built-in JavaScript features like `Array` and environment-specific properties like `window.innerHeight` (browser window height).
+- The universal name for the global object is **globalThis**, but environment-specific names include:
+  - `window` (for browsers)
+  - `global` (for Node.js)
+- Only store values in the global object if they are truly necessary.
+- In browsers (when not using modules), variables declared with `var` become properties of the global object.
+- To ensure code clarity and compatibility, always access global properties explicitly, like `window.x`.
+
+#######################################################################
+
+**Rest Parameters and Spread Syntax**
+
+Many JavaScript functions can accept any number of arguments. For example:
+
+- `Math.max(arg1, arg2, ..., argN)` – Returns the largest argument.
+- `Object.assign(dest, src1, ..., srcN)` – Copies properties from multiple sources to the destination object.
+
+In this chapter, we will learn how to use these features and how to pass arrays as function parameters.
+
+---
+
+### Rest Parameters (...)
+A function can be called with any number of arguments, regardless of how it is defined.
+
+Example:
+```js
+function sum(a, b) {
+  return a + b;
+}
+
+alert(sum(1, 2, 3, 4, 5)); // Only first two arguments are used: 1 + 2 = 3
+```
+
+To collect extra arguments into an array, we use three dots `...` followed by a variable name:
+
+```js
+function sumAll(...args) {  // args is an array
+  let sum = 0;
+  for (let arg of args) sum += arg;
+  return sum;
+}
+
+alert(sumAll(1));        // 1
+alert(sumAll(1, 2));     // 3
+alert(sumAll(1, 2, 3));  // 6
+```
+
+We can also collect only part of the arguments:
+
+```js
+function showName(firstName, lastName, ...titles) {
+  alert(firstName + ' ' + lastName); // Julius Caesar
+  alert(titles[0]); // Consul
+  alert(titles[1]); // Imperator
+  alert(titles.length); // 2
+}
+
+showName("Julius", "Caesar", "Consul", "Imperator");
+```
+
+**Important:** Rest parameters must always be at the end of the function parameters:
+
+```js
+function f(arg1, ...rest, arg2) {  // ❌ Error: arg2 cannot come after ...rest
+}
+```
+
+---
+
+### The "arguments" Variable
+
+JavaScript provides an `arguments` object that holds all function arguments as an array-like object:
+
+```js
+function showName() {
+  alert(arguments.length);
+  alert(arguments[0]);
+  alert(arguments[1]);
+}
+
+showName("Julius", "Caesar"); // Outputs: 2, Julius, Caesar
+showName("Ilya"); // Outputs: 1, Ilya, undefined
+```
+
+Older JavaScript code used `arguments` instead of rest parameters. However, `arguments` has limitations:
+- It is not a real array (no `map`, `filter`, etc.).
+- It always contains all arguments (you can't select only part of them).
+
+**Rest parameters are preferred** over `arguments` in modern JavaScript.
+
+---
+
+### Arrow Functions and "arguments"
+Arrow functions do **not** have their own `arguments` object. They inherit `arguments` from the surrounding function:
+
+```js
+function f() {
+  let showArg = () => alert(arguments[0]);
+  showArg();
+}
+
+f(1); // Outputs: 1
+```
+
+This is similar to how arrow functions do not have their own `this`.
+
+---
+
+### Summary
+- Rest parameters (`...args`) collect extra function arguments into an array.
+- The `arguments` object exists in normal functions but is not a real array.
+- Arrow functions do not have their own `arguments` object.
+- Use rest parameters instead of `arguments` for better flexibility and modern JavaScript practices.
+
+**Spread Syntax in Simple Terms**
+
+### What is Spread Syntax?
+Spread syntax (`...`) allows us to expand an array or an object into individual elements or properties. It is useful when working with functions, arrays, and objects.
+
+---
+
+### Using Spread with Functions
+The `Math.max()` function finds the largest number from a list. 
+
+```js
+alert(Math.max(3, 5, 1)); // 5
+```
+
+If we have an array `[3, 5, 1]`, we cannot pass it directly to `Math.max()`.
+
+```js
+let arr = [3, 5, 1];
+alert(Math.max(arr)); // NaN (not a valid input)
+```
+
+Using spread syntax, we can expand the array into individual values:
+
+```js
+alert(Math.max(...arr)); // 5
+```
+
+---
+
+### Combining Arrays with Spread
+We can merge multiple arrays:
+
+```js
+let arr1 = [1, 2, 3];
+let arr2 = [4, 5, 6];
+let merged = [...arr1, ...arr2];
+alert(merged); // 1,2,3,4,5,6
+```
+
+We can also mix normal values with arrays:
+
+```js
+let numbers = [2, 3, 4];
+let mixed = [1, ...numbers, 5];
+alert(mixed); // 1,2,3,4,5
+```
+
+---
+
+### Using Spread with Strings
+Spread syntax can break a string into an array of characters:
+
+```js
+let str = "Hello";
+alert([...str]); // H,e,l,l,o
+```
+
+This works like `Array.from(str)`:
+
+```js
+alert(Array.from(str)); // H,e,l,l,o
+```
+
+However, `Array.from()` can also handle array-like objects, while spread syntax only works with iterables.
+
+---
+
+### Copying Arrays and Objects with Spread
+#### Copying an Array
+We can create an exact copy of an array:
+
+```js
+let arr = [1, 2, 3];
+let arrCopy = [...arr];
+
+alert(JSON.stringify(arr) === JSON.stringify(arrCopy)); // true
+alert(arr === arrCopy); // false (different memory reference)
+```
+
+#### Copying an Object
+Similarly, we can copy an object:
+
+```js
+let obj = { a: 1, b: 2, c: 3 };
+let objCopy = { ...obj };
+
+alert(JSON.stringify(obj) === JSON.stringify(objCopy)); // true
+alert(obj === objCopy); // false (different memory reference)
+```
+
+This is a shorter way than using `Object.assign()`.
+
+---
+
+### Summary
+- **Rest parameters (`...args`)** gather arguments into an array.
+- **Spread syntax (`...arr`)** expands an array into individual elements.
+- Spread syntax works with **arrays, objects, and strings**.
+- It helps in **copying, merging, and passing arguments** easily.
+
+Spread syntax makes JavaS
+
 
 
