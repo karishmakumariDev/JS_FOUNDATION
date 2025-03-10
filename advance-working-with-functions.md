@@ -648,5 +648,128 @@ This technique is useful in JavaScript libraries for handling different types of
 
 This makes JavaScript functions powerful and adaptable. 🎯
 
+# Custom Properties in Functions
+
+## Adding Properties to Functions
+In JavaScript, we can add custom properties to functions. For example, let's add a counter to track how many times a function is called:
+
+```js
+function sayHi() {
+  alert("Hi");
+  sayHi.counter++; // Increase counter every time the function runs
+}
+
+sayHi.counter = 0; // Set initial value
+
+sayHi(); // Hi
+sayHi(); // Hi
+
+alert(`Called ${sayHi.counter} times`); // Called 2 times
+```
+
+### Function Properties vs. Variables
+A property inside a function (like `sayHi.counter`) is different from a normal variable declared inside the function. They do not affect each other.
+
+## Using Function Properties Instead of Closures
+Instead of using closures to store values, we can use function properties:
+
+```js
+function makeCounter() {
+  function counter() {
+    return counter.count++;
+  }
+  counter.count = 0; // Store count inside function
+  return counter;
+}
+
+let counter = makeCounter();
+alert(counter()); // 0
+alert(counter()); // 1
+```
+
+Here, `count` is stored as a function property, not in an external variable.
+
+### Closure vs. Function Property
+- **Closure:** `count` is private; outside code can't modify it.
+- **Function Property:** `count` is accessible and can be modified externally.
+
+Example:
+
+```js
+counter.count = 10;
+alert(counter()); // 10
+```
+
+Which approach to use depends on whether you want `count` to be accessible from outside or not.
+
+## Named Function Expression (NFE)
+A **Named Function Expression** (NFE) is a function expression with a name:
+
+```js
+let sayHi = function func(who) {
+  alert(`Hello, ${who}`);
+};
+```
+
+### Benefits of Named Function Expressions
+1. **Self-referencing:** The function can call itself using its name.
+2. **Not visible outside:** The name is only available inside the function.
+
+Example:
+
+```js
+let sayHi = function func(who) {
+  if (who) {
+    alert(`Hello, ${who}`);
+  } else {
+    func("Guest"); // Calls itself
+  }
+};
+
+sayHi(); // Hello, Guest
+func(); // Error: func is not defined outside
+```
+
+### Why Not Just Use `sayHi` Inside?
+Using `sayHi` inside may cause errors if the function is reassigned:
+
+```js
+let sayHi = function(who) {
+  sayHi("Guest"); // Error if sayHi is reassigned
+};
+
+let welcome = sayHi;
+sayHi = null;
+
+welcome(); // Error
+```
+
+Using `func` solves this problem:
+
+```js
+let sayHi = function func(who) {
+  if (who) {
+    alert(`Hello, ${who}`);
+  } else {
+    func("Guest");
+  }
+};
+
+let welcome = sayHi;
+sayHi = null;
+
+welcome(); // Hello, Guest
+```
+
+## Summary
+- **Functions are objects** and can have properties.
+- **`name` property** stores the function name (if available).
+- **`length` property** stores the number of defined parameters.
+- **Named Function Expressions (NFE)** allow self-referencing.
+- **Functions can store additional properties**, useful in libraries like jQuery (`$`) and Lodash (`_`).
+
+Thus, functions in JavaScript can do more than just execute code—they can also hold data and utility functions!
+
+
 
 
