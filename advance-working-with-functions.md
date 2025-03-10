@@ -534,5 +534,119 @@ This is a shorter way than using `Object.assign()`.
 
 Spread syntax makes JavaS
 
+##################################################################
+
+# Function Object and Named Function Expressions (NFE)
+
+## Functions are Objects
+In JavaScript, functions are a type of value, and every value has a type. The type of a function is an **object**.
+
+We can think of functions as **callable action objects**. We can:
+- Call them like normal functions.
+- Add or remove properties.
+- Pass them as references.
+
+---
+
+## The "name" Property
+JavaScript functions have a built-in **name** property that stores the function's name.
+
+Example:
+```js
+function sayHello() {
+  alert("Hello");
+}
+
+alert(sayHello.name); // Output: sayHello
+```
+Even if a function is assigned without a name, JavaScript tries to figure out its name:
+```js
+let greet = function() {
+  alert("Hi");
+};
+
+alert(greet.name); // Output: greet
+```
+JavaScript assigns a name from the variable to which the function is assigned.
+
+The same happens if we use a function as a default parameter:
+```js
+function test(func = function() {}) {
+  alert(func.name); // Output: func
+}
+
+test();
+```
+
+**Object Methods Also Have Names:**
+```js
+let user = {
+  sayHi() { },
+  sayBye: function() { }
+};
+
+alert(user.sayHi.name); // Output: sayHi
+alert(user.sayBye.name); // Output: sayBye
+```
+
+But sometimes, JavaScript cannot determine the function name:
+```js
+let arr = [function() {}];
+alert(arr[0].name); // Output: "" (empty string)
+```
+
+---
+
+## The "length" Property
+Another useful function property is **length**. It tells how many parameters the function expects.
+
+Example:
+```js
+function f1(a) {}
+function f2(a, b) {}
+function many(a, b, ...more) {}
+
+alert(f1.length); // Output: 1
+alert(f2.length); // Output: 2
+alert(many.length); // Output: 2 (rest parameters are not counted)
+```
+
+### Using "length" for Function Behavior
+We can use `length` to handle functions differently based on the number of parameters they take.
+
+Example:
+```js
+function ask(question, ...handlers) {
+  let isYes = confirm(question);
+
+  for (let handler of handlers) {
+    if (handler.length === 0) {
+      if (isYes) handler();
+    } else {
+      handler(isYes);
+    }
+  }
+}
+
+ask("Do you agree?",
+  () => alert("You said Yes"),
+  result => alert(result)
+);
+```
+- If a handler has **0 parameters**, it only runs when the user says "Yes".
+- If a handler has **parameters**, it runs in both cases (Yes or No).
+
+This technique is useful in JavaScript libraries for handling different types of functions dynamically.
+
+---
+
+## Summary
+1. **Functions are objects** in JavaScript, and we can treat them like objects.
+2. The **name** property stores the function name (or assigns it based on context).
+3. The **length** property tells how many parameters a function expects.
+4. We can use these properties to create **flexible and dynamic functions**.
+
+This makes JavaScript functions powerful and adaptable. 🎯
+
 
 
