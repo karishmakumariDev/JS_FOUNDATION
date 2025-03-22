@@ -71,3 +71,75 @@ Inside setTimeout (after 2 seconds)
 A **JavaScript Runtime Environment** provides everything required to run JavaScript code efficiently, whether in a browser or in a server environment like **Node.js**.
 
 
+# What is Actual JavaScript?
+
+JavaScript is a high-level, interpreted programming language primarily used for adding interactivity to web pages. It is a **multi-paradigm** language, supporting **object-oriented, functional, and event-driven** programming styles.
+
+However, when people ask about **"Actual JavaScript,"** they might be referring to:
+
+- **Core JavaScript (ECMAScript)** – The standardized language definition.
+- **JavaScript as implemented in browsers (with Web APIs).**
+- **JavaScript running in other environments (like Node.js).**
+
+## 1️⃣ Actual JavaScript = ECMAScript (Core Language Features)
+
+JavaScript follows the **ECMAScript (ES) standard**, which defines the core syntax and functionality of the language.
+
+### ✅ Core JavaScript includes:
+- **Variables** (`let`, `const`, `var`)
+- **Data types** (Numbers, Strings, Objects, Arrays)
+- **Functions & Arrow Functions**
+- **Asynchronous Programming** (`setTimeout`, `Promise`, `async/await`)
+- **Prototypes & Object-Oriented Programming**
+- **ES6+ Features** (Destructuring, Spread Operator, Modules)
+
+#### 🔹 Example of Core JavaScript:
+```javascript
+let name = "Karishma";
+console.log(`Hello, ${name}!`);  // Template literals
+```
+
+## 2️⃣ JavaScript in Browsers (with Web APIs)
+
+Browsers provide additional **Web APIs** that are NOT part of the core JavaScript language but are commonly used.
+
+### ✅ Features added in browser environments:
+- **DOM Manipulation** (`document.querySelector()`, `innerHTML`)
+- **Events** (`addEventListener()`)
+- **AJAX & Fetch API** (`fetch()`)
+- **Local Storage, Cookies**
+- **WebSockets & Geolocation API**
+
+#### 🔹 Example of JavaScript in the browser:
+```javascript
+document.querySelector("button").addEventListener("click", () => {
+  alert("Button Clicked!");
+});
+```
+
+## 3️⃣ JavaScript in Node.js (Server-Side)
+
+JavaScript can also run **outside** the browser using **Node.js**. Node.js uses the **V8 Engine** but provides additional features like:
+
+### ✅ Node.js Features:
+- **File System (`fs`)**
+- **Networking (`http` module)**
+- **Database Access**
+
+#### 🔹 Example of JavaScript in Node.js:
+```javascript
+const fs = require("fs");
+fs.writeFileSync("hello.txt", "Hello from Node.js");
+console.log("File created!");
+```
+
+## 🔹 Summary: What is Actual JavaScript?
+
+✅ **Actual JavaScript = ECMAScript (Core Language Features)**  
+✅ **Browser JavaScript includes Web APIs (DOM, Fetch, Events).**  
+✅ **Node.js JavaScript includes server-side APIs (File system, HTTP).**  
+
+🚀 **In short, JavaScript is a powerful and versatile language that works in different environments!** Let me know if you have any questions. 😊
+
+
+
