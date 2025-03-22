@@ -141,5 +141,81 @@ console.log("File created!");
 
 🚀 **In short, JavaScript is a powerful and versatile language that works in different environments!** Let me know if you have any questions. 😊
 
+# Functions in JavaScript
+
+A **function** in JavaScript is a reusable block of code that performs a specific task. Functions help in organizing, reusing, and maintaining code efficiently.
+
+## ✅ **Types of Functions in JavaScript**
+
+### 1️⃣ Function Declaration
+A function that is defined using the `function` keyword and can be called before its declaration due to **hoisting**.
+
+🔹 **Example:**
+```javascript
+function greet(name) {
+  return `Hello, ${name}!`;
+}
+console.log(greet("Karishma"));
+```
+
+---
+
+### 2️⃣ Function Expression
+A function that is assigned to a variable. It is **not hoisted**, meaning it cannot be called before its definition.
+
+🔹 **Example:**
+```javascript
+const greet = function(name) {
+  return `Hello, ${name}!`;
+};
+console.log(greet("Karishma"));
+```
+
+---
+
+### 3️⃣ Arrow Function
+A concise way to write functions using the `=>` syntax. It does not have its own `this` value.
+
+🔹 **Example:**
+```javascript
+const greet = (name) => `Hello, ${name}!`;
+console.log(greet("Karishma"));
+```
+
+---
+
+### 4️⃣ Immediately Invoked Function Expression (IIFE)
+A function that executes immediately after its definition.
+
+🔹 **Example:**
+```javascript
+(function() {
+  console.log("This function runs immediately!");
+})();
+```
+
+---
+
+### 5️⃣ Higher-Order Function
+A function that takes another function as an argument or returns a function.
+
+🔹 **Example:**
+```javascript
+function operate(a, b, operation) {
+  return operation(a, b);
+}
+const add = (x, y) => x + y;
+console.log(operate(5, 3, add)); // Output: 8
+```
+
+---
+
+### 🔹 **Summary**
+✅ Functions are reusable blocks of code that perform specific tasks.  
+✅ There are multiple types of functions in JavaScript: **Function Declarations, Function Expressions, Arrow Functions, IIFE, and Higher-Order Functions**.  
+✅ Functions help in **code reusability, readability, and modularity**.  
+
+🚀 **Mastering functions is crucial for writing efficient JavaScript code!** Let me know if you need more details. 😊
+
 
 
