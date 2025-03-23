@@ -392,4 +392,82 @@ console.log(user.address?.country); // undefined (no error!)
 🚀 **Understanding ECMAScript helps in writing clean and efficient JavaScript!** Let me know if you need more details. 😊
 
 
+# Execution Context and Hoisting in JavaScript
+
+## Execution Context
+
+Execution Context is the environment where JavaScript code is executed. It consists of the variables, functions, and the scope in which the code runs.
+
+### Types of Execution Contexts
+
+1️⃣ **Global Execution Context (GEC)**
+   - Created when the JavaScript file starts executing.
+   - `this` in the global context refers to the global object (`window` in browsers, `global` in Node.js).
+
+2️⃣ **Function Execution Context (FEC)**
+   - Created whenever a function is called.
+   - Each function gets its own execution context.
+
+3️⃣ **Eval Execution Context**
+   - Created when code is executed inside the `eval()` function.
+
+### Phases of Execution Context
+
+1️⃣ **Creation Phase**
+   - Memory is allocated for variables and functions.
+   - `this` is assigned a value.
+   - Functions are stored in memory, and variables are set to `undefined` (hoisting).
+
+2️⃣ **Execution Phase**
+   - Code is executed line by line.
+   - Variables are assigned values, and function calls are made.
+
+## Hoisting in JavaScript
+
+Hoisting is JavaScript's behavior of moving variable and function declarations to the top of their scope during the Creation Phase.
+
+### ✅ Example of Hoisting
+
+```javascript
+console.log(myVar); // Output: undefined
+var myVar = 10;
+console.log(myVar); // Output: 10
+```
+
+**Explanation:**
+- During the Creation Phase, `myVar` is hoisted and set to `undefined`.
+- In the Execution Phase, when `console.log(myVar)` is executed before assignment, it prints `undefined`.
+
+### ✅ Function Hoisting Example
+
+```javascript
+hello(); // Output: Hello, World!
+
+function hello() {
+  console.log("Hello, World!");
+}
+```
+
+**Explanation:**
+- Function declarations are hoisted entirely, meaning the function can be called before it is defined in the code.
+
+### ✅ Hoisting with `let` and `const`
+
+```javascript
+console.log(myLetVar); // ReferenceError: Cannot access 'myLetVar' before initialization
+let myLetVar = 5;
+```
+
+**Explanation:**
+- Variables declared with `let` and `const` are hoisted but are in a "temporal dead zone" until they are assigned a value.
+
+## 🔹 Summary
+✅ JavaScript execution context determines how code is executed.
+✅ There are three types: **Global Execution Context, Function Execution Context, and Eval Execution Context**.
+✅ Execution Context has two phases: **Creation Phase and Execution Phase**.
+✅ **Hoisting** moves function and variable declarations to the top of their scope.
+✅ `var` variables are hoisted with `undefined`, while `let` and `const` are in the **temporal dead zone**.
+
+🚀 **Understanding Execution Context and Hoisting is essential for mastering JavaScript!**
+
 
