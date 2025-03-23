@@ -217,5 +217,75 @@ console.log(operate(5, 3, add)); // Output: 8
 
 🚀 **Mastering functions is crucial for writing efficient JavaScript code!** Let me know if you need more details. 😊
 
+# What is ECMAScript in JavaScript?
+
+## **Introduction**
+ECMAScript (ES) is the **standardized specification** for JavaScript. It defines the core syntax, rules, and features of the language. JavaScript follows ECMAScript standards, ensuring consistency across different environments such as web browsers and Node.js.
+
+---
+
+## **Why is ECMAScript Important?**
+✅ Ensures **compatibility** of JavaScript across different platforms.
+✅ Introduces **new features** and improvements over time.
+✅ Helps developers write **modern, optimized code**.
+
+---
+
+## **Major ECMAScript Versions & Features**
+
+### **1️⃣ ES5 (2009) – Foundation for Modern JavaScript**
+✅ Introduced **Strict Mode** (`"use strict"`).
+✅ Added `JSON.parse()` and `JSON.stringify()` for handling JSON.
+✅ Introduced new array methods like `map()`, `filter()`, `reduce()`.
+
+🔹 **Example:**
+```javascript
+"use strict";
+var person = { name: "Karishma", age: 22 };
+console.log(Object.keys(person)); // ["name", "age"]
+```
+
+---
+
+### **2️⃣ ES6 (2015) – The Biggest Update** 🚀
+✅ **let & const** for variable declarations.
+✅ **Arrow Functions (`=>`)** for shorter function syntax.
+✅ **Template Literals** (`` `Hello, ${name}!` ``).
+✅ **Destructuring, Spread Operator, Modules (`import/export`)**.
+
+🔹 **Example:**
+```javascript
+let name = "Karishma";
+const greet = () => `Hello, ${name}!`;
+console.log(greet()); // "Hello, Karishma!"
+```
+
+---
+
+### **3️⃣ ES7 – ES12 (2016 - 2021) – More Enhancements**
+✅ **ES7 (2016):** `includes()` method, `**` exponentiation operator.
+✅ **ES8 (2017):** `async/await`, `Object.values()`.
+✅ **ES9 (2018):** Rest/Spread properties (`...obj`).
+✅ **ES10 (2019):** `flat()`, `flatMap()` for arrays.
+✅ **ES11 (2020):** Optional Chaining (`?.`), Nullish Coalescing (`??`).
+✅ **ES12 (2021):** Numeric Separators (`1_000_000`), `replaceAll()` method.
+
+🔹 **Example (ES11 – Optional Chaining)**
+```javascript
+const user = { name: "Karishma", address: { city: "Delhi" } };
+console.log(user.address?.city); // "Delhi"
+console.log(user.address?.country); // undefined (no error!)
+```
+
+---
+
+## **Summary**
+✅ **ECMAScript is the official standard** for JavaScript.
+✅ JavaScript evolves with ECMAScript updates like **ES5, ES6, ES7+**.
+✅ New ECMAScript versions bring **modern, optimized, and easier coding styles**.
+✅ **ES6 and later versions** are widely used in modern JavaScript development.
+
+🚀 **Understanding ECMAScript helps in writing clean and efficient JavaScript!** Let me know if you need more details. 😊
+
 
 
