@@ -210,6 +210,110 @@ console.log(operate(5, 3, add)); // Output: 8
 
 ---
 
+# First-Class Citizen in JavaScript
+
+## What is a First-Class Citizen?
+
+In JavaScript, functions are treated as **first-class citizens**, meaning they can be:
+- Stored in variables
+- Passed as arguments to other functions
+- Returned from other functions
+
+Since functions in JavaScript can be used like any other value (e.g., numbers, strings), they are considered **first-class citizens**.
+
+## ✅ Examples of First-Class Functions
+
+### 1️⃣ Storing a function in a variable
+```javascript
+const sayHello = function() {
+  return "Hello, Karishma!";
+};
+console.log(sayHello()); // Output: Hello, Karishma!
+```
+
+### 2️⃣ Passing a function as an argument (Higher-Order Function)
+```javascript
+function executeFunction(func) {
+  console.log(func()); // Calling the passed function
+}
+executeFunction(sayHello); // Output: Hello, Karishma!
+```
+
+### 3️⃣ Returning a function from another function
+```javascript
+function outerFunction() {
+  return function() {
+    return "I am returned from another function!";
+  };
+}
+const newFunc = outerFunction(); // Storing the returned function
+console.log(newFunc()); // Output: I am returned from another function!
+```
+
+### 4️⃣ Assigning a function to an array element
+```javascript
+const functionArray = [];
+functionArray.push(sayHello);
+console.log(functionArray[0]()); // Output: Hello, Karishma!
+```
+
+### 5️⃣ Assigning a function to an object property
+```javascript
+const obj = {
+  sayHi: sayHello
+};
+console.log(obj.sayHi()); // Output: Hello, Karishma!
+```
+
+## 🔹 Closures in JavaScript
+
+A **closure** is when an inner function remembers the variables of its outer function even after the outer function has finished execution.
+
+### ✅ Easy Example of a Closure
+```javascript
+function counter() {
+  let count = 0;
+  return function() {
+    count++;
+    console.log(`Current count: ${count}`);
+  };
+}
+
+const increment = counter();
+increment(); // Output: Current count: 1
+increment(); // Output: Current count: 2
+increment(); // Output: Current count: 3
+```
+
+### ✅ Another Example of a Closure
+```javascript
+function shopkeeper(name) {
+  return function() {
+    console.log(`नमस्ते ${name}, फिर से स्वागत है!`);
+  };
+}
+
+const customer1 = shopkeeper("करिश्मा");
+customer1(); // Output: नमस्ते करिश्मा, फिर से स्वागत है!
+
+const customer2 = shopkeeper("पीयूष");
+customer2(); // Output: नमस्ते पीयूष, फिर से स्वागत है!
+```
+
+### Explanation:
+1️⃣ `counter` function initializes a variable `count` and returns an inner function.
+2️⃣ The inner function increments `count` and logs its value.
+3️⃣ Even after `counter()` execution is completed, the returned function **remembers** `count` due to closure.
+4️⃣ The `shopkeeper` function demonstrates how an inner function remembers the `name` variable even after `shopkeeper` execution is finished.
+
+## 🔹 Summary
+✅ JavaScript functions are **first-class citizens** because they can be treated like values.  
+✅ Functions can be **stored, passed, and returned** like any other data type.  
+✅ **Higher-Order Functions** rely on this concept.  
+✅ **Closures** allow inner functions to retain access to variables of their outer functions.
+
+🚀 **First-Class Functions and Closures are essential concepts in JavaScript!**
+
 ### 🔹 **Summary**
 ✅ Functions are reusable blocks of code that perform specific tasks.  
 ✅ There are multiple types of functions in JavaScript: **Function Declarations, Function Expressions, Arrow Functions, IIFE, and Higher-Order Functions**.  
