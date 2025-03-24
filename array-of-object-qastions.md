@@ -321,4 +321,214 @@ console.log(shuffled);
 
 ---
 
+## JavaScript Array of Objects - `map()` Method Questions
+
+### 1. How do you extract a specific property from an array of objects?
+**Answer:**
+Use `map()` to get an array of property values.
+
+```js
+let users = [
+    { id: 1, name: "Alice" },
+    { id: 2, name: "Bob" }
+];
+
+let names = users.map(user => user.name);
+console.log(names);
+```
+**Output:**
+```js
+["Alice", "Bob"]
+```
+
+---
+
+### 2. How do you transform an array of objects by adding a new property?
+**Answer:**
+Use `map()` to add a new key-value pair.
+
+```js
+let employees = [
+    { name: "John", salary: 60000 },
+    { name: "Jane", salary: 45000 }
+];
+
+let updatedEmployees = employees.map(emp => ({ ...emp, bonus: 5000 }));
+console.log(updatedEmployees);
+```
+
+**Output:**
+```js
+[
+    { name: "John", salary: 60000, bonus: 5000 },
+    { name: "Jane", salary: 45000, bonus: 5000 }
+]
+```
+
+---
+
+### 3. How do you modify an existing property in an array of objects?
+**Answer:**
+Use `map()` to update a property.
+
+```js
+let products = [
+    { name: "Laptop", price: 1000 },
+    { name: "Phone", price: 500 }
+];
+
+let discountedProducts = products.map(p => ({ ...p, price: p.price * 0.9 }));
+console.log(discountedProducts);
+```
+
+---
+
+### 4. How do you format an array of objects into a different structure?
+**Answer:**
+Use `map()` to transform object structure.
+
+```js
+let students = [
+    { firstName: "Alice", lastName: "Smith" },
+    { firstName: "Bob", lastName: "Brown" }
+];
+
+let formattedStudents = students.map(s => ({ fullName: `${s.firstName} ${s.lastName}` }));
+console.log(formattedStudents);
+```
+
+---
+
+### 5. How do you convert an array of objects to an array of strings?
+**Answer:**
+Use `map()` with template literals.
+
+```js
+let cars = [
+    { brand: "Toyota", model: "Corolla" },
+    { brand: "Honda", model: "Civic" }
+];
+
+let carDescriptions = cars.map(car => `${car.brand} - ${car.model}`);
+console.log(carDescriptions);
+```
+
+---
+
+### 6. How do you generate a unique ID for each object in an array?
+**Answer:**
+Use `map()` and the index.
+
+```js
+let tasks = [
+    { task: "Do laundry" },
+    { task: "Buy groceries" }
+];
+
+let tasksWithIds = tasks.map((t, i) => ({ ...t, id: i + 1 }));
+console.log(tasksWithIds);
+```
+
+---
+
+### 7. How do you calculate a derived property for each object?
+**Answer:**
+Use `map()` to compute a new value.
+
+```js
+let employees = [
+    { name: "John", salary: 60000 },
+    { name: "Jane", salary: 50000 }
+];
+
+let salariesWithTax = employees.map(e => ({ ...e, afterTax: e.salary * 0.8 }));
+console.log(salariesWithTax);
+```
+
+---
+
+### 8. How do you uppercase a property value for all objects?
+**Answer:**
+Use `map()` with `toUpperCase()`.
+
+```js
+let users = [
+    { name: "alice" },
+    { name: "bob" }
+];
+
+let capitalizedUsers = users.map(user => ({ ...user, name: user.name.toUpperCase() }));
+console.log(capitalizedUsers);
+```
+
+---
+
+### 9. How do you get only specific keys from objects in an array?
+**Answer:**
+Use `map()` and destructuring.
+
+```js
+let people = [
+    { name: "Alice", age: 25, city: "NY" },
+    { name: "Bob", age: 30, city: "LA" }
+];
+
+let namesAndAges = people.map(({ name, age }) => ({ name, age }));
+console.log(namesAndAges);
+```
+
+---
+
+### 10. How do you append an index to each object?
+**Answer:**
+Use `map()` with the index argument.
+
+```js
+let items = [
+    { name: "Shirt" },
+    { name: "Pants" }
+];
+
+let indexedItems = items.map((item, index) => ({ ...item, index }));
+console.log(indexedItems);
+```
+
+---
+
+### 11. How do you double a numeric property in an array of objects?
+**Answer:**
+Use `map()` to multiply the property value.
+
+```js
+let numbers = [
+    { value: 10 },
+    { value: 20 }
+];
+
+let doubledNumbers = numbers.map(n => ({ ...n, value: n.value * 2 }));
+console.log(doubledNumbers);
+```
+
+---
+
+### 12. How do you conditionally modify a property using `map()`?
+**Answer:**
+Use `map()` with a condition.
+
+```js
+let employees = [
+    { name: "Alice", salary: 40000 },
+    { name: "Bob", salary: 60000 }
+];
+
+let updatedSalaries = employees.map(e =>
+    e.salary < 50000 ? { ...e, salary: e.salary + 5000 } : e
+);
+console.log(updatedSalaries);
+```
+
+---
+
+This document contains a series of JavaScript questions and answers related to using the `map()` method with arrays of objects. Each example demonstrates a different use case for transforming or manipulating arrays using `map()`. 🚀
+
 
