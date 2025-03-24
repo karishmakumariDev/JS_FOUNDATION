@@ -198,4 +198,127 @@ console.log(groupedByRole);
 👉 This groups objects based on the `role` key.
 
 ---
+# Intermediate-Level JavaScript Interview Questions and Answers (Arrays of Objects)
+
+## 1. How do you check if all objects in an array meet a condition?
+### Answer:
+Use the `every()` method:
+
+```js
+let students = [
+    { name: "Alice", age: 25 },
+    { name: "Bob", age: 20 },
+    { name: "Charlie", age: 22 }
+];
+
+let allAdults = students.every(student => student.age >= 18);
+
+console.log(allAdults);
+```
+### Output:
+```js
+true
+```
+👉 `every()` returns `true` if all objects satisfy the condition.
+
+---
+
+## 2. How do you find the index of an object in an array based on a property value?
+### Answer:
+Use the `findIndex()` method:
+
+```js
+let products = [
+    { id: 1, name: "Laptop" },
+    { id: 2, name: "Phone" },
+    { id: 3, name: "Tablet" }
+];
+
+let index = products.findIndex(p => p.id === 2);
+
+console.log(index);
+```
+### Output:
+```js
+1
+```
+👉 `findIndex()` returns the index of the first matching object.
+
+---
+
+## 3. How do you sum up values of a specific property in an array of objects?
+### Answer:
+Use the `reduce()` method:
+
+```js
+let orders = [
+    { orderId: 1, total: 500 },
+    { orderId: 2, total: 300 },
+    { orderId: 3, total: 200 }
+];
+
+let totalAmount = orders.reduce((sum, order) => sum + order.total, 0);
+
+console.log(totalAmount);
+```
+### Output:
+```js
+1000
+```
+👉 `reduce()` accumulates the sum of the `total` property.
+
+---
+
+## 4. How do you clone an array of objects without affecting the original?
+### Answer:
+Use `map()` with the spread operator:
+
+```js
+let users = [
+    { id: 1, name: "Alice" },
+    { id: 2, name: "Bob" }
+];
+
+let clonedUsers = users.map(user => ({ ...user }));
+
+console.log(clonedUsers);
+```
+### Output:
+```js
+[
+    { id: 1, name: "Alice" },
+    { id: 2, name: "Bob" }
+]
+```
+👉 This creates a deep copy, ensuring modifications to `clonedUsers` don’t affect `users`.
+
+---
+
+## 5. How do you shuffle an array of objects randomly?
+### Answer:
+Use `sort()` with `Math.random()`:
+
+```js
+let cards = [
+    { suit: "hearts", value: "A" },
+    { suit: "spades", value: "K" },
+    { suit: "diamonds", value: "Q" }
+];
+
+let shuffled = cards.sort(() => Math.random() - 0.5);
+
+console.log(shuffled);
+```
+### Output:
+```js
+[
+    { suit: "spades", value: "K" },
+    { suit: "diamonds", value: "Q" },
+    { suit: "hearts", value: "A" }
+]
+```
+👉 This randomizes the order of objects in the array.
+
+---
+
 
