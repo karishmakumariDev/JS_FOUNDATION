@@ -471,4 +471,148 @@ console.log(updatedOrders);
     { id: 2, status: "shipped" }
 ]
 ```
+# JavaScript Map Method - Questions & Answers (Array of Objects)
+
+## 13. How do you conditionally modify a property using map()?
+**Answer:** Use `map()` with a condition.
+
+```js
+let employees = [
+    { name: "Alice", salary: 40000 },
+    { name: "Bob", salary: 60000 }
+];
+
+let updatedSalaries = employees.map(e => 
+    e.salary < 50000 ? { ...e, salary: e.salary + 5000 } : e
+);
+
+console.log(updatedSalaries);
+```
+**Output:**
+```js
+[
+    { name: "Alice", salary: 45000 },
+    { name: "Bob", salary: 60000 }
+]
+```
+
+---
+
+## 14. How do you replace a specific value in an array of objects?
+**Answer:** Use `map()` with an if condition.
+
+```js
+let orders = [
+    { id: 1, status: "pending" },
+    { id: 2, status: "shipped" }
+];
+
+let updatedOrders = orders.map(o => o.id === 1 ? { ...o, status: "completed" } : o);
+
+console.log(updatedOrders);
+```
+**Output:**
+```js
+[
+    { id: 1, status: "completed" },
+    { id: 2, status: "shipped" }
+]
+```
+
+---
+
+## 15. How do you invert a boolean property in an array?
+**Answer:** Use `map()` to toggle `true/false`.
+
+```js
+let users = [
+    { name: "Alice", active: true },
+    { name: "Bob", active: false }
+];
+
+let toggledUsers = users.map(u => ({ ...u, active: !u.active }));
+
+console.log(toggledUsers);
+```
+**Output:**
+```js
+[
+    { name: "Alice", active: false },
+    { name: "Bob", active: true }
+]
+```
+
+---
+
+## 16. How do you assign a rank based on an array index?
+**Answer:** Use `map()` with index calculation.
+
+```js
+let students = [
+    { name: "Alice" },
+    { name: "Bob" }
+];
+
+let rankedStudents = students.map((s, i) => ({ ...s, rank: i + 1 }));
+
+console.log(rankedStudents);
+```
+**Output:**
+```js
+[
+    { name: "Alice", rank: 1 },
+    { name: "Bob", rank: 2 }
+]
+```
+
+---
+
+## 17. How do you convert an array of objects to an array of arrays?
+**Answer:** Use `map()` to create key-value pairs.
+
+```js
+let products = [
+    { name: "Laptop", price: 1000 },
+    { name: "Phone", price: 500 }
+];
+
+let productPairs = products.map(p => [p.name, p.price]);
+
+console.log(productPairs);
+```
+**Output:**
+```js
+[
+    ["Laptop", 1000],
+    ["Phone", 500]
+]
+```
+
+---
+
+## 18. How do you pad a string property to a fixed length?
+**Answer:** Use `map()` with `padEnd()`.
+
+```js
+let items = [
+    { name: "Pen" },
+    { name: "Notebook" }
+];
+
+let paddedItems = items.map(i => ({ ...i, name: i.name.padEnd(10, ".") }));
+
+console.log(paddedItems);
+```
+**Output:**
+```js
+[
+    { name: "Pen......." },
+    { name: "Notebook.." }
+]
+```
+
+---
+
+These 18 questions should give you deep practice with `map()`. Let me know if you need more! 🚀
+
 
