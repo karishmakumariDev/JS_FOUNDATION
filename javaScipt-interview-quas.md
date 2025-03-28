@@ -470,4 +470,507 @@ let myLetVar = 5;
 
 🚀 **Understanding Execution Context and Hoisting is essential for mastering JavaScript!**
 
+# Scope in JavaScript
+
+Scope refers to the accessibility of variables, functions, and objects in different parts of the code. It determines where a variable can be accessed.
+
+## Types of Scope in JavaScript:
+1. Global Scope
+2. Local/Function Scope
+3. Block Scope
+
+### 1. Global Scope
+A variable declared outside any function is in the global scope.
+It can be accessed from anywhere in the program.
+
+#### Example:
+```javascript
+let globalVar = "I am global";
+
+function show() {
+    console.log(globalVar); // Accessible here
+}
+
+show();
+console.log(globalVar); // Accessible here too
+```
+
+### 2. Local/Function Scope
+Variables declared inside a function are function-scoped.
+They can only be accessed within that function.
+
+#### Example:
+```javascript
+function greet() {
+    let message = "Hello, Karishma!";
+    console.log(message); // Accessible here
+}
+
+greet();
+console.log(message); // ❌ Error: message is not defined
+```
+
+### 3. Block Scope
+Variables declared using `let` and `const` inside `{}` (curly braces) are block-scoped.
+They can only be accessed within that block.
+
+#### Example:
+```javascript
+{
+    let blockVar = "Inside block";
+    console.log(blockVar); // Accessible here
+}
+
+console.log(blockVar); // ❌ Error: blockVar is not defined
+```
+**Note:** `var` does not have block scope; it is function-scoped.
+
+## Lexical Scope
+In JavaScript, functions are lexically scoped, meaning a function can access variables from its outer (parent) scope but not vice versa.
+
+#### Example:
+```javascript
+function outerFunction() {
+    let outerVar = "I am outer";
+
+    function innerFunction() {
+        console.log(outerVar); // ✅ Accessible due to lexical scope
+    }
+
+    innerFunction();
+}
+
+outerFunction();
+console.log(outerVar); // ❌ Error: outerVar is not defined
+```
+👉 Here, `innerFunction` can access `outerVar` because it's inside `outerFunction`, but the reverse is not possible.
+
+## Scope Chain
+If a variable is not found in the current scope, JavaScript looks in the outer scope and continues up the chain until it reaches the global scope.
+If the variable is not found in the entire chain, it results in a **ReferenceError**.
+
+#### Example:
+```javascript
+let globalVar = "I am global";
+
+function firstFunction() {
+    let firstVar = "I am in firstFunction";
+
+    function secondFunction() {
+        let secondVar = "I am in secondFunction";
+        console.log(globalVar); // ✅ Found in global scope
+        console.log(firstVar); // ✅ Found in firstFunction scope
+        console.log(secondVar); // ✅ Found in secondFunction scope
+    }
+
+    secondFunction();
+    console.log(secondVar); // ❌ Error: secondVar is not defined
+}
+
+firstFunction();
+```
+
+👉 **How the Scope Chain Works Here:**
+- `secondFunction` looks for `globalVar` → ✅ Found in the **global scope**.
+- `secondFunction` looks for `firstVar` → ✅ Found in `firstFunction` (its parent scope).
+- `secondFunction` looks for `secondVar` → ✅ Found in its own scope.
+- `firstFunction` tries to access `secondVar` → ❌ Error (not in scope).
+
+## Summary
+| Scope Type        | Accessible From |
+|------------------|----------------|
+| Global Scope    | Anywhere in the program |
+| Function Scope  | Only inside the function |
+| Block Scope     | Only inside `{}` (let, const) |
+| Lexical Scope   | Inner function can access outer function’s variables |
+| Scope Chain     | Looks for variables in parent scopes if not found locally |
+
+### JavaScript Interview Questions on `var` Keyword & Function Scope
+
+#### 1. What is the difference between `var`, `let`, and `const`?
+**Answer:**  
+- `var` is **function-scoped**, while `let` and `const` are **block-scoped**.
+- `var` allows **re-declaration**, while `let` and `const` do **not**.
+- `const` must be **initialized at declaration** and cannot be **reassigned**.
+
+**Example:**
+```javascript
+function example() {
+    var a = 10;
+    let b = 20;
+    const c = 30;
+    if (true) {
+        var a = 40; // ✅ Allowed (Re-declaration inside function scope)
+        let b = 50; // ✅ Allowed (Block scope)
+        const c = 60; // ✅ Allowed (Block scope)
+        console.log(a, b, c); // 40 50 60
+    }
+    console.log(a); // 40
+    console.log(b); // 20
+    console.log(c); // 30
+}
+example();
+```
+
+---
+
+#### 2. Does `var` have block scope?
+**Answer:**  
+No, `var` does **not** have block scope. It is **function-scoped**, meaning that a `var` declared inside a block (`{}`) is still accessible outside that block if within the same function.
+
+**Example:**
+```javascript
+function test() {
+    if (true) {
+        var x = 10;
+    }
+    console.log(x); // ✅ Accessible, prints 10
+}
+test();
+```
+
+---
+
+#### 3. What happens if you declare `var` multiple times in the same function?
+**Answer:**  
+If you declare `var` multiple times, the last assigned value **overwrites** the previous one.
+
+**Example:**
+```javascript
+function duplicateVar() {
+    var x = 10;
+    var x = 20; // No error, allowed in function scope
+    console.log(x); // 20
+}
+duplicateVar();
+```
+
+---
+
+#### 4. Can `var` be accessed before declaration?
+**Answer:**  
+Yes, due to **hoisting**, `var` declarations are **moved** to the top of their scope but remain `undefined` until assigned a value.
+
+**Example:**
+```javascript
+console.log(a); // ✅ No error, but prints undefined
+var a = 10;
+```
+
+---
+
+#### 5. What is function scope in JavaScript?
+**Answer:**  
+Function scope means that **variables declared inside a function using `var` are only accessible within that function**.
+
+**Example:**
+```javascript
+function myFunction() {
+    var localVar = "I am local";
+    console.log(localVar); // ✅ Accessible here
+}
+
+myFunction();
+console.log(localVar); // ❌ Error: localVar is not defined
+```
+
+---
+
+#### 6. What happens when `var` is declared inside a function and accessed outside?
+**Answer:**  
+It results in a **ReferenceError** because `var` is function-scoped and not accessible outside the function.
+
+**Example:**
+```javascript
+function testScope() {
+    var insideVar = "Inside Function";
+}
+console.log(insideVar); // ❌ ReferenceError: insideVar is not defined
+```
+
+---
+
+#### 7. What is the effect of using `var` inside nested functions?
+**Answer:**  
+A variable declared with `var` inside a function is accessible **within that function and its inner functions** but **not outside**.
+
+**Example:**
+```javascript
+function outerFunction() {
+    var outerVar = "I am outer";
+
+    function innerFunction() {
+        console.log(outerVar); // ✅ Accessible due to function scope
+    }
+
+    innerFunction();
+}
+outerFunction();
+console.log(outerVar); // ❌ Error: outerVar is not defined
+```
+
+---
+
+#### 8. Does `var` support block scope inside loops?
+**Answer:**  
+No, `var` does **not** have block scope. It leaks out of the loop block.
+
+**Example:**
+```javascript
+for (var i = 0; i < 3; i++) {
+    console.log(i); // ✅ 0, 1, 2
+}
+console.log(i); // ✅ Still accessible, prints 3
+```
+
+---
+
+#### 9. Can `var` variables be updated and redeclared?
+**Answer:**  
+Yes, `var` variables can be **redeclared** and **updated** within the same scope.
+
+**Example:**
+```javascript
+var x = 5;
+var x = 10; // ✅ No error, allowed
+console.log(x); // 10
+
+x = 20; // ✅ Updated successfully
+console.log(x); // 20
+```
+
+---
+
+#### 10. What is the impact of using `var` in global scope?
+**Answer:**  
+A `var` declared in the **global scope** becomes a **property of the `window` object** in browsers.
+
+**Example:**
+```javascript
+var globalVar = "I am global";
+console.log(window.globalVar); // ✅ "I am global"
+```
+
+---
+
+### **Summary Table**
+| Question | Answer |
+|----------|--------|
+| `var` vs `let` vs `const` | `var` is function-scoped, `let` and `const` are block-scoped |
+| Does `var` have block scope? | No, only function scope |
+| Multiple `var` declarations? | Allowed, last value overwrites previous |
+| Accessing `var` before declaration? | Yes, due to hoisting, but value is `undefined` |
+| What is function scope? | Variables declared in a function are only accessible inside it |
+| Accessing `var` outside function? | Not possible, results in a `ReferenceError` |
+| `var` inside nested functions? | Accessible inside inner functions but not outside parent function |
+| `var` in loops? | Leaks outside loop block |
+| Can `var` be updated/redeclared? | Yes, both are allowed |
+| Global `var` impact? | Becomes `window` property in browsers |
+
+---
+
+### **Conclusion**
+- Use **`let`** and **`const`** instead of `var` to avoid **unexpected behavior**.
+- Prefer `let` for variables that change and `const` for constants.
+- Avoid polluting the **global scope** with `var`.
+
+# Mutable vs Immutable in JavaScript
+
+In JavaScript, **mutability** and **immutability** refer to whether a value can be changed after it is created.
+
+## 1. Mutable (Changeable)
+Mutable data types can be modified after their creation. Any changes made to them affect the original value.
+
+### Examples of Mutable Data Types:
+- **Objects**
+- **Arrays**
+- **Functions**
+
+### Example of Mutable Data (Object)
+```javascript
+let person = { name: "Karishma", age: 25 };
+
+person.age = 26; // ✅ Modifying the object
+console.log(person); // { name: "Karishma", age: 26 }
+```
+Here, the `person` object is **mutable** because we changed its `age` property.
+
+### Example of Mutable Data (Array)
+```javascript
+let numbers = [1, 2, 3];
+numbers.push(4); // ✅ Adding element to the array
+console.log(numbers); // [1, 2, 3, 4]
+```
+Here, the array is **mutable** because we modified it by adding a new element.
+
+---
+
+## 2. Immutable (Unchangeable)
+Immutable data types **cannot be changed** once they are created. If you need to modify them, you have to create a new value.
+
+### Examples of Immutable Data Types:
+- **Primitive Data Types:**
+  - `String`
+  - `Number`
+  - `Boolean`
+  - `BigInt`
+  - `Symbol`
+  - `Undefined`
+  - `Null`
+
+### Example of Immutable Data (String)
+```javascript
+let str = "Hello";
+str[0] = "M"; // ❌ No effect
+console.log(str); // "Hello" (unchanged)
+```
+Here, strings are **immutable**, so modifying a character does not change the original string.
+
+### Example of Creating a New Immutable Value
+```javascript
+let name = "Karishma";
+let newName = name + " Saini"; // ✅ Creates a new string
+console.log(newName); // "Karishma Saini"
+```
+Instead of modifying `name`, JavaScript created a **new** string.
+
+---
+
+## 3. How to Make Objects Immutable?
+By default, objects and arrays are **mutable**, but we can prevent changes using:  
+
+### **1. `Object.freeze()` (Completely Freezes an Object)**
+```javascript
+let user = { name: "Piyush", age: 20 };
+Object.freeze(user); // ❌ Now, changes are not allowed
+
+user.age = 21; // ❌ No effect
+console.log(user.age); // 20 (unchanged)
+```
+
+### **2. `Object.seal()` (Allows Modification but No New Properties)**
+```javascript
+let user = { name: "Piyush", age: 20 };
+Object.seal(user);
+
+user.age = 21; // ✅ Allowed
+user.city = "Delhi"; // ❌ Not allowed (new properties cannot be added)
+console.log(user); // { name: "Piyush", age: 21 }
+```
+
+---
+
+## Summary Table
+
+| Data Type  | Mutable or Immutable? | Example |
+|------------|----------------------|---------|
+| Object     | Mutable | `{ name: "Karishma" }` → Can modify properties |
+| Array      | Mutable | `[1, 2, 3]` → Can add/remove elements |
+| String     | Immutable | `"Hello"` → Cannot change characters |
+| Number     | Immutable | `10` → Cannot change |
+| Boolean    | Immutable | `true` → Cannot change |
+
+---
+
+Would you like more examples or explanations? 😊
+
+# Pure vs Impure Functions in JavaScript
+
+## 1. Pure Functions  
+A **pure function** is a function that:  
+✅ **Always returns the same output** for the same input.  
+✅ **Has no side effects** (does not modify external state, global variables, DOM, etc.).  
+
+### Example of a Pure Function
+```javascript
+function add(a, b) {
+    return a + b; // ✅ No external modifications, always returns the same output
+}
+
+console.log(add(2, 3)); // 5
+console.log(add(2, 3)); // 5 (Same input, same output)
+```
+✅ The function does not modify anything outside itself.  
+
+---
+
+## 2. Impure Functions  
+An **impure function** does one or both of the following:  
+❌ **Modifies global state or external variables**  
+❌ **Has side effects** (changes DOM, logs to console, fetches data, etc.)  
+
+### Example of an Impure Function (Modifies External State)
+```javascript
+let count = 0;
+
+function increment() {
+    count++; // ❌ Modifies external state (global variable)
+    return count;
+}
+
+console.log(increment()); // 1
+console.log(increment()); // 2 (Different output for same function call)
+```
+❌ The function changes the global `count`, making it **impure**.  
+
+### Example of an Impure Function (Side Effects: Console Log & DOM Change)
+```javascript
+function updateTitle() {
+    document.title = "New Title"; // ❌ Side effect: Modifies webpage
+}
+
+updateTitle();
+```
+❌ This function is impure because it **modifies the DOM**.  
+
+### Example of an Impure Function (Fetching Data)
+```javascript
+function fetchData() {
+    fetch("https://api.example.com/data") // ❌ Side effect: Network request
+        .then(response => response.json())
+        .then(data => console.log(data));
+}
+
+fetchData(); // Calls an external API
+```
+❌ This function is impure because it depends on an external API call.
+
+---
+
+## How to Make an Impure Function Pure?  
+Instead of modifying external state, return a **new value**.  
+
+### ✅ Refactored to a Pure Function
+```javascript
+function incrementPure(count) {
+    return count + 1; // ✅ Returns a new value instead of modifying global variable
+}
+
+console.log(incrementPure(0)); // 1
+console.log(incrementPure(0)); // 1 (Same input, same output)
+```
+✅ Now the function is **pure** because it does not modify external state.  
+
+### ✅ Refactored Fetch Function (Pure Alternative)
+```javascript
+async function getData(url) {
+    const response = await fetch(url); // ✅ No side effects, takes input and returns output
+    return response.json();
+}
+
+getData("https://api.example.com/data").then(data => console.log(data));
+```
+✅ The function now takes an input (`url`) and returns output (`data`) without modifying external state directly.
+
+---
+
+## Summary Table  
+
+| Feature | Pure Function ✅ | Impure Function ❌ |
+|---------|-----------------|-----------------|
+| **Same Input, Same Output?** | ✅ Yes | ❌ No |
+| **Side Effects?** | ❌ No | ✅ Yes |
+| **Modifies External State?** | ❌ No | ✅ Yes |
+| **Example** | `Math.abs(-5) → 5` | `console.log("Hello")` |
+
 
