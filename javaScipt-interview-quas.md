@@ -1310,4 +1310,197 @@ person1.intro.call(person2);
 🚀 **Hope this helps! Let me know if you need more clarity. 😊**
 
 
+### Function Currying in JavaScript  
+Function currying is a technique in JavaScript where a function takes multiple arguments one at a time, returning a new function for each argument until all arguments are provided.  
+
+---
+
+### Why Use Currying?  
+✅ **Reusability** – Helps in reusing functions with preset arguments.  
+✅ **Avoids Repetition** – Allows breaking functions into smaller parts.  
+✅ **Functional Programming** – Encourages pure functions and avoids modifying global variables.  
+
+---
+
+### Example 1: Normal Function vs Curried Function
+#### Without Currying:
+```javascript
+function add(a, b, c) {
+    return a + b + c;
+}
+
+console.log(add(2, 3, 5)); // Output: 10
+```
+In this case, the `add` function takes all arguments at once.
+
+#### With Currying:
+```javascript
+function curryAdd(a) {
+    return function(b) {
+        return function(c) {
+            return a + b + c;
+        };
+    };
+}
+
+console.log(curryAdd(2)(3)(5)); // Output: 10
+```
+Here, each function takes one argument and returns another function until all arguments are provided.
+
+---
+
+### Example 2: Using Arrow Functions
+```javascript
+const multiply = a => b => c => a * b * c;
+
+console.log(multiply(2)(3)(4)); // Output: 24
+```
+
+---
+
+### Example 3: Partial Application with Currying
+```javascript
+function multiply(a) {
+    return function(b) {
+        return a * b;
+    };
+}
+
+const double = multiply(2); // Creates a new function with `a = 2`
+console.log(double(5)); // Output: 10
+console.log(double(10)); // Output: 20
+```
+Here, `double` is a partially applied function where `a = 2`, and we only need to pass the second argument.
+
+---
+
+### Conclusion  
+Currying transforms a function that takes multiple arguments into a series of functions that each take one argument. It enhances **code reusability** and supports **functional programming** principles. 🚀
+
+### What is a Constructor in JavaScript?
+
+A **constructor** in JavaScript is a special function used to create and initialize objects. It allows multiple objects to be created with the same properties and methods.
+
+---
+
+### 🔹 Key Points About Constructors:
+1. A constructor function starts with a **capital letter** by convention.
+2. It is called using the `new` keyword.
+3. Inside a constructor, `this` refers to the new object being created.
+4. It helps in object-oriented programming by creating multiple instances efficiently.
+
+---
+
+### ✅ Example of a Constructor Function:
+```javascript
+function Person(name, age) {
+    this.name = name;
+    this.age = age;
+
+    this.greet = function() {
+        console.log(`Hello, my name is ${this.name} and I am ${this.age} years old.`);
+    };
+}
+
+// Creating objects using the constructor
+let person1 = new Person("Karishma", 25);
+let person2 = new Person("Piyush", 22);
+
+person1.greet(); // Output: Hello, my name is Karishma and I am 25 years old.
+person2.greet(); // Output: Hello, my name is Piyush and I am 22 years old.
+```
+
+---
+
+### 🔹 Using `class` as a Constructor:
+In modern JavaScript, `class` provides a cleaner way to define constructors.
+
+```javascript
+class Car {
+    constructor(brand, model) {
+        this.brand = brand;
+        this.model = model;
+    }
+
+    display() {
+        console.log(`Car: ${this.brand} ${this.model}`);
+    }
+}
+
+let car1 = new Car("Toyota", "Corolla");
+car1.display(); // Output: Car: Toyota Corolla
+```
+
+---
+
+### 🔹 Why Use a Constructor?
+- **Reusability:** Instead of manually creating objects, constructors automate the process.
+- **Encapsulation:** Groups related data and behavior into objects.
+- **Scalability:** Easy to create multiple instances.
+
+### **Prototype and Prototypal Inheritance in JavaScript**  
+
+#### **1. What is Prototype?**  
+In JavaScript, a **prototype** is an object from which other objects inherit properties and methods. Every JavaScript function has a `prototype` property, which allows us to add shared methods and properties to objects created using constructors.
+
+#### **Example of Prototype**
+```javascript
+function Person(name, age) {
+    this.name = name;
+    this.age = age;
+}
+
+// Adding a method to the prototype
+Person.prototype.sayHello = function() {
+    console.log(`Hello, my name is ${this.name}`);
+};
+
+const user1 = new Person("Karishma", 25);
+user1.sayHello(); // Output: Hello, my name is Karishma
+```
+Here, `sayHello` is defined on `Person.prototype`, and all instances of `Person` can access it.
+
+---
+
+#### **2. What is Prototypal Inheritance?**  
+Prototypal inheritance allows one object to inherit properties and methods from another object. This is achieved by setting one object as the **prototype** of another.
+
+##### **Example of Prototypal Inheritance**
+```javascript
+function Animal(name) {
+    this.name = name;
+}
+
+Animal.prototype.eat = function() {
+    console.log(`${this.name} is eating`);
+};
+
+function Dog(name, breed) {
+    Animal.call(this, name); // Call parent constructor
+    this.breed = breed;
+}
+
+// Inherit prototype from Animal
+Dog.prototype = Object.create(Animal.prototype);
+Dog.prototype.constructor = Dog;
+
+// Adding a new method to Dog
+Dog.prototype.bark = function() {
+    console.log(`${this.name} says Woof!`);
+};
+
+const myDog = new Dog("Buddy", "Labrador");
+myDog.eat();  // ✅ Buddy is eating (inherited from Animal)
+myDog.bark(); // ✅ Buddy says Woof!
+```
+
+---
+
+#### **Key Points About Prototype and Prototypal Inheritance**
+- Every object in JavaScript has an internal `[[Prototype]]` property.
+- When you try to access a property or method on an object, JavaScript first looks at the object itself. If not found, it looks up the prototype chain.
+- Prototypal inheritance allows objects to inherit from other objects, promoting **code reuse**.
+
+Would you like more examples or explanations? 😊
+
 
