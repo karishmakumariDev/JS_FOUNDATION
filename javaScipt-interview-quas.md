@@ -1191,5 +1191,123 @@ console.log(sum); // 10
 
 Would you like more examples or explanations? 😊
 
+### **Understanding `call()`, `apply()`, and `bind()` in JavaScript**  
+
+In JavaScript, functions are first-class objects, which means they can be passed around like variables. However, sometimes we need to **explicitly set the value of `this`** when calling a function.  
+
+`call()`, `apply()`, and `bind()` are three methods that help us do this.
+
+---
+
+## **What is `this` in JavaScript?**  
+Before understanding `call()`, `apply()`, and `bind()`, we need to know how `this` works.  
+
+- **In a method (inside an object)** → `this` refers to the object.  
+- **In a function (not inside an object)** → `this` refers to the global object (`window` in browsers, `global` in Node.js).  
+- **In strict mode (`"use strict"`)** → `this` is `undefined` in a standalone function.  
+
+Now, let's explore how `call()`, `apply()`, and `bind()` help us **manipulate `this`.**
+
+---
+
+## **1️⃣ call() Method**  
+The `call()` method invokes a function with a specified `this` value.  
+
+### **Syntax:**  
+```javascript
+functionName.call(thisArg, arg1, arg2, ...);
+```
+
+### **Example 1: Using `call()`**
+```javascript
+let person = {
+    name: "Karishma"
+};
+
+function greet(age, city) {
+    console.log(`Hello, my name is ${this.name}. I am ${age} years old and from ${city}.`);
+}
+
+greet.call(person, 25, "Delhi");  
+// Output: Hello, my name is Karishma. I am 25 years old and from Delhi.
+```
+
+---
+
+## **2️⃣ apply() Method**  
+The `apply()` method is similar to `call()`, but it takes arguments as an **array**.  
+
+### **Syntax:**  
+```javascript
+functionName.apply(thisArg, [arg1, arg2, ...]);
+```
+
+### **Example 2: Using `apply()`**
+```javascript
+greet.apply(person, [25, "Delhi"]);  
+// Output: Hello, my name is Karishma. I am 25 years old and from Delhi.
+```
+
+✔ **When to use `apply()`?**  
+- When you have an array of arguments, `apply()` is easier than `call()`.  
+
+---
+
+## **3️⃣ bind() Method**  
+The `bind()` method **does not call the function immediately**. Instead, it returns a **new function** with `this` permanently set.
+
+### **Syntax:**  
+```javascript
+let newFunction = functionName.bind(thisArg, arg1, arg2, ...);
+```
+
+### **Example 3: Using `bind()`**
+```javascript
+let newGreet = greet.bind(person, 25, "Delhi");
+newGreet();  
+// Output: Hello, my name is Karishma. I am 25 years old and from Delhi.
+```
+
+✔ **When to use `bind()`?**  
+- When you want to store a function for later use with a specific `this` value.
+
+---
+
+## **Difference Between `call()`, `apply()`, and `bind()`**
+| Method  | When to Use? | How Arguments Are Passed | Executes Immediately? |
+|---------|------------|------------------|---------------------|
+| **call()** | When arguments are passed separately | As individual values | ✅ Yes |
+| **apply()** | When arguments are in an array | As an array | ✅ Yes |
+| **bind()** | When you want to create a new function with `this` bound | As individual values | ❌ No (returns a function) |
+
+---
+
+## **4️⃣ Real-World Example**
+### **Example 4: Borrowing Methods**
+```javascript
+let person1 = {
+    name: "Karishma",
+    intro: function() {
+        console.log(`Hi, my name is ${this.name}`);
+    }
+};
+
+let person2 = { name: "Piyush" };
+
+// Borrowing intro() method using call()
+person1.intro.call(person2);  
+// Output: Hi, my name is Piyush
+```
+✔ `call()` lets `person2` borrow `intro()` from `person1`.  
+
+---
+
+## **🎯 Conclusion**
+✔ **`call()` → Calls function with `this` and passes arguments separately.**  
+✔ **`apply()` → Calls function with `this` and passes arguments as an array.**  
+✔ **`bind()` → Returns a new function with `this` permanently set.**  
+
+🚀 **Hope this helps! Let me know if you need more clarity. 😊**
+
 
 
