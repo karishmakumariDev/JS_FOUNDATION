@@ -974,3 +974,222 @@ getData("https://api.example.com/data").then(data => console.log(data));
 | **Example** | `Math.abs(-5) → 5` | `console.log("Hello")` |
 
 
+# JavaScript `map()`, `filter()`, and `reduce()`
+
+## 1. `map()` Method
+The `map()` method is used to create a new array by applying a function to each element of the original array.
+
+### Example:
+```javascript
+const numbers = [1, 2, 3, 4, 5];
+const squaredNumbers = numbers.map(num => num * num);
+console.log(squaredNumbers); // Output: [1, 4, 9, 16, 25]
+```
+
+### Key Points:
+- Does **not** modify the original array.
+- Returns a **new array** with transformed elements.
+
+---
+
+## 2. `filter()` Method
+The `filter()` method creates a new array containing only elements that satisfy a specific condition.
+
+### Example:
+```javascript
+const numbers = [1, 2, 3, 4, 5];
+const evenNumbers = numbers.filter(num => num % 2 === 0);
+console.log(evenNumbers); // Output: [2, 4]
+```
+
+### Key Points:
+- Does **not** modify the original array.
+- Returns a **new array** with elements that pass the test condition.
+
+---
+
+## 3. `reduce()` Method
+The `reduce()` method is used to process an array and return a single accumulated value.
+
+### Example:
+```javascript
+const numbers = [1, 2, 3, 4, 5];
+const sum = numbers.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+console.log(sum); // Output: 15
+```
+
+### Key Points:
+- Returns a **single value** (e.g., sum, product, average, etc.).
+- Uses an **accumulator** to store the intermediate results.
+
+---
+
+## Summary Table
+| Method  | Purpose | Returns |
+|---------|---------|---------|
+| `map()` | Transforms elements | New array |
+| `filter()` | Filters elements based on condition | New array |
+| `reduce()` | Accumulates values to a single result | Single value |
+
+These three methods are commonly used in functional programming and can be combined for powerful data processing. 🚀
+
+# What is Prototype in JavaScript?
+In JavaScript, prototype is a built-in mechanism that allows objects to inherit properties and methods from other objects. Every JavaScript function (which is also an object) has a prototype property that is used to implement inheritance.
+
+## Key Points About Prototype:
+- Prototype is an object that exists in every function in JavaScript.
+- Objects in JavaScript inherit properties and methods from their prototype.
+- This enables prototype chaining, which means an object can inherit from another object, and so on.
+
+## Example 1: Understanding Prototype
+```javascript
+function Person(name) {
+    this.name = name;
+}
+
+Person.prototype.sayHello = function() {
+    console.log("Hello, my name is " + this.name);
+};
+
+let user1 = new Person("Karishma");
+user1.sayHello(); // Output: Hello, my name is Karishma
+```
+### Explanation:
+- We created a `Person` constructor function.
+- We added a method `sayHello` to `Person.prototype`.
+- Now, any instance of `Person` (like `user1`) can access `sayHello()` even though it was not directly defined inside the function.
+
+## Example 2: Prototype Chaining
+```javascript
+function Animal(name) {
+    this.name = name;
+}
+
+Animal.prototype.eat = function() {
+    console.log(this.name + " is eating.");
+};
+
+function Dog(name, breed) {
+    Animal.call(this, name);
+    this.breed = breed;
+}
+
+// Inherit from Animal
+Dog.prototype = Object.create(Animal.prototype);
+Dog.prototype.constructor = Dog;
+
+// Adding a new method
+Dog.prototype.bark = function() {
+    console.log(this.name + " says Woof!");
+};
+
+let dog1 = new Dog("Buddy", "Labrador");
+dog1.eat();  // ✅ Output: Buddy is eating. (Inherited from Animal)
+dog1.bark(); // ✅ Output: Buddy says Woof!
+```
+### Explanation:
+- `Dog.prototype = Object.create(Animal.prototype);`
+  - This makes `Dog` inherit from `Animal`, so `Dog` instances can use `eat()`.
+- **Prototype chaining:**
+  - `dog1.eat()` → First checks `Dog.prototype` (no `eat()` method) → Looks in `Animal.prototype` → Found `eat()`, so it executes.
+- **Adding `bark()` method** specifically for `Dog`.
+
+## Example 3: Modifying Built-in Prototypes
+You can modify prototypes of built-in objects like `Array`, `String`, etc.
+```javascript
+Array.prototype.sum = function() {
+    return this.reduce((acc, num) => acc + num, 0);
+};
+
+let numbers = [1, 2, 3, 4, 5];
+console.log(numbers.sum()); // Output: 15
+```
+⚠ **Caution**: Modifying built-in prototypes can cause conflicts with future JavaScript updates or libraries.
+
+## Prototype Chain Visualization
+When you create an object, JavaScript looks for properties/methods in the following order:
+1. In the object itself.
+2. In the object's **prototype**.
+3. In the prototype's **prototype** (if any).
+4. Continues up the chain until it reaches `Object.prototype`.
+
+```javascript
+let obj = {};
+console.log(obj.toString()); // Inherited from Object.prototype
+```
+
+## When to Use Prototype?
+- When you want **shared methods** for multiple objects without duplicating memory.
+- When implementing **inheritance** in JavaScript.
+- When extending the functionality of built-in objects (carefully).
+
+# What is a Polyfill in JavaScript?
+
+A **polyfill** is a piece of code (usually JavaScript) that provides modern functionality on older browsers that do not support it natively. It acts as a "fallback" to ensure that your code works consistently across different environments.
+
+## Why Use a Polyfill?
+Older browsers may not support new JavaScript features (like `map`, `filter`, `reduce`, `Promise`, etc.). A polyfill allows us to manually implement these features so they work on all browsers.
+
+## Examples of Polyfills
+
+### Polyfill for `map()`
+```javascript
+function mapPolyfill(arr, callback) {
+    let result = [];
+    for (let i = 0; i < arr.length; i++) {
+        result.push(callback(arr[i], i, arr));
+    }
+    return result;
+}
+
+// Usage
+let numbers = [1, 2, 3];
+let doubled = mapPolyfill(numbers, num => num * 2);
+console.log(doubled); // [2, 4, 6]
+```
+
+### Polyfill for `filter()`
+```javascript
+function filterPolyfill(arr, callback) {
+    let result = [];
+    for (let i = 0; i < arr.length; i++) {
+        if (callback(arr[i], i, arr)) {
+            result.push(arr[i]);
+        }
+    }
+    return result;
+}
+
+// Usage
+let nums = [1, 2, 3, 4, 5];
+let evenNumbers = filterPolyfill(nums, num => num % 2 === 0);
+console.log(evenNumbers); // [2, 4]
+```
+
+### Polyfill for `reduce()`
+```javascript
+function reducePolyfill(arr, callback, initialValue) {
+    let accumulator = initialValue === undefined ? arr[0] : initialValue;
+    let startIndex = initialValue === undefined ? 1 : 0;
+
+    for (let i = startIndex; i < arr.length; i++) {
+        accumulator = callback(accumulator, arr[i], i, arr);
+    }
+    return accumulator;
+}
+
+// Usage
+let sum = reducePolyfill([1, 2, 3, 4], (acc, num) => acc + num, 0);
+console.log(sum); // 10
+```
+
+## Key Takeaways
+- **Polyfills** provide missing functionalities in older browsers.
+- They allow modern JavaScript features to be used in all environments.
+- They are implemented using **basic JavaScript features**.
+- Common polyfills include `map`, `filter`, `reduce`, `Promise`, etc.
+
+Would you like more examples or explanations? 😊
+
+
+
