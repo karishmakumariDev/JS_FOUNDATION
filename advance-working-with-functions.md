@@ -1962,3 +1962,377 @@ With an arrow function, `this` is automatically taken from the surrounding conte
 
 Use arrow functions when you need to keep `this` from the surrounding scope!
 
+## **What is Event Loop in JavaScript?**  
+
+The **Event Loop** is a mechanism in JavaScript that allows it to handle **asynchronous operations** despite being **single-threaded**. It ensures that non-blocking tasks (like API calls, timers, and DOM events) are executed properly while the main thread continues running other code.  
+
+---
+
+### **💩 How the Event Loop Works?**  
+JavaScript execution is divided into different parts:  
+
+1️⃣ **Call Stack** → Runs synchronous (blocking) code.  
+2️⃣ **Web APIs** → Handles asynchronous tasks like `setTimeout`, `fetch`, etc.  
+3️⃣ **Callback Queue (Task Queue)** → Stores callbacks waiting to be executed.  
+4️⃣ **Microtask Queue** → Handles promises and `process.nextTick()` (executed before callback queue).  
+5️⃣ **Event Loop** → Continuously checks if the **call stack** is empty and pushes tasks from the **queues**.  
+
+---
+
+### **💩 Event Loop Example**  
+
+```javascript
+console.log("Start");
+
+setTimeout(() => {
+    console.log("Inside setTimeout");
+}, 0);
+
+Promise.resolve().then(() => {
+    console.log("Inside Promise");
+});
+
+console.log("End");
+```
+
+#### **🟢 Output:**  
+```
+Start  
+End  
+Inside Promise  
+Inside setTimeout  
+```
+
+#### **🔍 Explanation:**  
+1️⃣ `"Start"` is logged (synchronous).  
+2️⃣ `setTimeout` is called and sent to **Web APIs**.  
+3️⃣ A promise is created and its `.then()` callback goes to the **Microtask Queue**.  
+4️⃣ `"End"` is logged (synchronous).  
+5️⃣ The event loop first checks the **Microtask Queue** → `"Inside Promise"` is logged.  
+6️⃣ Then, the **Callback Queue** executes `setTimeout` → `"Inside setTimeout"` is logged.  
+
+---
+
+### **💩 Microtask Queue vs Callback Queue**  
+👉 **Microtask Queue (Higher Priority)** → Promises, `MutationObserver`, `queueMicrotask()`.  
+👉 **Callback Queue (Lower Priority)** → `setTimeout`, `setInterval`, `setImmediate`.  
+
+💡 **Microtasks always execute before callbacks** in the event loop cycle.  
+
+---
+
+### **💩 Why is the Event Loop Important?**  
+💚 Allows JavaScript to be **non-blocking** and handle multiple operations efficiently.  
+💚 Ensures **smooth UI rendering** by handling asynchronous tasks in the background.  
+💚 Helps avoid **performance issues** by prioritizing microtasks over regular callbacks.  
+
+---
+
+### **Would you like a visual diagram of the event loop? 🚀**
+
+## **What is a Callback in JavaScript?**  
+
+A **callback** is a function that is passed as an argument to another function and is executed later, usually after an asynchronous operation completes.
+
+---
+
+### **🔹 Example of a Callback Function**
+```javascript
+function greet(name, callback) {
+    console.log("Hello, " + name);
+    callback();
+}
+
+function sayGoodbye() {
+    console.log("Goodbye!");
+}
+
+greet("Karishma", sayGoodbye);
+```
+#### **🟢 Output:**
+```
+Hello, Karishma
+Goodbye!
+```
+#### **🔍 Explanation:**
+- `sayGoodbye` is passed as a **callback** to `greet`.
+- `greet` executes `console.log("Hello, " + name)`.
+- After that, it **calls** the `callback` function (`sayGoodbye`), which prints `"Goodbye!"`.
+
+---
+
+### **🔹 Callbacks in Asynchronous Operations**  
+Callbacks are commonly used in asynchronous operations like **setTimeout, API calls, and event handling**.
+
+```javascript
+console.log("Start");
+
+setTimeout(() => {
+    console.log("Inside setTimeout");
+}, 2000);
+
+console.log("End");
+```
+#### **🟢 Output:**  
+```
+Start  
+End  
+(Waits 2 seconds)  
+Inside setTimeout  
+```
+#### **🔍 Explanation:**
+- `"Start"` and `"End"` are logged first.
+- `setTimeout` is **asynchronous**, so it delays execution and doesn't block the code.
+- After **2 seconds**, the callback function inside `setTimeout` executes.
+
+---
+
+### **🔹 Callback Hell (Nested Callbacks)**  
+When multiple callbacks are nested inside each other, it creates **callback hell**, making the code difficult to read and maintain.
+
+```javascript
+setTimeout(() => {
+    console.log("Task 1 completed");
+    setTimeout(() => {
+        console.log("Task 2 completed");
+        setTimeout(() => {
+            console.log("Task 3 completed");
+        }, 1000);
+    }, 1000);
+}, 1000);
+```
+#### **🟢 Output:**  
+```
+Task 1 completed  
+Task 2 completed  
+Task 3 completed  
+```
+💡 **Solution:** Use **Promises** or **Async/Await** instead of deeply nested callbacks.
+# **Avoiding Callback Hell: Use Promises and Async/Await**
+
+Callback hell occurs when multiple nested callbacks make code difficult to read and maintain. To avoid this, JavaScript provides **Promises** and **Async/Await**, which improve readability and error handling.
+
+---
+
+## **1️⃣ Using Promises Instead of Callbacks**
+### **👎 Example of Callback Hell:**
+```javascript
+function fetchData(callback) {
+    setTimeout(() => {
+        console.log("Data fetched");
+        callback();
+    }, 1000);
+}
+
+fetchData(() => {
+    fetchData(() => {
+        fetchData(() => {
+            console.log("Too many nested callbacks!");
+        });
+    });
+});
+```
+
+### **✅ Using Promises to Improve Readability:**
+```javascript
+function fetchData() {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            console.log("Data fetched");
+            resolve();
+        }, 1000);
+    });
+}
+
+fetchData()
+    .then(() => fetchData())
+    .then(() => fetchData())
+    .then(() => console.log("No more callback hell!"));
+```
+
+---
+
+## **2️⃣ Using Async/Await for Even Better Readability**
+### **✅ Converting Promises to Async/Await:**
+```javascript
+async function fetchDataSequentially() {
+    await fetchData();
+    await fetchData();
+    await fetchData();
+    console.log("Clean and readable!");
+}
+
+fetchDataSequentially();
+```
+
+### **🔍 Explanation:**
+1. `fetchData` returns a **Promise**.
+2. `await` pauses execution until the promise resolves.
+3. The function executes in a clean, **top-down manner** without nesting.
+
+---
+
+## **💡 Benefits of Promises & Async/Await**
+✅ **Improv# **Avoiding Callback Hell: Use Promises and Async/Await**
+
+Callback hell occurs when multiple nested callbacks make code difficult to read and maintain. To avoid this, JavaScript provides **Promises** and **Async/Await**, which improve readability and error handling.
+
+---
+
+## **1️⃣ Using Promises Instead of Callbacks**
+### **👎 Example of Callback Hell:**
+```javascript
+function fetchData(callback) {
+    setTimeout(() => {
+        console.log("Data fetched");
+        callback();
+    }, 1000);
+}
+
+fetchData(() => {
+    fetchData(() => {
+        fetchData(() => {
+            console.log("Too many nested callbacks!");
+        });
+    });
+});
+```
+
+### **✅ Using Promises to Improve Readability:**
+```javascript
+function fetchData() {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            console.log("Data fetched");
+            resolve();
+        }, 1000);
+    });
+}
+
+fetchData()
+    .then(() => fetchData())
+    .then(() => fetchData())
+    .then(() => console.log("No more callback hell!"));
+```
+
+---
+
+## **2️⃣ Using Async/Await for Even Better Readability**
+### **✅ Converting Promises to Async/Await:**
+```javascript
+async function fetchDataSequentially() {
+    await fetchData();
+    await fetchData();
+    await fetchData();
+    console.log("Clean and readable!");
+}
+
+fetchDataSequentially();
+```
+
+### **🔍 Explanation:**
+1. `fetchData` returns a **Promise**.
+2. `await` pauses execution until the promise resolves.
+3. The function executes in a clean, **top-down manner** without nesting.
+
+---
+
+## **💡 Benefits of Promises & Async/Await**
+✅ **Improves readability** – No more deeply nested callbacks.  
+✅ **Better error handling** – Use `.catch()` for promises or `try/catch` for async/await.  
+✅ **Easier debugging** – Stack traces are clearer.
+
+---
+
+Would you like more examples or explanations? 😊
+
+es readability** – No more deeply nested callbacks.  
+✅ **Better error handling** – Use `.catch()` for promises or `try/catch` for async/await.  
+✅ **Easier debugging** – Stack traces are clearer.
+
+---
+
+Would you like more examples or explanations? 😊
+
+
+## 1️⃣ What is a Promise?
+A **Promise** is an object that represents the eventual completion (or failure) of an asynchronous operation.
+
+### 👐 States of a Promise:
+A promise can be in one of these three states:
+1. **Pending** → The operation is still in progress.
+2. **Fulfilled** → The operation was successful (resolved).
+3. **Rejected** → The operation failed.
+
+### 📌 Example of a Promise:
+```javascript
+let myPromise = new Promise((resolve, reject) => {
+    setTimeout(() => {
+        let success = true; // Change this to false to test rejection
+        if (success) {
+            resolve("✅ Promise Resolved!");
+        } else {
+            reject("❌ Promise Rejected!");
+        }
+    }, 2000);
+});
+
+// Handling the Promise
+myPromise
+    .then(response => console.log(response))  // Runs when resolved
+    .catch(error => console.log(error));      // Runs when rejected
+```
+### 👐 Expected Output (after 2 seconds):
+```
+✅ Promise Resolved!
+```
+
+---
+
+## 2️⃣ What is Async/Await?
+`async` and `await` are used to handle promises in a more readable and synchronous-like manner.
+
+### 👐 Async Function:
+A function declared with `async` always returns a **Promise**.
+```javascript
+async function myFunction() {
+    return "Hello, Async!";
+}
+
+myFunction().then(console.log); // Output: Hello, Async!
+```
+
+### 👐 Await Keyword:
+The `await` keyword **pauses** the execution of an `async` function until a Promise is resolved.
+
+### 📌 Example of Async/Await:
+```javascript
+async function fetchData() {
+    try {
+        let response = await myPromise;  // Waits for promise to resolve
+        console.log(response);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+fetchData();
+```
+### 👐 Expected Output (after 2 seconds):
+```
+✅ Promise Resolved!
+```
+
+---
+
+## 3️⃣ Key Differences Between Promises and Async/Await
+| Feature      | Promises | Async/Await |
+|-------------|---------|-------------|
+| Syntax      | Uses `.then()` and `.catch()` | Uses `await` inside an `async` function |
+| Readability | Can get complex with chaining | More readable and cleaner |
+| Error Handling | Uses `.catch()` | Uses `try...catch` |
+
+👉 **Conclusion:**
+- Use **Promises** when handling multiple asynchronous operations.
+- Use **Async/Await** for **better readability and cleaner code**.
+
