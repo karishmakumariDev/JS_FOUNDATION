@@ -1503,4 +1503,197 @@ myDog.bark(); // ✅ Buddy says Woof!
 
 Would you like more examples or explanations? 😊
 
+# Inheritance Using Class in JavaScript
+
+## What is Inheritance?
+Inheritance allows a class (child class) to acquire properties and methods from another class (parent class). In JavaScript, the `extends` keyword is used to achieve inheritance.
+
+---
+
+## 🔹 **Example 1: Basic Inheritance**
+```javascript
+// Parent Class (Super Class)
+class Animal {
+    constructor(name) {
+        this.name = name;
+    }
+
+    eat() {
+        console.log(`${this.name} is eating.`);
+    }
+}
+
+// Child Class (Sub Class)
+class Dog extends Animal {
+    bark() {
+        console.log(`${this.name} says Woof!`);
+    }
+}
+
+// Create an object of Dog class
+let myDog = new Dog("Buddy");
+
+myDog.eat();  // ✅ Output: Buddy is eating. (Inherited from Animal)
+myDog.bark(); // ✅ Output: Buddy says Woof!
+```
+✅ **Explanation**:
+- `Dog` class inherits from `Animal` using the `extends` keyword.
+- `Dog` automatically gets the `eat()` method from `Animal`.
+
+---
+
+## 🔹 **Example 2: Overriding a Method**
+If a child class wants to change a method from the parent class, it can **override** it.
+
+```javascript
+class Animal {
+    constructor(name) {
+        this.name = name;
+    }
+
+    makeSound() {
+        console.log("Some generic sound...");
+    }
+}
+
+class Cat extends Animal {
+    makeSound() {
+        console.log(`${this.name} says Meow!`);
+    }
+}
+
+let myCat = new Cat("Whiskers");
+myCat.makeSound(); // ✅ Output: Whiskers says Meow!
+```
+✅ **Explanation**:
+- The `Cat` class overrides the `makeSound()` method.
+- Instead of calling `Animal`'s method, `Cat`'s method executes.
+
+---
+
+## 🔹 **Example 3: Using `super` in Constructor**
+If the child class has additional properties, the `super()` function is used to call the parent class constructor.
+
+```javascript
+class Animal {
+    constructor(name) {
+        this.name = name;
+    }
+}
+
+class Bird extends Animal {
+    constructor(name, canFly) {
+        super(name); // ✅ Calls parent class constructor
+        this.canFly = canFly;
+    }
+
+    showAbility() {
+        console.log(`${this.name} can ${this.canFly ? "fly" : "not fly"}.`);
+    }
+}
+
+let myBird = new Bird("Sparrow", true);
+myBird.showAbility(); // ✅ Output: Sparrow can fly.
+```
+✅ **Explanation**:
+- `super(name)` calls the constructor of `Animal` class.
+- The `Bird` class successfully inherits the `name` property from `Animal`.
+
+---
+
+## 🔹 **Conclusion**
+- The `extends` keyword is used for inheritance.
+- **Parent Class (Super Class)** → The class that is inherited from.
+- **Child Class (Sub Class)** → The class that inherits.
+- `super()` is used to call the parent class constructor.
+- A child class can **override** parent methods.
+
+---
+
+📌 **Inheritance helps in code reusability and is an important concept in Object-Oriented Programming (OOP).**
+
+Let me know if you need more details or examples! 😊
+
+# Understanding setTimeout and setInterval with Output
+
+## 1. setTimeout
+
+### Definition:
+`setTimeout` executes a function once after a specified time.
+
+### Example:
+```javascript
+console.log("Before setTimeout");
+
+setTimeout(() => {
+    console.log("Executed after 3 seconds");
+}, 3000);
+
+console.log("After setTimeout");
+```
+
+### Output:
+```
+Before setTimeout
+After setTimeout
+(Waits 3 seconds)
+Executed after 3 seconds
+```
+
+### Explanation:
+1. "Before setTimeout" is printed first.
+2. `setTimeout` schedules the function to run after 3 seconds but does not pause execution.
+3. "After setTimeout" is printed immediately after scheduling.
+4. After 3 seconds, "Executed after 3 seconds" is printed.
+
+---
+
+## 2. setInterval
+
+### Definition:
+`setInterval` repeatedly executes a function at fixed time intervals.
+
+### Example:
+```javascript
+let count = 1;
+
+console.log("Before setInterval");
+
+let intervalId = setInterval(() => {
+    console.log("Interval Execution:", count);
+    count++;
+
+    if (count > 5) {
+        clearInterval(intervalId); // Stops execution after 5 times
+        console.log("Interval Stopped");
+    }
+}, 1000);
+
+console.log("After setInterval");
+```
+
+### Output:
+```
+Before setInterval
+After setInterval
+(Waits 1 second)
+Interval Execution: 1
+(Waits 1 second)
+Interval Execution: 2
+(Waits 1 second)
+Interval Execution: 3
+(Waits 1 second)
+Interval Execution: 4
+(Waits 1 second)
+Interval Execution: 5
+Interval Stopped
+```
+
+### Explanation:
+1. "Before setInterval" is printed first.
+2. `setInterval` starts and schedules a function to run every 1 second.
+3. "After setInterval" is printed immediately, without waiting.
+4. "Interval Execution: 1" is printed after 1 second, then "Interval Execution: 2", and so on.
+5. After 5 executions, `clearInterval(intervalId)` stops further execution, and "Interval Stopped" is printed.
+
 
