@@ -1696,4 +1696,56 @@ Interval Stopped
 4. "Interval Execution: 1" is printed after 1 second, then "Interval Execution: 2", and so on.
 5. After 5 executions, `clearInterval(intervalId)` stops further execution, and "Interval Stopped" is printed.
 
+## Polyfill of setInterval
+
+The `setInterval` function repeatedly executes a given function at a specified interval. To create a polyfill for `setInterval`, we can use `setTimeout` recursively.
+
+### ✅ Custom `setInterval` Implementation
+
+```javascript
+function mySetInterval(callback, delay) {
+    let intervalId = { active: true }; // Object to track interval state
+
+    function repeat() {
+        if (!intervalId.active) return; // Stop if interval is cleared
+        callback(); // Execute the callback function
+        setTimeout(repeat, delay); // Schedule next execution
+    }
+
+    setTimeout(repeat, delay); // Start the first execution
+    return intervalId;
+}
+
+// ✅ Example Usage
+let count = 0;
+let interval = mySetInterval(() => {
+    console.log("Count:", count++);
+    if (count > 5) myClearInterval(interval); // Stop after 5 executions
+}, 1000);
+
+// ✅ Polyfill for clearInterval
+function myClearInterval(intervalId) {
+    intervalId.active = false; // Set active flag to false to stop execution
+}
+```
+
+### 🔍 Explanation:
+
+- We create an object `intervalId` to track whether the interval should continue.
+- The `repeat` function calls the callback and then schedules itself using `setTimeout`.
+- If `myClearInterval` is called, it sets `intervalId.active = false`, stopping further execution.
+
+### ✅ Expected Output:
+
+```bash
+Count: 0
+Count: 1
+Count: 2
+Count: 3
+Count: 4
+Count: 5
+```
+
+This behaves just like `setInterval`, but is built using `setTimeout`. 🚀
+
 
