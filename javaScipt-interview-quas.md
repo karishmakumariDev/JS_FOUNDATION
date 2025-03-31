@@ -1805,5 +1805,176 @@ Inside setTimeout
 
 ---
 
+# **What is a Promise in JavaScript?**
+
+A **Promise** in JavaScript is an object that represents the eventual completion (or failure) of an asynchronous operation. It helps manage asynchronous code execution and avoids callback hell.
+
+---
+
+## **✅ Promise States**
+A JavaScript Promise can be in one of the following states:
+
+1. **Pending** → Initial state; neither fulfilled nor rejected.
+2. **Fulfilled** → The operation was completed successfully.
+3. **Rejected** → The operation failed.
+
+### **🔹 Example of a Basic Promise:**
+
+```javascript
+let myPromise = new Promise((resolve, reject) => {
+    let success = true; // Change to false to test rejection
+    if (success) {
+        resolve("Promise resolved successfully!");
+    } else {
+        reject("Promise was rejected!");
+    }
+});
+
+myPromise
+    .then(response => console.log(response)) // Runs if resolved
+    .catch(error => console.log(error)); // Runs if rejected
+```
+
+**Output (if success = true):**
+```
+Promise resolved successfully!
+```
+
+**Output (if success = false):**
+```
+Promise was rejected!
+```
+
+---
+
+## **✅ Promise Methods**
+
+### **1️⃣ then()** → Runs when the promise is resolved (fulfilled).
+
+```javascript
+let p1 = new Promise((resolve) => {
+    setTimeout(() => resolve("Data received!"), 2000);
+});
+
+p1.then((message) => console.log(message));
+```
+
+**Output:**
+```
+(Data received! after 2 seconds)
+```
+
+---
+
+### **2️⃣ catch()** → Runs when the promise is rejected.
+
+```javascript
+let p2 = new Promise((resolve, reject) => {
+    setTimeout(() => reject("Error occurred!"), 2000);
+});
+
+p2.catch((error) => console.log(error));
+```
+
+**Output:**
+```
+Error occurred! (after 2 seconds)
+```
+
+---
+
+### **3️⃣ finally()** → Runs after the promise is either resolved or rejected.
+
+```javascript
+let p3 = new Promise((resolve, reject) => {
+    setTimeout(() => resolve("Success!"), 2000);
+});
+
+p3.finally(() => console.log("Execution completed!"));
+```
+
+**Output:**
+```
+Execution completed! (after 2 seconds)
+Success!
+```
+
+---
+
+## **✅ Types of Promises**
+
+### **1️⃣ Promise.all()** → Resolves when all promises in an array resolve; rejects if any one fails.
+
+```javascript
+let p1 = Promise.resolve("First success");
+let p2 = Promise.resolve("Second success");
+let p3 = Promise.resolve("Third success");
+
+Promise.all([p1, p2, p3]).then(values => console.log(values));
+```
+
+**Output:**
+```
+["First success", "Second success", "Third success"]
+```
+
+---
+
+### **2️⃣ Promise.race()** → Resolves or rejects as soon as the first promise settles.
+
+```javascript
+let p4 = new Promise(resolve => setTimeout(() => resolve("First Done"), 2000));
+let p5 = new Promise(resolve => setTimeout(() => resolve("Second Done"), 1000));
+
+Promise.race([p4, p5]).then(result => console.log(result));
+```
+
+**Output:**
+```
+Second Done (since p5 completes first)
+```
+
+---
+
+### **3️⃣ Promise.allSettled()** → Returns an array of all promises' results (fulfilled or rejected).
+
+```javascript
+let p6 = Promise.resolve("Success");
+let p7 = Promise.reject("Failed");
+
+Promise.allSettled([p6, p7]).then(results => console.log(results));
+```
+
+**Output:**
+```
+[{status: "fulfilled", value: "Success"}, {status: "rejected", reason: "Failed"}]
+```
+
+---
+
+### **4️⃣ Promise.any()** → Resolves as soon as one promise is fulfilled.
+
+```javascript
+let p8 = Promise.reject("Error 1");
+let p9 = Promise.resolve("Success");
+let p10 = Promise.reject("Error 2");
+
+Promise.any([p8, p9, p10]).then(result => console.log(result));
+```
+
+**Output:**
+```
+Success
+```
+
+---
+
+## **💡 Conclusion:**
+✔ **Promises** make asynchronous programming easier in JavaScript.
+✔ The **.then()**, **.catch()**, and **.finally()** methods help handle success and failure scenarios.
+✔ Using methods like **Promise.all(), Promise.race(), Promise.allSettled(), and Promise.any()** enables better control over multiple asynchronous tasks.
+
+🚀 **Would you like examples using `async/await` with promises?**
+
 
 
