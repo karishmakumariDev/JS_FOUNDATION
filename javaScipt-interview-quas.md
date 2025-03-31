@@ -1747,5 +1747,63 @@ Count: 5
 ```
 
 This behaves just like `setInterval`, but is built using `setTimeout`. 🚀
+## **What is the Microtask Queue in JavaScript?**
+
+The **Microtask Queue** is a special queue in JavaScript that holds microtasks, which are executed immediately after the current synchronous code finishes and before any macrotasks (callback queue tasks like `setTimeout`) run.
+
+---
+
+### **💡 How Microtasks Work?**
+Microtasks include:
+✅ **Promises** (`.then()`, `.catch()`, `.finally()`)  
+✅ **MutationObserver** (used to detect DOM changes)  
+✅ **queueMicrotask()** (a built-in way to manually add a microtask)  
+✅ **process.nextTick()** (Node.js only)  
+
+Microtasks are executed **before** macrotasks (callback queue tasks like `setTimeout`) to ensure priority execution.
+
+---
+
+### **💡 Example of Microtask Queue vs Callback Queue**
+
+```javascript
+console.log("Start");
+
+setTimeout(() => {
+    console.log("Inside setTimeout");
+}, 0);
+
+Promise.resolve().then(() => {
+    console.log("Inside Promise");
+});
+
+console.log("End");
+```
+
+#### **🟢 Output:**  
+```
+Start  
+End  
+Inside Promise  
+Inside setTimeout  
+```
+
+#### **🔍 Explanation (Event Loop Execution Order):**
+1️⃣ "Start" is printed (**synchronous**).  
+2️⃣ `setTimeout()` is added to the **Callback Queue**.  
+3️⃣ `Promise.resolve().then()` is added to the **Microtask Queue**.  
+4️⃣ "End" is printed (**synchronous**).  
+5️⃣ **Microtask Queue executes first** → "Inside Promise" is printed.  
+6️⃣ Then, the **Callback Queue executes** → "Inside setTimeout" is printed.  
+
+---
+
+### **💡 Key Takeaways:**
+✅ **Microtasks run before macrotasks** (higher priority).  
+✅ **Promises execute their `.then()` callbacks** in the microtask queue.  
+✅ The **event loop ensures** that the microtask queue is emptied before processing the next macrotask.  
+
+---
+
 
 
