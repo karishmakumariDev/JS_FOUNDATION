@@ -2054,5 +2054,86 @@ console.log(obj2.address.city); // "Mumbai"
 ✔ **Deep Copy ensures complete separation** but is slower.  
 ✔ **Use Lodash’s `_.cloneDeep()` for complex cases.** 🚀
 
+# Flatten Object in JavaScript
 
+Flattening an object in JavaScript means converting an object with nested properties into a single-level object with key-value pairs. The nested keys are concatenated into a single key, typically by using some delimiter like a dot (`.`) or underscore (`_`).
+
+### Flattening an Object in JavaScript
+```javascript
+function flattenObject(obj, parent = '', result = {}) {
+  for (let key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      const prop = obj[key];
+      const newKey = parent ? `${parent}.${key}` : key;
+
+      // If the value is an object, recurse into it
+      if (typeof prop === 'object' && prop !== null && !Array.isArray(prop)) {
+        flattenObject(prop, newKey, result);
+      } else {
+        // Otherwise, add it to the result
+        result[newKey] = prop;
+      }
+    }
+  }
+  return result;
+}
+
+const nestedObj = {
+  name: 'Karishma',
+  address: {
+    city: 'Delhi',
+    postal: {
+      code: '110001',
+      area: 'North'
+    }
+  },
+  age: 25
+};
+
+const flatObj = flattenObject(nestedObj);
+console.log(flatObj);
+```
+
+### Output:
+```javascript
+{
+  name: 'Karishma',
+  'address.city': 'Delhi',
+  'address.postal.code': '110001',
+  'address.postal.area': 'North',
+  age: 25
+}
+```
+
+### Explanation:
+- The `flattenObject` function recursively traverses the nested object.
+- The `parent` parameter keeps track of the current key path (e.g., `'address.city'`).
+- If the value is an object (and not an array), the function recurses to flatten that object.
+- When it reaches a primitive value (like a string, number, etc.), it adds the value to the `result` object with the combined key (e.g., `'address.city': 'Delhi'`).
+
+### For Arrays:
+If the nested object contains arrays, you might want to decide whether to handle arrays differently or flatten them as well. This approach is not designed to flatten arrays, but it can be modified to suit that need.
+
+### Alternative with Libraries:
+You can also use libraries like **Lodash** to flatten objects:
+```javascript
+const _ = require('lodash');
+
+const nestedObj = {
+  name: 'Karishma',
+  address: {
+    city: 'Delhi',
+    postal: {
+      code: '110001',
+      area: 'North'
+    }
+  },
+  age: 25
+};
+
+const flatObj = _.flattenDeep(nestedObj);
+console.log(flatObj);
+```
+
+Let me know if you need further customization or help with something specific!
 
