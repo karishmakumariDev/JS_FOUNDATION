@@ -2,6 +2,9 @@
 
 A **JavaScript Runtime Environment (JS Runtime)** is the environment where JavaScript code executes. It provides the necessary tools, APIs, and features required to run JavaScript programs outside or inside a browser.
 
+How JavaScript Runtime Works? (Execution Flow) 🚀
+JavaScript is a single-threaded language, meaning it executes one operation at a time. However, with the help of the JS Runtime Environment, it efficiently handles asynchronous operations without blocking the main thread.
+
 ## Components of JavaScript Runtime Environment
 
 A JS runtime typically consists of the following components:
