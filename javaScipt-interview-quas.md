@@ -28,6 +28,10 @@ A JS runtime typically consists of the following components:
 ### 4️⃣ Callback Queue & Event Loop
 - **Callback Queue:** Stores asynchronous tasks (like `setTimeout()`, `fetch()`).
 - **Event Loop:** Manages execution by checking the **Call Stack** and **Callback Queue**, ensuring non-blocking execution.
+- The heart of JS Runtime.
+Continuously checks if the Call Stack is empty and pushes tasks from Microtask & Callback Queues.
+
+
 
 ## Types of JavaScript Runtimes
 
