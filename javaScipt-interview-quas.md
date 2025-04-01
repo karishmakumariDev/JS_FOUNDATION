@@ -1983,5 +1983,76 @@ Success
 
 🚀 **Would you like examples using `async/await` with promises?**
 
+# Shallow Copy vs Deep Copy in JavaScript
+
+## What is a Shallow Copy?
+A **shallow copy** creates a new object or array, but the nested objects/arrays are still referenced from the original.
+
+- If you modify a nested object/array in the copied variable, the original is also affected.
+
+### Example: Shallow Copy in Arrays
+```javascript
+let arr1 = [1, 2, [3, 4]];
+let arr2 = [...arr1]; // Shallow copy
+
+arr2[2][0] = 100;
+
+console.log(arr1); // [1, 2, [100, 4]] (Original modified 😱)
+console.log(arr2); // [1, 2, [100, 4]]
+```
+
+### Example: Shallow Copy in Objects
+```javascript
+let obj1 = { name: "Karishma", address: { city: "Delhi" } };
+let obj2 = { ...obj1 }; // Shallow copy
+
+obj2.address.city = "Mumbai";
+
+console.log(obj1.address.city); // "Mumbai" (Original modified 😱)
+console.log(obj2.address.city); // "Mumbai"
+```
+
+## What is a Deep Copy?
+A **deep copy** creates a completely independent copy, including all nested objects/arrays.
+
+- Modifying the copied variable does **not** affect the original object.
+
+### Example: Deep Copy in Arrays
+```javascript
+let arr1 = [1, 2, [3, 4]];
+let arr2 = JSON.parse(JSON.stringify(arr1)); // Deep copy
+
+arr2[2][0] = 100;
+
+console.log(arr1); // [1, 2, [3, 4]] (Original unchanged ✅)
+console.log(arr2); // [1, 2, [100, 4]]
+```
+
+### Example: Deep Copy in Objects
+```javascript
+let obj1 = { name: "Karishma", address: { city: "Delhi" } };
+let obj2 = JSON.parse(JSON.stringify(obj1)); // Deep copy
+
+obj2.address.city = "Mumbai";
+
+console.log(obj1.address.city); // "Delhi" (Original unchanged ✅)
+console.log(obj2.address.city); // "Mumbai"
+```
+
+## Summary: Shallow Copy vs Deep Copy
+| Feature | Shallow Copy | Deep Copy |
+|---------|-------------|-----------|
+| **Definition** | Copies top-level elements only | Creates a completely independent copy |
+| **Nested Objects/Arrays** | Still reference the original | Fully cloned |
+| **Impact on Original** | Changes in nested values affect the original | Changes do NOT affect the original |
+| **Methods (Arrays)** | `[...arr]`, `.slice()`, `.concat()` | `JSON.parse(JSON.stringify(arr))`, `_.cloneDeep(arr)` |
+| **Methods (Objects)** | `{...obj}`, `Object.assign({}, obj)` | `JSON.parse(JSON.stringify(obj))`, `_.cloneDeep(obj)` |
+| **Best Use Case** | When no nested objects exist | When objects have nested data |
+
+## Conclusion
+✔ **Shallow Copy is faster** but does not fully copy nested structures.  
+✔ **Deep Copy ensures complete separation** but is slower.  
+✔ **Use Lodash’s `_.cloneDeep()` for complex cases.** 🚀
+
 
 
