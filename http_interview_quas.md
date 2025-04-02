@@ -1,7 +1,7 @@
 # What is HTTP?
 
 ## Introduction
-**HTTP (HyperText Transfer Protocol)** is a communication protocol used for transferring data between a web browser (client) and a web server. It is the foundation of the World Wide Web, allowing users to access websites and web applications.
+HTTP (HyperText Transfer Protocol) is the protocol used for communication between web browsers and web servers. It allows data to be transferred over the internet, enabling websites to load and function.
 
 ## How HTTP Works?
 1. **Client Request**: When you enter a URL in your browser, it sends an HTTP request to the web server.  
