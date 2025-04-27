@@ -14,10 +14,4 @@ ReactJS is a JavaScript library used to build reusable components for the view l
 - **React Router**: React Router enables navigation in a React application. It allows you to define different routes for different views in a single-page application (SPA).
 """
 
-# Writing content to a .md file
-file_path_2 = '/mnt/data/what_is_reactjs.md'
-with open(file_path_2, 'w') as file:
-    file.write(content_2)
-
-file_path_2
 
