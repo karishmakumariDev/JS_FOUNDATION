@@ -163,28 +163,3 @@ class HelloWorldClass extends React.Component {
   }
 }
 
-## Key Differences between Props and State
-
-### 1. **Definition**
-- **Props**: Used to pass data from parent to child.
-- **State**: Used to store local data within a component.
-
-### 2. **Mutability**
-- **Props**: Immutable (cannot be changed by the component).
-- **State**: Mutable (can be changed within the component).
-
-### 3. **Purpose**
-- **Props**: Used for communication between components.
-- **State**: Used to track and update internal data of a component.
-
-### 4. **Data Source**
-- **Props**: Passed down from the parent component.
-- **State**: Set and modified within the component itself.
-
-### 5. **Updating**
-- **Props**: Cannot be changed by the child component.
-- **State**: Can be changed using `setState` (class) or `useState` (function).
-
-### 6. **Re-rendering**
-- **Props**: Does not cause re-rendering unless the parent component re-renders.
-- **State**: Changes in state cause re-rendering of the component.
