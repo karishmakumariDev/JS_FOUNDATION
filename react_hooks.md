@@ -314,4 +314,176 @@ export default UserCard;
 export default App;
 
 
+# React
 
+React is a **JavaScript library** developed by Facebook (now Meta) for
+building **user interfaces (UI)**, especially for **single-page
+applications (SPAs)** where the content updates dynamically without
+reloading the whole page.
+
+------------------------------------------------------------------------
+
+## ✅ What is React?
+
+-   React is **component-based**, meaning the UI is broken into small,
+    reusable pieces called **components** (like buttons, headers, forms,
+    etc.).
+-   It is **declarative**, which means instead of manually updating the
+    DOM, you describe what the UI should look like, and React updates it
+    efficiently.
+-   It uses a **Virtual DOM** (a lightweight copy of the real DOM) to
+    make UI updates fast and smooth.
+
+------------------------------------------------------------------------
+
+## ✅ Why is React used?
+
+-   **Reusable Components** → You can build small UI pieces once and
+    reuse them across the app.\
+-   **Fast Performance** → Virtual DOM makes UI updates much faster than
+    direct DOM manipulation.\
+-   **Declarative UI** → You just describe how the UI should look, and
+    React handles updating the actual DOM.\
+-   **One-Way Data Flow** → Makes the application predictable and easier
+    to debug.\
+-   **Large Community & Ecosystem** → Tons of libraries, tools, and
+    community support.\
+-   **Cross-Platform** → With React Native, you can use the same
+    concepts to build mobile apps.
+
+------------------------------------------------------------------------
+
+# React Props
+
+## ✅ What are Props in React?
+
+-   **Props** (short for **properties**) are used to pass **data from
+    parent component to child component**.\
+-   They are **read-only** (immutable) -- meaning a child cannot modify
+    the props it receives.\
+-   Props help make components **reusable** and **dynamic**.
+
+------------------------------------------------------------------------
+
+## ✅ Practical Example
+
+### Parent Component (`App.js`)
+
+``` jsx
+import React from "react";
+import UserCard from "./UserCard";
+
+function App() {
+  return (
+    <div>
+      <h1>Props Example</h1>
+      <UserCard name="Karishma" age={20} />
+      <UserCard name="Piyush" age={18} />
+    </div>
+  );
+}
+
+export default App;
+```
+
+### Child Component (`UserCard.js`)
+
+``` jsx
+import React from "react";
+
+function UserCard(props) {
+  return (
+    <div style={{ border: "1px solid gray", padding: "10px", margin: "10px" }}>
+      <h2>Name: {props.name}</h2>
+      <p>Age: {props.age}</p>
+    </div>
+  );
+}
+
+export default UserCard;
+```
+
+------------------------------------------------------------------------
+
+# React Components
+
+## ✅ What is a Component in React?
+
+-   A **component** in React is like a **building block of UI**.\
+-   It is a **reusable piece of code** that returns HTML (JSX).\
+-   Components make React apps easier to **build, maintain, and reuse**.
+
+------------------------------------------------------------------------
+
+## 🔹 Types of Components
+
+### 1. Functional Components
+
+``` jsx
+function Welcome(props) {
+  return <h1>Hello, {props.name}!</h1>;
+}
+```
+
+### 2. Class Components
+
+``` jsx
+import React, { Component } from "react";
+
+class Welcome extends Component {
+  render() {
+    return <h1>Hello, {this.props.name}!</h1>;
+  }
+}
+```
+
+------------------------------------------------------------------------
+
+## 🔹 Example of a Functional Component
+
+### Parent Component (`App.js`)
+
+``` jsx
+import React from "react";
+import Greeting from "./Greeting";
+
+function App() {
+  return (
+    <div>
+      <h1>React Components Example</h1>
+      <Greeting name="Karishma" />
+      <Greeting name="Piyush" />
+    </div>
+  );
+}
+
+export default App;
+```
+
+### Child Component (`Greeting.js`)
+
+``` jsx
+import React from "react";
+
+function Greeting(props) {
+  return <h2>Hello, {props.name}! 👋</h2>;
+}
+
+export default Greeting;
+```
+
+------------------------------------------------------------------------
+
+## ✅ Output
+
+    React Components Example
+    Hello, Karishma! 👋
+    Hello, Piyush! 👋
+
+------------------------------------------------------------------------
+
+## 👉 In Simple Words
+
+A **React component** is like a **function that returns UI**.\
+You can reuse it as many times as you want with different data (via
+**props**).
