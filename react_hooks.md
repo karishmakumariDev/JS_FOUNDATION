@@ -229,4 +229,28 @@ with open(file_path, 'w') as file:
     file.write(content)
 
 file_path
+# React
+
+React is a **JavaScript library** developed by Facebook (now Meta) for building **user interfaces (UI)**, especially for **single-page applications (SPAs)** where the content updates dynamically without reloading the whole page.
+
+---
+
+## ✅ What is React?
+
+- React is **component-based**, meaning the UI is broken into small, reusable pieces called **components** (like buttons, headers, forms, etc.).
+- It is **declarative**, which means instead of manually updating the DOM, you describe what the UI should look like, and React updates it efficiently.
+- It uses a **Virtual DOM** (a lightweight copy of the real DOM) to make UI updates fast and smooth.
+
+---
+
+## ✅ Why is React used?
+
+- **Reusable Components** → You can build small UI pieces once and reuse them across the app.  
+- **Fast Performance** → Virtual DOM makes UI updates much faster than direct DOM manipulation.  
+- **Declarative UI** → You just describe how the UI should look, and React handles updating the actual DOM.  
+- **One-Way Data Flow** → Makes the application predictable and easier to debug.  
+- **Large Community & Ecosystem** → Tons of libraries, tools, and community support.  
+- **Cross-Platform** → With React Native, you can use the same concepts to build mobile apps.  
+
+---
 
