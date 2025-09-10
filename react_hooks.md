@@ -254,3 +254,64 @@ React is a **JavaScript library** developed by Facebook (now Meta) for building 
 
 ---
 
+# React Props
+
+## ✅ What are Props in React?
+- **Props** (short for **properties**) are used to pass **data from parent component to child component**.  
+- They are **read-only** (immutable) – meaning a child cannot modify the props it receives.  
+- Props help make components **reusable** and **dynamic**.
+
+---
+
+## ✅ Practical Example
+
+Let’s say we want to create a **UserCard** component that shows a user’s name and age.  
+Instead of hardcoding values, we pass them as **props**.
+
+---
+
+### 🔹 Parent Component (`App.js`)
+```jsx
+import React from "react";
+import UserCard from "./UserCard";
+
+function App() {
+  return (
+    <div>
+      <h1>Props Example</h1>
+      
+      {/* Passing props */}
+      <UserCard name="Karishma" age={20} />
+      <UserCard name="Piyush" age={18} />
+    </div>
+  );
+}
+# React Child Component (UserCard.js)
+
+## ✅ Child Component with Props
+
+This component receives **props** (`name` and `age`) from the parent component and displays them.
+
+---
+
+### 🔹 Code (`UserCard.js`)
+```jsx
+import React from "react";
+
+// props received as argument
+function UserCard(props) {
+  return (
+    <div style={{ border: "1px solid gray", padding: "10px", margin: "10px" }}>
+      <h2>Name: {props.name}</h2>
+      <p>Age: {props.age}</p>
+    </div>
+  );
+}
+
+export default UserCard;
+
+
+export default App;
+
+
+
